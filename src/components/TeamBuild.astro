@@ -1,140 +1,158 @@
 ---
 import { getCollection } from 'astro:content';
-import Section from './ui/Section.astro';
 import { site } from '../data/site';
 
 const phases = (await getCollection('teamPhases')).sort((a, b) => a.data.order - b.data.order).map((p) => p.data);
 
-// Flat org chart: one lead, 24 people on two rings (no management layer is
-// implied). The founding five are lit; one was promoted into a lead role; the
-// rest light up in sequence when the chart is revealed.
+// 24 people: the founding five are lit, the rest light up in sequence when the
+// panel is revealed. One founding member was promoted into a lead role.
+const PEOPLE = 24;
 const FOUNDING = 5;
 const PROMOTED = 2;
-const C = 200;
-const ring = (count: number, radius: number, offset: number) =>
-  Array.from({ length: count }, (_, i) => {
-    const a = offset + (i / count) * Math.PI * 2;
-    return { x: C + Math.cos(a) * radius, y: C + Math.sin(a) * radius };
-  });
-const nodes = [...ring(8, 82, -Math.PI / 2), ...ring(16, 150, -Math.PI / 2 + Math.PI / 16)];
-const promoted = nodes[PROMOTED];
 ---
 
-<Section
-  id="team"
-  band="warm"
-  variant="annotation"
-  title="And I've built the team."
-  intro="R&D Infrastructure, Feb 2022 → Mar 2024: from 5 people to a 24-person organization of FTEs, contractors, and MSP partners running ~1,000 labs across data centers and VR/AR environments."
->
-  <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
-    <figure class="lg:sticky lg:top-28 lg:col-span-5 lg:self-start" data-reveal>
-      <svg viewBox="0 0 400 400" class="mx-auto w-full max-w-md" role="img" aria-label="Team chart: 5 founding members grown to 24 people, one promoted into a lead role">
-        <circle cx={C} cy={C} r="82" fill="none" stroke="var(--color-line)" stroke-dasharray="2 6" />
-        <circle cx={C} cy={C} r="150" fill="none" stroke="var(--color-line)" stroke-dasharray="2 6" />
-        {nodes.map((n, i) => <line class:list={['org-link', i < FOUNDING && 'is-founding']} style={`--d: ${i}`} x1={C} y1={C} x2={n.x} y2={n.y} />)}
-        {nodes.map((n, i) => <circle class:list={['org-node', i < FOUNDING && 'is-founding']} style={`--d: ${i}`} cx={n.x} cy={n.y} r="7" />)}
-        <circle cx={promoted.x} cy={promoted.y} r="13" fill="none" stroke="var(--color-accent)" stroke-width="1.25" class="org-promoted" />
-        <text x={promoted.x + 18} y={promoted.y + 4} class="fill-muted font-mono text-[10px]">promoted to lead</text>
-        <circle cx={C} cy={C} r="24" fill="var(--color-surface-2)" stroke="var(--color-accent)" stroke-width="1.5" />
-        <text x={C} y={C + 4} text-anchor="middle" class="fill-fg font-mono text-[11px] font-medium">ME</text>
-      </svg>
-      <figcaption class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-xs text-muted">
-        <span class="inline-flex items-center gap-2"><span class="size-2 rounded-full bg-accent"></span>founding five</span>
-        <span class="inline-flex items-center gap-2"><span class="size-2 rounded-full border border-accent/60 bg-accent/20"></span>hired and grown</span>
-        <span class="text-fg">5 → 24 in two years</span>
-      </figcaption>
-    </figure>
+<section id="team" aria-labelledby="team-title" class="relative border-y border-line bg-band-warm py-24 sm:py-32">
+  <div class="container-page">
+    <!-- Header: title left, context right -->
+    <header class="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-16">
+      <h2 id="team-title" class="text-display lg:col-span-6" data-reveal>And I've built the team.</h2>
+      <p class="max-w-xl text-lg leading-relaxed text-pretty text-muted lg:col-span-6" data-reveal style="--i: 1">
+        R&D Infrastructure, Feb 2022 → Mar 2024. A blended organization of FTEs, contractors, and MSP partners running ~1,000 labs across data centers and VR/AR environments.
+      </p>
+    </header>
 
-    <div class="lg:col-span-7">
-      <ol class="relative border-l border-line-strong">
+    <!-- Growth panel -->
+    <div class="team-panel mt-14 overflow-hidden rounded-3xl border border-line bg-canvas/40" data-reveal>
+      <div class="grid items-center gap-10 p-8 sm:p-10 lg:grid-cols-12 lg:gap-12 lg:p-14">
+        <div class="lg:col-span-4">
+          <p class="font-mono text-[clamp(4rem,3rem+4vw,7rem)] leading-none font-medium tracking-[-0.04em] text-fg tabular-nums">
+            <span class="text-muted">5</span><span class="mx-3 text-dim">→</span>24
+          </p>
+          <p class="mt-4 text-lg text-fg">people in two years</p>
+          <p class="mt-1 text-sm text-muted">One of the founding five promoted into a lead role.</p>
+        </div>
+
+        <div class="lg:col-span-8">
+          <ul class="grid grid-cols-8 gap-3 sm:gap-4 lg:grid-cols-12" aria-label={`${FOUNDING} founding members grown to ${PEOPLE} people`}>
+            {
+              Array.from({ length: PEOPLE }, (_, i) => (
+                <li
+                  class:list={['person', i < FOUNDING ? 'person--founding' : 'person--new', i === PROMOTED && 'person--promoted']}
+                  style={`--d: ${i}`}
+                >
+                  <svg viewBox="0 0 24 32" aria-hidden="true">
+                    <circle cx="12" cy="8" r="6" />
+                    <path d="M2 31c0-6.6 4.5-11 10-11s10 4.4 10 11" />
+                  </svg>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs text-muted">
+            <span class="inline-flex items-center gap-2"><span class="size-2.5 rounded-full bg-accent"></span>Founding five</span>
+            <span class="inline-flex items-center gap-2"><span class="size-2.5 rounded-full border border-accent/70"></span>Hired and grown</span>
+            <span class="inline-flex items-center gap-2"><span class="size-2.5 rounded-full bg-accent ring-2 ring-accent/40 ring-offset-2 ring-offset-canvas"></span>Promoted to lead</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Phases on one horizontal track -->
+      <ol class="grid border-t border-line md:grid-cols-3">
         {
           phases.map((p, i) => (
-            <li class="relative pb-10 pl-8 last:pb-0" data-reveal style={`--i: ${i}`}>
-              <span class="absolute top-2 -left-[5px] size-[9px] rounded-full bg-accent" aria-hidden="true" />
-              <p class="font-mono text-xs text-muted">
-                <span class="text-accent">{String(i + 1).padStart(2, '0')} · {p.phase}</span> · {p.when}
+            <li class:list={['relative p-8 sm:p-10', i > 0 && 'border-t border-line md:border-t-0 md:border-l']}>
+              <p class="flex items-center gap-3 font-mono text-xs">
+                <span class="flex size-6 items-center justify-center rounded-full border border-accent text-accent">{i + 1}</span>
+                <span class="text-fg">{p.phase}</span>
+                <span class="text-muted">{p.when}</span>
               </p>
-              <h3 class="mt-2 text-xl font-medium tracking-[-0.015em] text-fg">{p.title}</h3>
-              <p class="mt-2 max-w-[56ch] leading-relaxed text-prose">{p.detail}</p>
+              <h3 class="mt-5 text-xl font-medium tracking-[-0.015em] text-fg">{p.title}</h3>
+              <p class="mt-2 leading-relaxed text-prose">{p.detail}</p>
             </li>
           ))
         }
       </ol>
+    </div>
 
-      <dl class="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3" data-reveal>
-        {
-          site.teamProof.map((m) => (
-            <div class="flex flex-col-reverse gap-1">
-              <dt class="text-sm text-muted">{m.label}</dt>
-              <dd class="font-mono text-2xl font-medium text-fg tabular-nums">{m.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
+    <!-- Proof: one row of numbers -->
+    <dl class="mt-14 grid grid-cols-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-6" data-reveal>
+      {
+        site.teamProof.map((m) => (
+          <div class="flex flex-col-reverse gap-2 border-l border-line pr-6 pl-5">
+            <dt class="text-sm leading-snug text-muted">{m.label}</dt>
+            <dd class="font-mono text-3xl font-medium tracking-tight text-fg tabular-nums">{m.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
 
-      <div class="mt-12 grid gap-8 border-t border-line pt-8 sm:grid-cols-2" data-reveal>
-        {
-          site.teamPrinciples.map((p) => (
-            <div>
-              <h3 class="text-lg leading-snug font-medium text-fg">{p.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-prose">{p.body}</p>
-            </div>
-          ))
-        }
-      </div>
+    <!-- How I lead -->
+    <div class="mt-20 grid gap-12 border-t border-line pt-12 lg:grid-cols-2 lg:gap-16">
+      {
+        site.teamPrinciples.map((p, i) => (
+          <div data-reveal style={`--i: ${i}`}>
+            <h3 class="text-[clamp(1.5rem,1.1rem+1.2vw,2rem)] leading-tight font-medium tracking-[-0.025em] text-balance text-fg">{p.title}</h3>
+            <p class="mt-4 max-w-[52ch] leading-relaxed text-prose">{p.body}</p>
+          </div>
+        ))
+      }
+    </div>
 
-      <ul class="mt-10 space-y-2 text-sm text-muted" data-reveal>
-        {
-          site.teamNotes.map((note) => (
-            <li class="flex items-center gap-3">
-              <span class="h-px w-3 bg-accent" aria-hidden="true" />
-              {note}
-            </li>
-          ))
-        }
+    <div class="mt-16 flex flex-col gap-8 border-t border-line pt-10 lg:flex-row lg:items-center lg:justify-between" data-reveal>
+      <ul class="flex flex-wrap gap-2" aria-label="People development">
+        {site.teamNotes.map((note) => <li class="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted">{note}</li>)}
       </ul>
-
-      <p class="mt-10 max-w-[60ch] border-l-2 border-accent pl-5 text-lg leading-relaxed text-fg" data-reveal>
-        {site.teamClosing}
-      </p>
+      <p class="max-w-[46ch] text-lg leading-relaxed text-fg lg:text-right">{site.teamClosing}</p>
     </div>
   </div>
-</Section>
+</section>
 
 <style>
-  .org-link {
-    stroke: color-mix(in oklab, var(--color-accent) 35%, transparent);
-    stroke-width: 1;
+  .team-panel {
+    background-image: radial-gradient(ellipse 60% 80% at 15% 30%, color-mix(in oklab, var(--color-accent) 7%, transparent), transparent 70%);
   }
 
-  .org-node {
+  .person svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .person--founding svg {
     fill: var(--color-accent);
-    stroke: var(--color-accent-strong);
-    stroke-width: 1;
-    transform-box: fill-box;
-    transform-origin: center;
+    filter: drop-shadow(0 0 8px color-mix(in oklab, var(--color-accent) 55%, transparent));
   }
 
-  .org-node:not(.is-founding) {
-    fill: color-mix(in oklab, var(--color-accent) 22%, var(--color-band-warm));
-    stroke: color-mix(in oklab, var(--color-accent) 60%, transparent);
+  .person--new svg {
+    fill: none;
+    stroke: color-mix(in oklab, var(--color-accent) 70%, transparent);
+    stroke-width: 1.5;
   }
 
-  /* Hired-and-grown nodes light up in sequence once the chart is revealed. */
+  .person--promoted {
+    position: relative;
+  }
+
+  .person--promoted::after {
+    content: '';
+    position: absolute;
+    inset: -6px -4px;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 60%, transparent);
+    border-radius: 9999px;
+  }
+
+  /* Hired-and-grown people appear in sequence once the panel is revealed. */
   @media (prefers-reduced-motion: no-preference) {
-    .org-node:not(.is-founding),
-    .org-link:not(.is-founding) {
+    .person--new {
       transition:
-        opacity 500ms var(--ease-out),
-        transform 500ms var(--ease-out);
-      transition-delay: calc(400ms + (var(--d) - 5) * 60ms);
+        opacity 450ms var(--ease-out),
+        transform 450ms var(--ease-out);
+      transition-delay: calc(350ms + (var(--d) - 5) * 55ms);
     }
 
-    :global(.js) :global([data-reveal]:not(.is-in)) .org-node:not(.is-founding),
-    :global(.js) :global([data-reveal]:not(.is-in)) .org-link:not(.is-founding) {
+    :global(.js) :global([data-reveal]:not(.is-in)) .person--new {
       opacity: 0;
-      transform: scale(0.4);
+      transform: translateY(6px);
     }
   }
 </style>
