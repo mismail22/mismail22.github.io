@@ -46,11 +46,14 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--i: 4">
-      <Button href="#impact" class="rounded-full">
-        View impact
+      <Button href="#systems" class="rounded-full">
+        Systems I built
         <ArrowRight class="size-4" aria-hidden="true" />
       </Button>
-      <Button href="#contact" variant="secondary" class="rounded-full">Get in touch</Button>
+      <Button href="#team" variant="secondary" class="rounded-full">
+        Teams I built
+        <ArrowRight class="size-4" aria-hidden="true" />
+      </Button>
       {
         linkedin && (
           <Button href={linkedin.href} variant="ghost" class="rounded-full" target="_blank" rel="noopener me">
@@ -75,8 +78,8 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
             <dt class="sys-label">{item.label}</dt>
             <dd class="font-mono text-base font-medium text-fg tabular-nums">
               {'from' in item && <span class="text-muted">{item.from} → </span>}
-              <span data-count={item.to} data-prefix={'prefix' in item ? item.prefix : ''} data-suffix={item.suffix}>
-                {formatValue(item.to, { prefix: 'prefix' in item ? item.prefix : '', suffix: item.suffix })}
+              <span data-count={item.to} data-count-from={'from' in item ? parseFloat(item.from) : 0} data-prefix={'prefix' in item ? item.prefix : ''} data-suffix={'suffix' in item ? item.suffix : ''}>
+                {formatValue(item.to, { prefix: 'prefix' in item ? item.prefix : '', suffix: 'suffix' in item ? item.suffix : '' })}
               </span>
             </dd>
           </div>

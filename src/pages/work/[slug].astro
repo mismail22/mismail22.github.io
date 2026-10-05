@@ -1,0 +1,98 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import Footer from '../../components/Footer.astro';
+import Navbar from '../../components/Navbar.astro';
+import ArchDiagram from '../../components/ui/ArchDiagram.astro';
+import Button from '../../components/ui/Button.astro';
+import Panel from '../../components/ui/Panel.astro';
+import Tag from '../../components/ui/Tag.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { withBase } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const studies = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return studies.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, index: i, next: studies[(i + 1) % studies.length] },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  index: number;
+  next: CollectionEntry<'work'>;
+}
+
+const { entry, index, next } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${data.title} · ${site.name}`} description={data.summary}>
+  <Navbar home={false} />
+  <main id="main" tabindex="-1" class="focus:outline-none">
+    <article class="relative pt-32 pb-24 sm:pt-40">
+      <div class="bg-grid absolute inset-x-0 top-0 -z-10 h-[32rem] [mask-image:linear-gradient(to_bottom,#000,transparent)]" aria-hidden="true"></div>
+
+      <div class="container-page">
+        <a href={withBase('/#systems')} class="inline-flex items-center gap-2 font-mono text-xs text-muted hover:text-fg" data-reveal>
+          <ArrowLeft class="size-3.5" aria-hidden="true" />
+          All systems
+        </a>
+
+        <header class="mt-8 max-w-4xl">
+          <p class="sys-label" data-reveal>
+            <span class="text-accent">Case {String(index + 1).padStart(2, '0')}</span> · {data.period} · {data.role}
+          </p>
+          <h1 class="mt-5 text-5xl font-semibold tracking-[-0.04em] text-balance sm:text-6xl" data-reveal style="--i: 1">{data.title}</h1>
+          <p class="mt-5 text-xl leading-snug text-pretty text-muted sm:text-2xl" data-reveal style="--i: 2">{data.tagline}</p>
+          <ul class="mt-8 flex flex-wrap gap-1.5" aria-label="Stack" data-reveal style="--i: 3">
+            {data.stack.map((s) => <Tag label={s} />)}
+          </ul>
+        </header>
+
+        <dl class="panel mt-12 grid grid-cols-2 divide-line overflow-hidden lg:grid-cols-4 lg:divide-x" data-reveal style="--i: 4">
+          {
+            data.metrics.map((m) => (
+              <div class="flex flex-col-reverse gap-1 border-line p-6 max-lg:border-b max-lg:odd:border-r">
+                <dt class="text-sm text-muted">{m.label}</dt>
+                <dd class="font-mono text-3xl font-medium tracking-tight text-fg tabular-nums">{m.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <Panel ticks class="mt-6 p-4 sm:p-6">
+          <p class="sys-label mb-4 flex items-center gap-2"><span class="led led--pulse" aria-hidden="true"></span>Architecture</p>
+          <div class="overflow-x-auto">
+            <div class="min-w-[760px]">
+              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} />
+            </div>
+          </div>
+        </Panel>
+
+        <div class="prose-cp mx-auto mt-16 max-w-3xl" data-reveal>
+          <Content />
+        </div>
+
+        <nav class="mx-auto mt-20 grid max-w-3xl gap-4 sm:grid-cols-2" aria-label="More">
+          <Panel as="a" href={withBase(`/work/${next.id}`)} class="group p-6 hover:border-line-strong">
+            <p class="sys-label">Next case study</p>
+            <p class="mt-3 flex items-center justify-between gap-3 text-lg font-semibold text-fg">
+              {next.data.title}
+              <ArrowRight class="size-5 text-accent transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </p>
+          </Panel>
+          <Panel class="flex flex-col justify-between gap-4 p-6">
+            <p class="sys-label">Want the deeper version?</p>
+            <Button href={withBase('/#contact')} class="self-start rounded-full">Get in touch</Button>
+          </Panel>
+        </nav>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

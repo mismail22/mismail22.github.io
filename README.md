@@ -8,14 +8,15 @@ All content lives in `src/data/`. You don't need to touch any components.
 
 | File | What it controls |
 | --- | --- |
-| `site.ts` | Name, headline, status badge, hero status bar, MBA section, education, optional email/resume, social links, Formspree ID, SEO text |
-| `projects.json` | Project cards. Order, category, metrics, tags, and optional repo/demo links |
-| `experience.json` | Experience timeline entries |
-| `skills.json` | Capability matrix under Platforms |
-| `telemetry.json` | Impact metric tiles (people first, then platform) |
-| `leadership.json` | "How I lead" principles and their proof points |
-| `org-growth.json` | Team-building story milestones and headcount |
-| `categories.ts` | Project filter categories and their labels |
+| `site.ts` | Name, headline, status, hero status bar, team notes, education, optional email/resume, social links, Formspree ID, SEO text |
+| `../content/work/*.md` | **Case studies** (one markdown file each): front matter for title, metrics, stack and the architecture diagram; body for the write-up |
+| `telemetry.json` | Impact tiles (systems first, then team) |
+| `incidents.json` | Incident log entries (impact, root cause, fix, result) |
+| `principles.json` | "How I build" principles and their proof points |
+| `team-phases.json` | Team-build timeline |
+| `toolbox.json` | Skills, each with where it was used and the evidence |
+| `projects.json` | Smaller "More work" cards |
+| `experience.json` | Release-log (journey) entries |
 
 The JSON files are validated against schemas in `src/content.config.ts`. A typo, such as an unknown category or a missing field, fails the build with a clear error instead of shipping a broken page.
 
@@ -41,6 +42,14 @@ Append an object to `src/data/projects.json`:
 - `id` must be unique.
 - `metrics`, `repo`, `demo`, and `context` are optional. A card hides any button whose link is missing.
 - To add a new filter tab, add its key to `src/data/categories.ts`. Tabs only appear for categories that have at least one project.
+
+### Add a case study
+
+Copy one of the files in `src/content/work/`, change the front matter and the write-up, and it gets its own page at `/work/<file-name>` plus a card on the home page. Diagram nodes sit on a grid (`col`, `row`); `kind` controls styling (`source`, `core`, `guard`, `surface`, `target`); `edges` are `[from, to]` pairs.
+
+### Content audit
+
+`npm run audit` (also run by the deploy workflow) fails if the built site contains `[CONFIRM]` markers, internal tool names, incident IDs, or personal contact details. `npm run audit -- --numbers` also lists every numeric claim for a final fact check.
 
 ### Other updates
 
@@ -106,9 +115,10 @@ src/
 ├─ content.config.ts     # Schemas for the JSON data
 ├─ data/                 # ← all editable content
 ├─ layouts/BaseLayout.astro
-├─ components/           # Navbar, Hero, Telemetry, Leadership, OrgGrowth, Projects, Business, Journey, Contact, Footer
-│  └─ ui/                # Section, Panel, Button, Tag, BrandIcon
-├─ scripts/              # motion, topology (hero graph), org-growth, nav, project-filter, contact-form
+├─ content/work/         # case studies (markdown)
+├─ components/           # Navbar, Hero, Telemetry, Systems, Incidents, Principles, TeamBuild, Toolbox, Journey, Contact, Footer
+│  └─ ui/                # Section, Panel, ArchDiagram, Button, Tag, BrandIcon
+├─ scripts/              # motion, topology (hero graph), nav, contact-form
 ├─ styles/global.css     # Tailwind import + design tokens (@theme)
-└─ pages/                # index.astro, 404.astro
+└─ pages/                # index.astro, work/[slug].astro, 404.astro
 ```

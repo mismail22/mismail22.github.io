@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import Panel from './ui/Panel.astro';
+import Section from './ui/Section.astro';
+
+const principles = (await getCollection('principles')).sort((a, b) => a.data.order - b.data.order).map((p) => p.data);
+---
+
+<Section
+  id="principles"
+  index="04"
+  eyebrow="How I build"
+  title="Five principles, each with a receipt."
+  intro="Three about systems, two about teams. Each one is backed by something that actually shipped."
+>
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+    {
+      principles.map((p, i) => (
+        <Panel
+          as="article"
+          ticks
+          delay={i % 3}
+          class:list={['flex flex-col p-7', p.kind === 'technical' ? 'lg:col-span-2' : 'lg:col-span-3', i === 2 && 'md:col-span-2 lg:col-span-2']}
+        >
+          <p class="sys-label flex items-center justify-between">
+            <span class="text-accent">0{i + 1}</span>
+            <span>{p.kind}</span>
+          </p>
+          <h3 class="mt-5 text-xl font-semibold tracking-[-0.02em] text-balance lg:text-2xl">{p.title}</h3>
+          <p class="mt-4 flex-1 text-sm leading-relaxed text-pretty text-muted">{p.body}</p>
+          <div class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-line pt-5">
+            <span class="led self-center" aria-hidden="true" />
+            <p class="font-mono text-lg font-medium text-fg tabular-nums">{p.proof.value}</p>
+            <p class="text-sm text-muted">{p.proof.label}</p>
+          </div>
+        </Panel>
+      ))
+    }
+  </div>
+</Section>

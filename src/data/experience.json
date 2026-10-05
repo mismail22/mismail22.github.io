@@ -1,33 +1,33 @@
 [
   {
     "id": "meta-tech-lead",
-    "role": "Tech Lead, Infrastructure Platforms & Automation",
+    "role": "Tech Lead, Infrastructure Platforms & AI",
     "company": "Meta",
     "location": "Menlo Park, CA",
     "start": "2024-03",
     "end": null,
     "highlights": [
-      "Created the governance platform that gives operations and finance a single source of truth across a $7B data-center fleet.",
-      "Automated fleet disposition, cutting cycle time from 81 to 10 days. Unlocked $100M–$200M in trapped capital and drove $300M+ in asset rebalancing.",
-      "Introduced AI-assisted engineering and sprint-based delivery, doubling quarterly output. Peer teams now use the same method.",
-      "Drove a zero-downtime peering-circuit migration strategy that cleared a multi-quarter bottleneck for 34 circuits."
+      "Architected the governance platform for $7B+ in data-center rack assets, with real-time computation, guardrailed bulk operations, and an audit trail designed with finance.",
+      "Automated fleet disposition and rebalancing: cycle time cut from 81 to 10 days, $300M+ rebalanced, and an estimated $100–200M reduction in aging inventory.",
+      "Spearheaded automation for AI/HPC network infrastructure (InfiniBand, RoCEv2) across thousands of devices (80%+ data-accuracy gain), and designed a carrier-grade router system saving ~480 hours a year.",
+      "Shipped a 9-tool LLM agent in one week. An AI-assisted code audit surfaced a nine-figure misclassification undetected for five years. Mentored 4 engineers."
     ],
-    "tags": ["Platform strategy", "Automation", "Applied AI", "Networking"]
+    "tags": ["React", "GraphQL", "PHP/Hack", "SQL", "LLM agents", "Network automation"]
   },
   {
-    "id": "meta-engineering-manager",
-    "role": "Engineering Manager, R&D Infrastructure",
+    "id": "meta-rd-environments",
+    "role": "R&D Environments Lead (Infrastructure Engineer)",
     "company": "Meta",
     "location": "Menlo Park, CA",
     "start": "2022-02",
     "end": "2024-03",
     "highlights": [
-      "Grew a 5-person team into a 24-engineer global infrastructure organization. Defined the org structure, hiring bar, and operating model for a mix of FTEs, contractors, and managed-service providers.",
-      "Cut a $5M vendor portfolio by 40% through a competitive RFP and contract renegotiation, with no SLA regression across 1,000+ lab environments.",
-      "Built the reliability practice from scratch: 99% availability, a 96.85% repair SLA against a 95% target, and a 90%+ MTTR improvement in year one.",
-      "Supported 43% fleet growth at flat headcount. Cut project closure from 47 to 2.25 days and raised partner incident participation from 37% to 83%."
+      "Built and led R&D infrastructure for ~1,000 labs across data centers and VR/AR environments, growing the team from 5 to 24 FTEs, contractors, and MSP partners.",
+      "Architected the lab automation framework, and drove 162 production code changes consolidating ACL policy plus 40+ VLAN migrations with network and security partners.",
+      "Reached a 96.85% repair SLA against a 95% target, 99% availability, and a 90%+ MTTR improvement, while supporting 43% device growth at flat headcount.",
+      "Directed a multi-vendor RFP across ~750 physical and ~250 logical labs and moved Tier 2 support to an MSP."
     ],
-    "tags": ["Org design", "Hiring", "Vendor strategy", "SRE"]
+    "tags": ["Lab automation", "ACL / VLAN", "Reliability", "Vendor management", "Org design"]
   },
   {
     "id": "meta-senior-swe",
@@ -37,12 +37,12 @@
     "start": "2020-04",
     "end": "2022-02",
     "highlights": [
-      "Tech-led a hardware RMA automation program across five organizations, processing 1,600+ returns for seven-figure savings. Earned a top-5% rating and a merit promotion.",
-      "Led incident response on four high-severity events, including mitigating a 40-terabit backbone-capacity drain and unlocking 3 terabits of stranded capacity.",
-      "Cut critical-ticket volume 52% month over month by root-causing a priority misassignment in outage automation.",
-      "Shipped production NLP and OCR systems. The email classifier filters 67% of inbound mail, saving ~73 person-days a year."
+      "Tech-led RMA automation across five engineering organizations (1,600+ returns). Rated Greatly Exceeds Expectations (top ~5%) and promoted.",
+      "Worked incident response on four high-severity events: mitigated a 40-terabit backbone-capacity drain and restored ~3 Tbps of stranded capacity with one fix.",
+      "Rebuilt network workflow APIs on a push model (57% faster, timeouts eliminated) and fixed outage-automation priority logic (52% fewer critical tickets).",
+      "Shipped a computer-vision OCR pipeline for rack audits that cut manual validation by 80%."
     ],
-    "tags": ["Python", "Incident response", "NLP", "Computer vision"]
+    "tags": ["Python", "Network workflows", "Incident response", "Computer vision"]
   },
   {
     "id": "facebook-swe",
@@ -52,10 +52,10 @@
     "start": "2018-04",
     "end": "2020-04",
     "highlights": [
-      "Unblocked a ticketing migration that had stalled for years by rescoping access controls with Security and shipping three production ML classifiers.",
-      "Replaced a fragile legacy system with an email-ingestion pipeline processing 45,000+ emails per cycle at 99% availability, avoiding ~$100K in third-party tooling."
+      "Built three production ML classifiers for email-to-ticket routing (94%, ~70%, 63% accuracy) and the pipeline that replaced legacy intake: 45,147 emails at 99% availability.",
+      "Drove an org-wide ticketing migration blocked for years, avoiding an estimated ~$100K tool purchase, and led the Zero-Touch Operations program for automated logical network repairs."
     ],
-    "tags": ["Python", "ML classifiers", "Data pipelines"]
+    "tags": ["Python", "NLP", "Data pipelines", "Network operations"]
   },
   {
     "id": "facebook-mobile-operator",
@@ -65,9 +65,9 @@
     "start": "2015-04",
     "end": "2018-04",
     "highlights": [
-      "Managed integrations with 10+ telecom carriers across APAC, EMEA, and LATAM for messaging products serving billions of users."
+      "Launched integrations with 10+ telecom carriers across APAC, EMEA, and LATAM: traffic zero-rating (GGSN DPI), URL redirection, HTTP header enrichment, and SMS/SMPP binds for products serving billions of users."
     ],
-    "tags": ["Carrier integrations", "Messaging"]
+    "tags": ["Carrier integrations", "GGSN / DPI", "SMPP"]
   },
   {
     "id": "vodafone-egypt",
@@ -77,8 +77,8 @@
     "start": "2010-03",
     "end": "2015-04",
     "highlights": [
-      "Ran mobile-core operations across Cisco, Ericsson, and Juniper stacks. Owned vendor escalations and built the team's first automation."
+      "Operated the GPRS/LTE packet core (Cisco ASR5K GGSN, Ericsson SGSN, Juniper SBR, F5 BIG-IP), administered MPBN routers (BGP/OSPF certified), and automated operations with UNIX scripting."
     ],
-    "tags": ["Mobile core", "Cisco", "Ericsson", "Juniper"]
+    "tags": ["Packet core", "BGP / OSPF", "Cisco", "Ericsson", "Juniper"]
   }
 ]

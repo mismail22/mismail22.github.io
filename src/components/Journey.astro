@@ -13,10 +13,10 @@ const roles = (await getCollection('experience')).sort((a, b) => b.data.start.lo
 
 <Section
   id="journey"
-  index="06"
+  index="07"
   eyebrow="Release history"
-  title="16 years, from mobile core to fleet-scale platforms."
-  intro="Each role is an entry in the log. Open one to read the highlights."
+  title="Sixteen years, versioned."
+  intro="From mobile packet core to fleet-scale platforms. Each role is an entry in the log; open one to read the highlights."
 >
   <ol class="overflow-hidden rounded-2xl border border-line">
     {
@@ -73,15 +73,18 @@ const roles = (await getCollection('experience')).sort((a, b) => b.data.start.lo
   <div class="mt-12 grid gap-4 md:grid-cols-2">
     {
       site.education.map((edu, i) => (
-        <div class="panel flex items-center gap-4 p-5" data-reveal style={`--i: ${i}`}>
+        <div class="panel flex items-start gap-4 p-5" data-reveal style={`--i: ${i}`}>
           <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-accent">
             <GraduationCap class="size-5" aria-hidden="true" />
           </span>
           <div class="min-w-0 flex-1">
-            <p class="font-medium text-fg">{edu.degree}</p>
-            <p class="truncate text-sm text-muted">{edu.school}</p>
+            <div class="flex items-baseline justify-between gap-4">
+              <p class="font-medium text-fg">{edu.degree}</p>
+              <p class="shrink-0 font-mono text-xs text-muted">{edu.period}</p>
+            </div>
+            <p class="text-sm text-muted">{edu.school}</p>
+            {'note' in edu && <p class="mt-2 text-sm leading-relaxed text-muted">{edu.note}</p>}
           </div>
-          <p class="shrink-0 font-mono text-xs text-muted">{edu.period}</p>
         </div>
       ))
     }

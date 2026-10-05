@@ -1,74 +1,60 @@
 [
   {
-    "id": "org-size",
-    "group": "people",
-    "label": "Engineers in the organization I built",
-    "detail": "Feb 2022 → Mar 2024, FTEs, contractors and MSPs",
-    "from": "5",
-    "to": 24,
+    "id": "disposal-cycle",
+    "group": "systems",
+    "label": "Fleet disposal cycle after automation",
+    "detail": "Fleet governance platform",
+    "from": "81",
+    "to": 10,
+    "suffix": " days",
     "order": 1
   },
   {
-    "id": "partner-participation",
-    "group": "people",
-    "label": "Partner-team incident participation",
+    "id": "bulk-sweep",
+    "group": "systems",
+    "label": "Racks covered by the first guardrailed bulk sweep",
+    "detail": "Fleet governance platform",
+    "to": 27000,
+    "suffix": "+",
+    "order": 2
+  },
+  {
+    "id": "stranded-capacity",
+    "group": "systems",
+    "label": "Backbone capacity restored with a single fix",
+    "detail": "Network workflow tooling",
+    "prefix": "~",
+    "to": 3,
+    "suffix": " Tbps",
+    "order": 3
+  },
+  {
+    "id": "repair-sla",
+    "group": "systems",
+    "label": "Repair SLA against a 95% target",
+    "detail": "~1,000 R&D labs",
+    "to": 96.85,
+    "decimals": 2,
+    "suffix": "%",
+    "order": 4
+  },
+  {
+    "id": "org-size",
+    "group": "team",
+    "label": "People in the R&D infrastructure team I built",
+    "detail": "Feb 2022 → Mar 2024 · FTEs, contractors, MSP partners",
+    "from": "5",
+    "to": 24,
+    "order": 5
+  },
+  {
+    "id": "partner-engagement",
+    "group": "team",
+    "label": "Partner-team incident engagement",
     "detail": "After a shared-ownership charter",
     "from": "37%",
     "to": 83,
     "suffix": "%",
-    "order": 2
-  },
-  {
-    "id": "help-resolution",
-    "group": "people",
-    "label": "Customer help-request resolution",
-    "detail": "Operations redesign",
-    "from": "10",
-    "to": 3,
-    "suffix": " days",
-    "order": 3
-  },
-  {
-    "id": "interview-loops",
-    "group": "people",
-    "label": "Behavioral interview loops conducted",
-    "detail": "Holding the hiring bar across cycles",
-    "to": 19,
-    "order": 4
-  },
-  {
-    "id": "mentored",
-    "group": "people",
-    "label": "Engineers mentored through complex designs",
-    "detail": "As Tech Lead, 2024 → present",
-    "to": 4,
-    "order": 5
-  },
-  {
-    "id": "repair-sla",
-    "group": "platform",
-    "label": "Repair SLA against a 95% target",
-    "to": 96.85,
-    "decimals": 2,
-    "suffix": "%",
     "order": 6
-  },
-  {
-    "id": "disposal-cycle",
-    "group": "platform",
-    "label": "Fleet disposal cycle, after automation",
-    "from": "81",
-    "to": 10,
-    "suffix": " days",
-    "order": 7
-  },
-  {
-    "id": "fleet",
-    "group": "platform",
-    "label": "Data-center fleet under governance",
-    "prefix": "$",
-    "to": 7,
-    "suffix": "B",
-    "order": 8
   }
 ]

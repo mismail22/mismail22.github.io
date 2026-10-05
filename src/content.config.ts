@@ -1,10 +1,40 @@
 import { defineCollection } from 'astro:content';
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { categories, type Category } from './data/categories';
 
 const categoryKeys = Object.keys(categories) as [Category, ...Category[]];
 
+// Case studies: one markdown file per system in src/content/work/.
+// The diagram is data (nodes on a grid + edges), rendered as SVG.
+const work = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/work' }),
+  schema: z.object({
+    title: z.string(),
+    tagline: z.string(),
+    summary: z.string(),
+    role: z.string(),
+    period: z.string(),
+    stack: z.array(z.string()).min(1),
+    metrics: z.array(z.object({ value: z.string(), label: z.string() })).min(2).max(4),
+    diagram: z.object({
+      nodes: z.array(
+        z.object({
+          id: z.string(),
+          label: z.string(),
+          sub: z.string().optional(),
+          col: z.number().min(0),
+          row: z.number().min(0),
+          kind: z.enum(['source', 'core', 'guard', 'surface', 'target']).default('core'),
+        }),
+      ),
+      edges: z.array(z.tuple([z.string(), z.string()])),
+    }),
+    order: z.number(),
+  }),
+});
+
+// Smaller project cards ("More work").
 const projects = defineCollection({
   loader: file('src/data/projects.json'),
   schema: z.object({
@@ -34,12 +64,14 @@ const experience = defineCollection({
   }),
 });
 
-const skills = defineCollection({
-  loader: file('src/data/skills.json'),
+// "Tools, with receipts": every skill carries the evidence of where it was used.
+const toolbox = defineCollection({
+  loader: file('src/data/toolbox.json'),
   schema: z.object({
-    title: z.string(),
-    icon: z.enum(['users', 'shield', 'network', 'workflow', 'brain']),
-    items: z.array(z.string()).min(1),
+    skill: z.string(),
+    group: z.enum(['network', 'platform', 'data', 'ai']),
+    where: z.string(),
+    evidence: z.string(),
     order: z.number(),
   }),
 });
@@ -47,7 +79,7 @@ const skills = defineCollection({
 const telemetry = defineCollection({
   loader: file('src/data/telemetry.json'),
   schema: z.object({
-    group: z.enum(['people', 'platform']),
+    group: z.enum(['systems', 'team']),
     label: z.string(),
     detail: z.string().optional(),
     // Shown before an arrow, e.g. "5" in "5 → 24"
@@ -61,9 +93,10 @@ const telemetry = defineCollection({
   }),
 });
 
-const leadership = defineCollection({
-  loader: file('src/data/leadership.json'),
+const principles = defineCollection({
+  loader: file('src/data/principles.json'),
   schema: z.object({
+    kind: z.enum(['technical', 'team']),
     title: z.string(),
     body: z.string(),
     proof: z.object({ value: z.string(), label: z.string() }),
@@ -71,15 +104,29 @@ const leadership = defineCollection({
   }),
 });
 
-const orgGrowth = defineCollection({
-  loader: file('src/data/org-growth.json'),
+const incidents = defineCollection({
+  loader: file('src/data/incidents.json'),
   schema: z.object({
-    phase: z.string(),
     title: z.string(),
-    detail: z.string(),
-    headcount: z.number().int().min(1).max(24),
+    year: z.string(),
+    severity: z.enum(['high', 'medium']),
+    impact: z.string(),
+    cause: z.string(),
+    fix: z.string(),
+    result: z.string(),
     order: z.number(),
   }),
 });
 
-export const collections = { projects, experience, skills, telemetry, leadership, orgGrowth };
+const teamPhases = defineCollection({
+  loader: file('src/data/team-phases.json'),
+  schema: z.object({
+    phase: z.string(),
+    when: z.string(),
+    title: z.string(),
+    detail: z.string(),
+    order: z.number(),
+  }),
+});
+
+export const collections = { work, projects, experience, toolbox, telemetry, principles, incidents, teamPhases };

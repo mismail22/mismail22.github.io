@@ -1,0 +1,26 @@
+[
+  {
+    "id": "foundation",
+    "phase": "Foundation",
+    "when": "Feb 2022 · 5 people",
+    "title": "Operating model first",
+    "detail": "Defined onboarding, role boundaries, escalation paths, hiring, and career development for FTEs, contractors, and MSP partners.",
+    "order": 1
+  },
+  {
+    "id": "reliability",
+    "phase": "Reliability",
+    "when": "Year one",
+    "title": "A reliability practice from scratch",
+    "detail": "99% availability, a 96.85% repair SLA against a 95% target, and a 90%+ MTTR improvement. Device fleet grew 43% (1,823 → 2,623) at flat headcount.",
+    "order": 2
+  },
+  {
+    "id": "scale",
+    "phase": "Scale",
+    "when": "Mar 2024 · 24 people",
+    "title": "A team that runs itself",
+    "detail": "Team incident handling rose from 40% to 75% through training and documentation. A multi-vendor RFP across ~1,000 labs and a Tier 2 move to an MSP cut support costs with no SLA regression.",
+    "order": 3
+  }
+]

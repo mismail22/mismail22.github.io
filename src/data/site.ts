@@ -1,26 +1,27 @@
 // Single place for personal details. Edit this file to update the hero,
-// MBA section, contact links and SEO metadata. Longer lists live in the
-// JSON files next to this one.
+// contact links and SEO metadata. Longer lists live in the JSON files next to
+// this one, and case studies live in src/content/work/.
 
 export const site = {
   name: 'Mohanad Ismail',
   handle: 'mohanad',
-  title: 'Mohanad Ismail · Engineering Leader, Infrastructure & Platforms',
+  title: 'Mohanad Ismail · Infrastructure Platforms & Network Automation',
   description:
-    'Engineering leader with 16 years in large-scale infrastructure, 11 at Meta. Grew a 5-person team into a 24-engineer global organization and built the governance platform behind a $7B data-center fleet. MBA with Honors.',
+    '16 years in network and infrastructure engineering, 11 at Meta. Architected the governance platform for $7B+ in data-center rack assets, automated network policy across thousands of devices, and grew an R&D infrastructure team from 5 to 24.',
   // Hero headline, split so the second half can be de-emphasized.
-  headline: ['I build engineering organizations,', 'and the infrastructure platforms they run.'],
+  headline: ['I build infrastructure platforms and network automation,', "and I've built the team that runs them."],
   intro:
-    '16 years in large-scale infrastructure, 11 at Meta. I grew a 5-person team into a 24-engineer global organization, then returned to hands-on technical leadership to architect the governance platform behind a $7B data-center fleet.',
+    '16 years in network and infrastructure engineering, 11 at Meta. I architected the governance platform for $7B+ in data-center rack assets, automated network policy across thousands of devices, and grew an R&D infrastructure team from 5 to 24 engineers.',
   location: 'Menlo Park, CA',
-  status: 'Open to infrastructure leadership roles',
+  status: 'Open to Staff+ infrastructure and infrastructure engineering-management roles',
 
-  // Hero status bar. `to` is animated; `from` is shown before an arrow.
+  // Hero status bar: three systems readouts, one team readout.
+  // `to` is animated; `from` is shown before an arrow.
   heroTelemetry: [
-    { label: 'Org', from: '5', to: 24, suffix: ' eng' },
-    { label: 'Fleet', prefix: '$', to: 7, suffix: 'B' },
-    { label: 'Avail', to: 99, suffix: '%' },
-    { label: 'Vendor cost', prefix: '−', to: 40, suffix: '%' },
+    { label: 'Rack assets', prefix: '$', to: 7, suffix: 'B+' },
+    { label: 'Net changes', to: 162 },
+    { label: 'Cycle', from: '81', to: 10, suffix: 'd' },
+    { label: 'Org', from: '5', to: 24 },
   ],
 
   // Optional public email. Leave empty to keep it off the site.
@@ -39,29 +40,15 @@ export const site = {
     // { label: 'X', handle: 'yourhandle', href: 'https://x.com/yourhandle', icon: 'x' },
   ],
 
-  mba: {
-    school: 'Boston University, Questrom School of Business',
-    degree: 'Master of Business Administration',
-    honors: 'With Honors',
-    period: '2024 – 2025',
-    gpa: '3.68',
-    note: 'Led a 5-person team to a top-5% finish in an international country-manager strategy simulation.',
-    coursework: ['Analytics', 'Strategic leadership', 'Risk management', 'Global business'],
-    // How the business training shows up in engineering work.
-    applied: [
-      { value: '$5M → ~$3M', label: 'Annual budget after a multi-vendor RFP, with no SLA regression' },
-      { value: '$100–200M', label: 'Trapped capital unlocked by automating fleet disposition' },
-      { value: 'SOX', label: 'Compliant governance platform built with finance as a partner' },
-      { value: '1,000+', label: 'Lab environments under ongoing capacity and cost governance' },
-    ],
-    toolkit: ['P&L and budget ownership', 'Vendor strategy and negotiation', 'Capacity and cost governance', 'Risk management', 'Analytics', 'Cross-functional partnership'],
-  },
+  // Team section extras
+  teamNotes: ['Promoted a direct report into a lab-operations lead role', 'Mentored 4 engineers through complex technical designs', '19 behavioral interview loops'],
 
   education: [
     {
       school: 'Boston University, Questrom School of Business',
       degree: 'MBA, With Honors',
       period: '2024 – 2025',
+      note: 'GPA 3.68 · Analytics, strategic leadership, risk management · Led a team to a top-5% finish in an international strategy simulation',
     },
     {
       school: 'Cairo University',

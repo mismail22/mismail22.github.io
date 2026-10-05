@@ -1,0 +1,42 @@
+[
+  {
+    "id": "guardrails",
+    "kind": "technical",
+    "title": "Guardrails before bulk operations.",
+    "body": "The inventory platform's CLI ships with confirm flags, batch-size caps, mandatory filters, and value-at-risk thresholds. I design for the day someone runs the wrong command against tens of thousands of racks.",
+    "proof": { "value": "27,000+", "label": "racks in the first bulk sweep" },
+    "order": 1
+  },
+  {
+    "id": "real-time",
+    "kind": "technical",
+    "title": "Real-time over stale when decisions depend on it.",
+    "body": "I replaced lagging batch analytics with live computation, so operations and finance decide from the same sub-second numbers instead of last week's export.",
+    "proof": { "value": "81 → 10", "label": "days per disposal cycle" },
+    "order": 2
+  },
+  {
+    "id": "agents-orchestrate",
+    "kind": "technical",
+    "title": "Agents orchestrate tools; they don't replace them.",
+    "body": "My LLM agents call the same guarded commands people use, and my AI-assisted audits pair model reasoning with human verification. That combination surfaced a data defect that had been hiding for five years.",
+    "proof": { "value": "1 week", "label": "to ship a 9-tool LLM agent" },
+    "order": 3
+  },
+  {
+    "id": "operating-model",
+    "kind": "team",
+    "title": "Build the operating model before the headcount.",
+    "body": "Before growing R&D infrastructure from 5 to 24 people, I defined onboarding, role boundaries, escalation paths, and the hiring bar for a mix of FTEs, contractors, and MSP partners.",
+    "proof": { "value": "5 → 24", "label": "people in two years" },
+    "order": 4
+  },
+  {
+    "id": "shared-ownership",
+    "kind": "team",
+    "title": "Shared ownership beats escalation.",
+    "body": "A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams. The same three teams partnered on 162 production changes consolidating ACL policy.",
+    "proof": { "value": "37% → 83%", "label": "partner incident engagement" },
+    "order": 5
+  }
+]

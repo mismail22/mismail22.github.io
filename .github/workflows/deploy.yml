@@ -40,6 +40,9 @@ jobs:
           SITE: ${{ steps.pages.outputs.origin }}
           BASE: ${{ steps.pages.outputs.base_path }}
 
+      # Blocks deploys containing [CONFIRM] markers, internal names or contact details
+      - run: npm run audit
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

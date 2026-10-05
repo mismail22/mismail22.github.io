@@ -13,7 +13,7 @@ export function withBase(path: string): string {
 }
 
 // Money, counts, percentages and ranges: $7B, 1,600+, 96.85%, $100M–$200M, 81 to 10
-const METRIC = /(\$?\d[\d,.]*[MBK]?(?:[–-]\$?\d[\d,.]*[MBK]?)?\+?%?)/g;
+const METRIC = /((?<![\w$])\$?\d[\d,.]*[MBK]?(?:[–-]\$?\d[\d,.]*[MBK]?)?\+?%?(?![\w]))/g;
 
 /** Split text so numeric metrics can be rendered with emphasis. */
 export function splitMetrics(text: string): { text: string; metric: boolean }[] {

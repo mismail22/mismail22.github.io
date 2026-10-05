@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import Panel from './ui/Panel.astro';
+import Section from './ui/Section.astro';
+
+const incidents = (await getCollection('incidents')).sort((a, b) => a.data.order - b.data.order).map((i) => i.data);
+---
+
+<Section
+  id="incidents"
+  index="03"
+  eyebrow="Incident log"
+  title="When it broke."
+  intro="Production is where engineering judgment gets tested. A few incidents I worked, written like postmortem summaries."
+>
+  <Panel class="overflow-hidden">
+    <div class="flex items-center justify-between border-b border-line px-5 py-3 font-mono text-xs text-muted sm:px-7">
+      <span>incident.log</span>
+      <span>{incidents.length} entries · newest first</span>
+    </div>
+    <ol class="divide-y divide-line">
+      {
+        incidents.map((inc, i) => (
+          <li class="grid gap-4 px-5 py-6 sm:grid-cols-[9rem_1fr] sm:gap-8 sm:px-7" data-reveal style={`--i: ${Math.min(i, 4)}`}>
+            <div class="flex items-center gap-3 font-mono text-xs sm:flex-col sm:items-start sm:gap-2">
+              <span class="inline-flex items-center gap-2">
+                <span class:list={['led', inc.severity === 'high' ? 'led--high' : '']} aria-hidden="true" />
+                <span class:list={['uppercase tracking-widest', inc.severity === 'high' ? 'text-amber-300' : 'text-accent']}>
+                  {inc.severity === 'high' ? 'High sev' : 'Medium'}
+                </span>
+              </span>
+              <span class="text-muted">{inc.year}</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold tracking-[-0.015em] text-fg">{inc.title}</h3>
+              <dl class="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt class="sys-label">Impact</dt>
+                  <dd class="mt-1 text-muted">{inc.impact}</dd>
+                </div>
+                <div>
+                  <dt class="sys-label">Root cause</dt>
+                  <dd class="mt-1 text-muted">{inc.cause}</dd>
+                </div>
+                <div>
+                  <dt class="sys-label">Fix</dt>
+                  <dd class="mt-1 text-muted">{inc.fix}</dd>
+                </div>
+                <div>
+                  <dt class="sys-label">Result</dt>
+                  <dd class="mt-1 font-mono text-accent">{inc.result}</dd>
+                </div>
+              </dl>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Panel>
+</Section>
+
+<style>
+  .led--high {
+    background: #fbbf24;
+    box-shadow: 0 0 10px rgb(251 191 36 / 0.7);
+  }
+</style>

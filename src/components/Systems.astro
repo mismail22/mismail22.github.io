@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import ProjectCard from './ProjectCard.astro';
+import ArchDiagram from './ui/ArchDiagram.astro';
+import Panel from './ui/Panel.astro';
+import Section from './ui/Section.astro';
+import Tag from './ui/Tag.astro';
+import { withBase } from '../lib/format';
+
+const studies = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Section
+  id="systems"
+  index="02"
+  eyebrow="Selected systems"
+  title="Systems I designed, and why they look that way."
+  intro="Three deep dives: the problem, the constraints, the architecture, the decisions, and the results. Described at a public level of detail."
+>
+  <div class="grid gap-4 lg:grid-cols-2">
+    {
+      studies.map(({ id, data }, i) => (
+        <Panel
+          as="a"
+          href={withBase(`/work/${id}`)}
+          ticks
+          delay={i}
+          class:list={['group flex flex-col gap-8 p-6 hover:border-line-strong sm:p-8', i === 0 && 'lg:col-span-2 lg:flex-row lg:items-center']}
+        >
+          <div class:list={['flex flex-col', i === 0 && 'lg:w-5/12']}>
+            <p class="sys-label">
+              <span class="text-accent">Case {String(i + 1).padStart(2, '0')}</span> · {data.period}
+            </p>
+            <h3 class="mt-4 text-2xl font-semibold tracking-[-0.025em] text-fg sm:text-3xl">{data.title}</h3>
+            <p class="mt-2 text-muted">{data.tagline}</p>
+
+            <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line">
+              {data.metrics.slice(0, 2).map((m) => (
+                <div class="flex flex-col-reverse gap-1 bg-surface p-4">
+                  <dt class="text-xs text-muted">{m.label}</dt>
+                  <dd class="font-mono text-xl font-medium text-fg tabular-nums">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Stack">
+              {data.stack.slice(0, 4).map((s) => (
+                <Tag label={s} />
+              ))}
+            </ul>
+
+            <p class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
+              Read the case study
+              <ArrowRight class="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+            </p>
+          </div>
+
+          <div class:list={['rounded-xl border border-line bg-canvas/60 p-3', i === 0 && 'lg:flex-1']}>
+            <ArchDiagram diagram={data.diagram} label={`${data.title} architecture overview`} compact />
+          </div>
+        </Panel>
+      ))
+    }
+  </div>
+
+  <h3 class="sys-label mt-16 mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>More work</h3>
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {projects.map(({ id, data }, i) => <ProjectCard id={id} project={data} index={i} />)}
+  </div>
+</Section>

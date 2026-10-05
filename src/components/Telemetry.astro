@@ -5,92 +5,83 @@ import Section from './ui/Section.astro';
 import { formatValue } from '../lib/format';
 
 const items = (await getCollection('telemetry')).sort((a, b) => a.data.order - b.data.order).map((i) => i.data);
-const [headline, ...people] = items.filter((i) => i.group === 'people');
-const platform = items.filter((i) => i.group === 'platform');
+const systems = items.filter((i) => i.group === 'systems');
+const [org, ...team] = items.filter((i) => i.group === 'team');
+
+type Item = (typeof items)[number];
 
 // Count from the "before" value when there is one, so 81 → 10 counts down.
-const countAttrs = (item: (typeof items)[number]) => ({
+const countAttrs = (item: Item) => ({
   'data-count': item.to,
   'data-count-from': item.from ? parseFloat(item.from) : 0,
   'data-prefix': item.prefix,
   'data-suffix': item.suffix,
   'data-decimals': item.decimals,
 });
-const display = (item: (typeof items)[number]) => formatValue(item.to, item);
-const founding = headline.from ? parseInt(headline.from, 10) : 0;
+const display = (item: Item) => formatValue(item.to, item);
+const founding = org.from ? parseInt(org.from, 10) : 0;
 ---
 
-<Section
-  id="impact"
-  index="01"
-  eyebrow="Impact telemetry"
-  title="Measured in people first, then platforms."
-  intro="The numbers I'm proudest of are about teams: how they grew, how they work with partners, and how fast they help customers."
->
-  <p class="sys-label mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>People</p>
-
+<Section id="impact" index="01" eyebrow="Impact telemetry" title="Impact, measured." intro="Systems first, then the team behind them.">
+  <p class="sys-label mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>Systems</p>
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <!-- Headline people metric with the team visualized as nodes -->
-    <Panel ticks class="flex flex-col justify-between gap-10 p-7 sm:col-span-2 lg:row-span-2 lg:p-9">
-      <div>
-        <p class="sys-label">Org size</p>
-        <p class="mt-4 font-mono text-6xl font-medium tracking-tight tabular-nums sm:text-7xl">
-          {headline.from && <span class="text-muted">{headline.from}<span class="mx-3 text-dim">→</span></span>}
-          <span class="text-fg" {...countAttrs(headline)}>{display(headline)}</span>
-        </p>
-        <p class="mt-4 text-lg text-fg">{headline.label}</p>
-        {headline.detail && <p class="mt-1 text-sm text-muted">{headline.detail}</p>}
-      </div>
-
-      <div>
-        <ul class="grid grid-cols-8 gap-2.5 sm:gap-3" aria-label={`${founding} founding engineers grown to ${headline.to}`}>
-          {
-            Array.from({ length: headline.to }, (_, i) => (
-              <li
-                class:list={['org-dot aspect-square rounded-full', i < founding ? 'bg-accent shadow-[0_0_12px_var(--color-accent)]' : 'org-dot--new border border-accent/60 bg-accent/15']}
-                style={`--d: ${i}`}
-              />
-            ))
-          }
-        </ul>
-        <p class="mt-4 flex items-center gap-4 font-mono text-xs text-muted">
-          <span class="inline-flex items-center gap-1.5"><span class="size-2 rounded-full bg-accent"></span>founding team</span>
-          <span class="inline-flex items-center gap-1.5"><span class="size-2 rounded-full border border-accent/60 bg-accent/15"></span>hired and grown</span>
-        </p>
-      </div>
-    </Panel>
-
     {
-      people.map((item, i) => (
-        <Panel ticks delay={i + 1} class="flex flex-col justify-between gap-6 p-6">
-          <p class="font-mono text-3xl font-medium tracking-tight tabular-nums">
+      systems.map((item, i) => (
+        <Panel ticks delay={i} class="flex flex-col justify-between gap-8 p-6">
+          <p class="font-mono text-3xl font-medium tracking-tight tabular-nums lg:text-4xl">
             {item.from && <span class="text-muted">{item.from} → </span>}
-            <span class="text-fg" {...countAttrs(item)}>{display(item)}</span>
+            <span class="text-fg" {...countAttrs(item)}>
+              {display(item)}
+            </span>
           </p>
           <div>
             <p class="text-sm text-fg">{item.label}</p>
-            {item.detail && <p class="mt-1 text-xs text-muted">{item.detail}</p>}
+            {item.detail && <p class="mt-1 font-mono text-xs text-muted">{item.detail}</p>}
           </div>
         </Panel>
       ))
     }
   </div>
 
-  <p class="sys-label mt-14 mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>Platform</p>
-
-  <Panel class="grid divide-y divide-line md:grid-cols-3 md:divide-x md:divide-y-0">
+  <p class="sys-label mt-12 mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>Team</p>
+  <div class="grid gap-4 lg:grid-cols-3">
+    <Panel ticks class="flex flex-col gap-8 p-6 sm:flex-row sm:items-center sm:justify-between lg:col-span-2">
+      <div>
+        <p class="font-mono text-4xl font-medium tracking-tight tabular-nums">
+          {org.from && <span class="text-muted">{org.from} → </span>}
+          <span class="text-fg" {...countAttrs(org)}>{display(org)}</span>
+        </p>
+        <p class="mt-3 text-sm text-fg">{org.label}</p>
+        {org.detail && <p class="mt-1 font-mono text-xs text-muted">{org.detail}</p>}
+      </div>
+      <ul class="grid w-full max-w-xs grid-cols-8 gap-2" aria-label={`${founding} founding members grown to ${org.to}`}>
+        {
+          Array.from({ length: org.to }, (_, i) => (
+            <li
+              class:list={['org-dot aspect-square rounded-full', i < founding ? 'bg-accent shadow-[0_0_10px_var(--color-accent)]' : 'org-dot--new border border-accent/60 bg-accent/15']}
+              style={`--d: ${i}`}
+            />
+          ))
+        }
+      </ul>
+    </Panel>
     {
-      platform.map((item) => (
-        <div class="p-6 lg:p-8">
+      team.map((item, i) => (
+        <Panel ticks delay={i + 1} class="flex flex-col justify-between gap-8 p-6">
           <p class="font-mono text-4xl font-medium tracking-tight tabular-nums">
             {item.from && <span class="text-muted">{item.from} → </span>}
-            <span class="text-fg" {...countAttrs(item)}>{display(item)}</span>
+            <span class="text-fg" {...countAttrs(item)}>
+              {display(item)}
+            </span>
           </p>
-          <p class="mt-3 text-sm text-muted">{item.label}</p>
-        </div>
+          <div>
+            <p class="text-sm text-fg">{item.label}</p>
+            {item.detail && <p class="mt-1 font-mono text-xs text-muted">{item.detail}</p>}
+          </div>
+        </Panel>
       ))
     }
-  </Panel>
+  </div>
 </Section>
 
 <style>

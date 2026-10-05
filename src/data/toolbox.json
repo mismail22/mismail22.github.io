@@ -1,0 +1,98 @@
+[
+  {
+    "id": "bgp-ospf",
+    "skill": "BGP / OSPF routing",
+    "group": "network",
+    "where": "Vodafone → Meta",
+    "evidence": "Certified on BGP, OSPF, and RIP; administered the MPBN routers of a national mobile network before moving into backbone and edge automation at Meta.",
+    "order": 1
+  },
+  {
+    "id": "acl-vlan",
+    "skill": "ACL & VLAN policy at scale",
+    "group": "network",
+    "where": "R&D Environments",
+    "evidence": "162 production code changes consolidating ACL policy and 40+ VLAN migrations, delivered with network-infra, network-security, and infra-security teams.",
+    "order": 2
+  },
+  {
+    "id": "ib-roce",
+    "skill": "AI/HPC fabric automation (InfiniBand, RoCEv2)",
+    "group": "network",
+    "where": "Tech Lead",
+    "evidence": "Spearheaded automation for AI/HPC network infrastructure (InfiniBand, RoCEv2) across thousands of devices, improving data accuracy by 80%+.",
+    "order": 3
+  },
+  {
+    "id": "carrier-routers",
+    "skill": "Carrier-grade router platforms",
+    "group": "network",
+    "where": "Tech Lead",
+    "evidence": "Designed a system for Juniper PTX10003 carrier-grade routers that saves ~480 engineering hours a year; built the peering-circuit migration workflow (34 migrations supported).",
+    "order": 4
+  },
+  {
+    "id": "packet-core",
+    "skill": "Mobile packet core",
+    "group": "network",
+    "where": "Vodafone, Facebook",
+    "evidence": "Operated GPRS/LTE core (Cisco ASR5K GGSN, Ericsson SGSN, Juniper SBR, F5 BIG-IP); launched zero-rating, header enrichment, and SMPP integrations with 10+ carriers.",
+    "order": 5
+  },
+  {
+    "id": "workflow-orchestration",
+    "skill": "Workflow orchestration",
+    "group": "platform",
+    "where": "Tech Lead",
+    "evidence": "Owned a workflow-automation estate of 102 workflows built from 314 reusable building blocks, including peering-circuit and patch-panel automation (~72 hours/month saved).",
+    "order": 6
+  },
+  {
+    "id": "full-stack",
+    "skill": "React, GraphQL, PHP/Hack",
+    "group": "platform",
+    "where": "Fleet governance platform",
+    "evidence": "Built the platform's web UI, APIs, guarded CLI, and executive health dashboard end to end.",
+    "order": 7
+  },
+  {
+    "id": "monitoring",
+    "skill": "Monitoring & alerting",
+    "group": "platform",
+    "where": "R&D Environments",
+    "evidence": "Onboarded Wi-Fi alerting into central monitoring, doubling coverage to ~2,500 access points. Improved incident alert detection by 31%.",
+    "order": 8
+  },
+  {
+    "id": "pipelines",
+    "skill": "Python & SQL data pipelines",
+    "group": "data",
+    "where": "Tech Lead",
+    "evidence": "Migrated 3.9M rows of legacy pipelines into managed daily anomaly-detection jobs with 100% primary-key parity, redirecting 9+ downstream consumers.",
+    "order": 9
+  },
+  {
+    "id": "llm-agents",
+    "skill": "LLM agents & retrieval (RAG)",
+    "group": "ai",
+    "where": "Tech Lead",
+    "evidence": "Shipped a 9-tool LLM agent in one week, and a two-stage retrieval search that cut building-block lookup from ~10 minutes to seconds across three teams.",
+    "order": 10
+  },
+  {
+    "id": "nlp-cv",
+    "skill": "NLP & computer vision",
+    "group": "ai",
+    "where": "Tooling & Automation",
+    "evidence": "Three production email classifiers (94%, ~70%, and 63% accuracy) and an OCR rack-audit pipeline that cut manual validation by 80%.",
+    "order": 11
+  },
+  {
+    "id": "ai-engineering",
+    "skill": "AI-assisted engineering",
+    "group": "ai",
+    "where": "Daily practice",
+    "evidence": "Agent-assisted development every day: a 7× year-over-year code-shipping run rate and a reusable Claude Code skill adopted by peer engineers.",
+    "order": 12
+  }
+]

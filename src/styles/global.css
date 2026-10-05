@@ -249,6 +249,89 @@
     }
   }
 
+  /* Long-form case-study copy */
+  .prose-cp {
+    color: var(--color-muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+
+    & h2 {
+      margin-top: 3.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-fg);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    & h2::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      background: var(--color-accent);
+      box-shadow: 0 0 10px var(--color-accent);
+    }
+
+    & h2:first-child {
+      margin-top: 0;
+    }
+
+    & p,
+    & ul,
+    & ol {
+      margin-bottom: 1.25rem;
+    }
+
+    & strong {
+      color: var(--color-fg);
+      font-weight: 600;
+    }
+
+    & ul,
+    & ol {
+      padding-left: 1.25rem;
+    }
+
+    & ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    & ul > li {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    & ul > li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.85em;
+      width: 0.75rem;
+      height: 1px;
+      background: color-mix(in oklab, var(--color-accent) 60%, transparent);
+    }
+
+    & ol {
+      list-style: decimal-leading-zero;
+    }
+
+    & ol > li::marker {
+      color: var(--color-accent);
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+    }
+
+    & li + li {
+      margin-top: 0.6rem;
+    }
+  }
+
   /* Native <details> accordion with a smooth height transition where supported. */
   .log-entry {
     interpolate-size: allow-keywords;
