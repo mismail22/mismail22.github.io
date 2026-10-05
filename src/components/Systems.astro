@@ -58,7 +58,12 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
               class:list={['bg-dots block rounded-2xl border border-line p-4 transition-colors group-hover:border-line-strong sm:p-6 lg:col-span-7', i % 2 === 1 && 'lg:order-1']}
               style={`view-transition-name: diagram-${id}`}
             >
-              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture overview`} compact flow="hover" />
+              <div class="hidden sm:block">
+                <ArchDiagram diagram={data.diagram} label={`${data.title} architecture overview`} compact flow="hover" />
+              </div>
+              <div class="mx-auto max-w-xs sm:hidden">
+                <ArchDiagram diagram={data.diagram} label={`${data.title} architecture overview`} compact vertical flow="hover" />
+              </div>
             </a>
           </article>
         );

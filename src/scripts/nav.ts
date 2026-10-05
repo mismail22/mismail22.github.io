@@ -22,7 +22,11 @@ function movePill(target: HTMLAnchorElement | undefined) {
   pill.style.opacity = '1';
 }
 
+let current: string | null = null;
+window.addEventListener('resize', () => setActive(current), { passive: true });
+
 function setActive(id: string | null) {
+  current = id;
   let desktopTarget: HTMLAnchorElement | undefined;
   for (const link of links) {
     if (id && link.hash === `#${id}`) {

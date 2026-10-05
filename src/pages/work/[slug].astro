@@ -112,10 +112,10 @@ const legend = [
             </ul>
           </figcaption>
           <div class="bg-dots rounded-2xl border border-line p-4 sm:p-6" style={`view-transition-name: diagram-${entry.id}`}>
-            <div class="hidden md:block">
+            <div class="hidden lg:block">
               <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" />
             </div>
-            <div class="mx-auto max-w-sm md:hidden">
+            <div class="mx-auto max-w-md lg:hidden">
               <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" vertical />
             </div>
           </div>

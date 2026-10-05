@@ -16,12 +16,13 @@ const COLORS = {
   signal: [94, 234, 212],
 };
 
-// Career sites anchor the graph (normalized coordinates on desktop).
+// Career sites anchor the graph. x is a fraction of the graph field (the area
+// to the right of the hero text on desktop), y a fraction of the hero height.
 const SITES = [
-  { label: 'CAI · 2010', x: 0.64, y: 0.72 },
-  { label: 'SIN · 2015', x: 0.76, y: 0.4 },
-  { label: 'MPK · 2018', x: 0.9, y: 0.64 },
-  { label: 'MPK · NOW', x: 0.84, y: 0.2 },
+  { label: 'CAI · 2010', x: 0.1, y: 0.72 },
+  { label: 'SIN · 2015', x: 0.42, y: 0.4 },
+  { label: 'MPK · 2018', x: 0.86, y: 0.64 },
+  { label: 'MPK · NOW', x: 0.64, y: 0.2 },
 ];
 
 function mulberry32(seed: number) {
@@ -68,26 +69,29 @@ export function initTopology(canvas: HTMLCanvasElement) {
     canvas.height = Math.round(height * dpr);
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const desktop = width >= 768;
+    const desktop = width >= 1024;
     const rand = mulberry32(7);
-    const count = desktop ? 32 : 16;
-    // Desktop keeps the left side calm for the headline.
-    const minX = desktop ? 0.48 : 0.02;
+
+    // On desktop the graph lives to the right of the hero text, so lines never
+    // run behind the copy and wide screens don't leave an empty left gutter.
+    const text = document.querySelector<HTMLElement>('[data-hero-text]');
+    const fieldLeft = desktop && text ? Math.min(width * 0.6, text.getBoundingClientRect().right - rect.left + 56) : width * 0.02;
+    const fieldWidth = width - fieldLeft - width * 0.02;
+    // Keep density constant: more nodes on bigger screens.
+    const count = desktop ? Math.max(24, Math.min(60, Math.round((fieldWidth * height) / 20000))) : 16;
 
     nodes = [];
     for (const site of SITES) {
-      const x = desktop ? site.x : 0.15 + (site.x - 0.5) * 1.4;
-      nodes.push({ x: x * width, y: site.y * height, bx: x * width, by: site.y * height, r: 2.6, energy: 0.6, label: site.label });
+      const x = fieldLeft + (desktop ? site.x : 0.1 + site.x * 0.8) * fieldWidth;
+      nodes.push({ x, y: site.y * height, bx: x, by: site.y * height, r: 2.8, energy: 0.6, label: site.label });
     }
-    const cols = Math.ceil(Math.sqrt(count * (width / height)));
+    const cols = Math.ceil(Math.sqrt(count * (fieldWidth / height)));
     const rows = Math.ceil(count / cols);
     for (let i = 0; nodes.length < count + SITES.length && i < cols * rows * 2; i++) {
       const cx = (i % cols) + 0.15 + rand() * 0.7;
       const cy = Math.floor(i / cols) % rows + 0.15 + rand() * 0.7;
-      const nx = minX + (cx / cols) * (1 - minX - 0.02);
-      const ny = 0.06 + (cy / rows) * 0.88;
-      const x = nx * width;
-      const y = ny * height;
+      const x = fieldLeft + (cx / cols) * fieldWidth;
+      const y = (0.06 + (cy / rows) * 0.88) * height;
       if (nodes.some((n) => Math.hypot(n.bx - x, n.by - y) < 48)) continue;
       nodes.push({ x, y, bx: x, by: y, r: 1.2 + rand() * 1.1, energy: 0 });
     }
@@ -104,7 +108,7 @@ export function initTopology(canvas: HTMLCanvasElement) {
         .slice(0, 3);
       for (const { j, d } of nearest) {
         const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-        if (seen.has(key) || d > Math.max(width, height) * 0.22) continue;
+        if (seen.has(key) || d > Math.max(fieldWidth, height) * 0.25) continue;
         seen.add(key);
         adjacency[i].push(edges.length);
         adjacency[j].push(edges.length);
@@ -210,7 +214,7 @@ export function initTopology(canvas: HTMLCanvasElement) {
       ctx!.fill();
     }
 
-    ctx!.font = '500 10px "Geist Mono Variable", ui-monospace, monospace';
+    ctx!.font = '500 12px "Geist Mono Variable", ui-monospace, monospace';
     for (const n of nodes) {
       const d = pointer.active ? Math.hypot(pointer.x - n.x, pointer.y - n.y) : 9999;
       const glow = Math.max(n.energy, d < 160 ? 1 - d / 160 : 0);
@@ -224,9 +228,10 @@ export function initTopology(canvas: HTMLCanvasElement) {
       ctx!.beginPath();
       ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx!.fill();
-      if (n.label && width >= 640) {
+      // Labels only where the graph has its own space (desktop), never behind text.
+      if (n.label && width >= 1024) {
         ctx!.fillStyle = n.label.endsWith('NOW') ? rgba(COLORS.accent, 0.9) : rgba(COLORS.node, 0.6);
-        ctx!.fillText(n.label, n.x + 9, n.y + 3.5);
+        ctx!.fillText(n.label, n.x + 11, n.y + 4);
       }
     }
   }
