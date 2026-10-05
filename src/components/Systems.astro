@@ -66,7 +66,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   </div>
 
   <h3 class="sys-label mt-16 mb-4 flex items-center gap-2" data-reveal><span class="led" aria-hidden="true"></span>More work</h3>
-  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  <div class="grid gap-4 md:grid-cols-2">
     {projects.map(({ id, data }, i) => <ProjectCard id={id} project={data} index={i} />)}
   </div>
 </Section>

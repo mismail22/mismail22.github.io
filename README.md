@@ -94,7 +94,7 @@ npx lighthouse http://localhost:4321 --view
 3. On GitHub, open **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
 4. The workflow in `.github/workflows/deploy.yml` type-checks, builds, and deploys on every push to `main`. It sets the site URL and base path automatically, so both repo-name options work. Watch progress in the **Actions** tab.
 
-If you use a repo name other than `mismail22.github.io`, update `site.repo` and the portfolio entry's `repo`/`demo` links in `projects.json`.
+If you use a repo name other than `mismail22.github.io`, update `site.repo` in `site.ts` (used by the footer's Source link).
 
 ### Option B: Vercel
 

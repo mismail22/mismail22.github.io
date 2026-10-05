@@ -44,21 +44,5 @@
       "Computer vision"
     ],
     "order": 2
-  },
-  {
-    "id": "portfolio-site",
-    "title": "This Portfolio",
-    "context": "Open source",
-    "category": "tools",
-    "summary": "Static site with no client framework: Astro, Tailwind CSS, a canvas topology, typed content collections, and CI/CD to GitHub Pages.",
-    "tags": [
-      "Astro",
-      "TypeScript",
-      "Canvas",
-      "GitHub Actions"
-    ],
-    "repo": "https://github.com/mismail22/mismail22.github.io",
-    "demo": "https://mismail22.github.io",
-    "order": 3
   }
 ]
