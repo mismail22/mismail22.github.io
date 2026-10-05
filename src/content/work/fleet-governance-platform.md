@@ -72,4 +72,4 @@ Tech lead and architect. I partnered with edge deployment, inventory operations,
 
 ## What I'd do differently
 
-[CONFIRM: one honest lesson, e.g. a decision you would make earlier or a trade-off you'd revisit]
+**Audit the upstream data before building on it.** A governance platform is only as trustworthy as the classification logic beneath it. When I later ran an AI-assisted audit over inventory pipelines, it found a defect that had been hiding for five years. Next time, that audit happens on day one, before the first dashboard.

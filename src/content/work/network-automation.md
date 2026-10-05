@@ -12,24 +12,26 @@ metrics:
   - { value: '~480 h', label: 'saved per year (router system)' }
 diagram:
   nodes:
-    - { id: intent, label: Change intent, sub: migration · roadmap · ticket, col: 0, row: 1, kind: source }
-    - { id: search, label: Block search, sub: LLM + two-stage RAG, col: 1, row: 0, kind: surface }
-    - { id: engine, label: Workflow engine, sub: 102 workflows · 314 blocks, col: 1, row: 1 }
-    - { id: pre, label: Pre-checks, sub: '[CONFIRM]', col: 2, row: 1, kind: guard }
-    - { id: gen, label: Config generation, sub: '[CONFIRM: how]', col: 3, row: 1 }
-    - { id: bb, label: Backbone & edge, sub: carrier-grade routers, col: 4, row: 0, kind: target }
+    - { id: intent, label: Change intent, sub: migration · turn-up · roadmap, col: 0, row: 0, kind: source }
+    - { id: sot, label: Network source of truth, col: 0, row: 1, kind: source }
+    - { id: dc, label: DC asset & site data, col: 0, row: 2, kind: source }
+    - { id: map, label: Device & site mapping, sub: old → new · patch panels, col: 1, row: 1 }
+    - { id: search, label: Block search, sub: LLM + RAG, col: 2, row: 0, kind: surface }
+    - { id: engine, label: Workflow engine, sub: 102 workflows · 314 blocks, col: 2, row: 1 }
+    - { id: exec, label: Change execution, sub: scripted · reviewed · capacity-safe, col: 3, row: 1, kind: guard }
+    - { id: bb, label: Backbone & edge, sub: peering · carrier-grade routers, col: 4, row: 0, kind: target }
     - { id: fab, label: AI/HPC fabric, sub: InfiniBand · RoCEv2, col: 4, row: 1, kind: target }
     - { id: lab, label: Lab networks, sub: ACLs · VLANs, col: 4, row: 2, kind: target }
-    - { id: post, label: Post-validation & audit, col: 3, row: 2, kind: guard }
   edges:
-    - [intent, engine]
+    - [intent, map]
+    - [sot, map]
+    - [dc, map]
+    - [map, engine]
     - [search, engine]
-    - [engine, pre]
-    - [pre, gen]
-    - [gen, bb]
-    - [gen, fab]
-    - [gen, lab]
-    - [lab, post]
+    - [engine, exec]
+    - [exec, bb]
+    - [exec, fab]
+    - [exec, lab]
 order: 2
 ---
 
@@ -41,18 +43,20 @@ Network changes at hyperscale cross team boundaries. Backbone, edge, security, a
 
 - **Shared ownership.** ACL consolidation spanned network-infra, network-security, and infra-security teams.
 - **Heterogeneous fleet.** Carrier-grade routers, AI/HPC fabrics (InfiniBand, RoCEv2), and thousands of lab devices, each with different tooling.
-- **No downtime budget.** Migrations ran against live networks. [CONFIRM: any specific change-window or validation rules]
+- **Production stays untouched.** Capacity delivery and migrations ran against live networks, so every change had to be minimally disruptive.
+- **Gaps in the source data.** The network source of truth didn't capture everything a migration needed, such as old-to-new device mappings and non-standard rack locations.
 
 ## Architecture
 
-A change starts as intent: a migration, a roadmap item, or a ticket. The **workflow engine** composes it from **reusable building blocks**, so the same tested step (for example a pre-check or a device update) is reused across many workflows instead of re-implemented. Engineers find blocks through an **LLM-powered search** with two-stage retrieval. Changes pass **pre-checks**, are applied to the target networks, and are **validated and audited** afterwards. [CONFIRM: correct the stage names and how configs are generated]
+A change starts as intent: a peering migration, a turn-up, or a roadmap item. A **mapping layer** joins the network source of truth with data-center asset data to fill its gaps, for example mapping old devices to new ones for a forklift migration, or resolving non-standard rack locations and patch-panel details. The **workflow engine** composes the change from **reusable building blocks**, so a tested step is reused across many workflows instead of re-implemented, and engineers find blocks through an **LLM-powered search**. Policy changes are **script-generated and reviewed** like code, and every change is executed so capacity delivery never affects production.
 
 ## Key decisions
 
-1. **Policy changes as code.** ACL consolidation shipped as **162 production code changes** and **40+ VLAN migrations**, delivered with all three partner teams.
+1. **Lead with a script, then scale it through the team.** I wrote the first ACL policy script; the team followed with scripts for the other policy types. Together they generated **~162 automated code changes** that closed a security and redundancy risk, plus **40+ VLAN migrations**, delivered with network and security partners.
 2. **Blocks over scripts.** Owning **102 workflows built from 314 reusable building blocks** made every fix and safety check reusable across the estate.
 3. **Make the library searchable.** A two-stage retrieval agent cut building-block lookup from **~10 minutes to seconds** and rolled out to network operations, deployment, and ops-automation teams.
-4. **Automate the long tail.** Peering-circuit migrations (34 supported, ~102 hours saved) and patch-panel initialization (~72 hours a month saved) became workflows instead of runbooks.
+4. **Fill data gaps in the workflow, not in spreadsheets.** The peering-circuit migration workflow carries a detailed old-to-new device mapping (34 migrations, ~102 hours saved), and patch-panel initialization queries data-center asset data directly (~72 hours a month saved).
+5. **Simple beats clever.** The carrier-grade router system (Juniper PTX10003) went through several iterations and proposals; the design that shipped was the simplest, most scalable, and least disruptive to the network.
 
 ## Results
 
@@ -67,4 +71,4 @@ Engineer on the earlier workflow tooling, then owner of the workflow-automation 
 
 ## What I'd do differently
 
-[CONFIRM: one honest lesson]
+**Build workflow-health detection in from day one.** Two incidents I worked started the same way: an automated workflow stopped or got stuck, and nobody knew until capacity or tickets were already affected. I added anomaly detection as an incident follow-up; next time, stalled-run and abnormal-duration alerts ship with the first workflow, not after the first outage.

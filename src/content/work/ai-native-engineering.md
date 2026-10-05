@@ -61,4 +61,4 @@ Designed and built the audit method, the agent, and the retrieval search, and wr
 
 ## What I'd do differently
 
-[CONFIRM: one honest lesson]
+**Package the method for others from the first run.** My own AI speed-up mattered far less than what happened once the audit method and the Claude Code skill were written up for other teams, which is when adoption took off. I'd now treat the write-up as part of the deliverable, not an afterthought, because the multiplier only counts when it scales beyond my own keyboard.

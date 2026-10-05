@@ -4,10 +4,10 @@
     "title": "40-terabit backbone capacity drain",
     "year": "2021",
     "severity": "high",
-    "impact": "40 Tbps of protected backbone capacity drained during a high-severity incident.",
-    "cause": "[CONFIRM: one-line public-safe root cause]",
-    "fix": "Led mitigation as part of the incident response team. [CONFIRM: what you did, e.g. traffic shift, tooling fix]",
-    "result": "Drained capacity restored.",
+    "impact": "~40 Tbps of backbone capacity drained, pushing protected capacity below demand in a region.",
+    "cause": "An automated traffic-shift workflow got stuck mid-run and left circuits drained.",
+    "fix": "Paged into the incident; worked with the response team on the fix that recovered the stuck workflow and un-drained the circuits.",
+    "result": "~40 Tbps of backbone capacity restored.",
     "order": 1
   },
   {
@@ -16,8 +16,8 @@
     "year": "2021",
     "severity": "high",
     "impact": "~3 Tbps of capacity left stranded and unusable.",
-    "cause": "A truncation bug in network workflow tooling.",
-    "fix": "Root-caused the truncation and fixed it in the tooling.",
+    "cause": "Network tickets failed to create when descriptions exceeded a size limit, so capacity-restoration work never started.",
+    "fix": "Root-caused it and landed a fix that truncates oversized descriptions safely.",
     "result": "~3 Tbps restored with one fix.",
     "order": 2
   },
