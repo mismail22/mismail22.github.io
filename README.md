@@ -14,7 +14,7 @@ All content lives in `src/data/`. You don't need to touch any components.
 | `incidents.json` | Incident log entries (impact, root cause, fix, result) |
 | `principles.json` | "How I build" engineering principles and their proof points |
 | `team-phases.json` | Team-build timeline |
-| `skills.json` | Skills matrix: category, tier (expert / proficient / working), years, evidence |
+| `skills.json` | Skills matrix: category, tier (expert / proficient / working), evidence |
 | `projects.json` | "More work" rows |
 | `experience.json` | Release-log (journey) entries |
 
@@ -29,7 +29,6 @@ Append an object to `src/data/projects.json`:
   "id": "my-new-project",
   "title": "My New Project",
   "context": "Open source",
-  "category": "tools",
   "summary": "One or two sentences on what it does and why it matters.",
   "metrics": [{ "value": "12k", "label": "monthly users" }],
   "tags": ["Go", "Docker"],
@@ -41,7 +40,6 @@ Append an object to `src/data/projects.json`:
 
 - `id` must be unique.
 - `metrics`, `repo`, `demo`, and `context` are optional. A card hides any button whose link is missing.
-- To add a new filter tab, add its key to `src/data/categories.ts`. Tabs only appear for categories that have at least one project.
 
 ### Add a case study
 
@@ -117,7 +115,7 @@ src/
 ├─ layouts/BaseLayout.astro
 ├─ content/work/         # case studies (markdown)
 ├─ components/           # Navbar, Hero, Telemetry (impact ledger), Systems, Skills, Incidents, Principles, TeamBuild, Journey, Contact, Footer
-│  └─ ui/                # Section, Panel, ArchDiagram, Button, Tag, BrandIcon
+│  └─ ui/                # Section, ArchDiagram, ImpactViz, CompanyLogo, Button, Tag, BrandIcon
 ├─ scripts/              # motion, topology (hero career map), nav, toc, contact-form
 ├─ styles/global.css     # Tailwind import + design tokens (@theme)
 └─ pages/                # index.astro, work/[slug].astro, 404.astro

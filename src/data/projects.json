@@ -19,14 +19,12 @@
       "Workflow automation",
       "Hardware lifecycle"
     ],
-    "order": 1,
-    "category": "automation"
+    "order": 1
   },
   {
     "id": "ops-ml-systems",
     "title": "Production ML for Network Ops",
     "context": "Meta · 2019 – 2020",
-    "category": "ai-ml",
     "summary": "Email-to-ticket NLP classifiers and an OCR pipeline that reads rack serials during audits, removing manual classification from the operations workflow.",
     "metrics": [
       {
@@ -49,7 +47,6 @@
     "id": "carrier-integrations",
     "title": "Carrier Integrations",
     "context": "Facebook · 2015 – 2018",
-    "category": "network",
     "summary": "Launched integrations with 10+ mobile carriers across APAC, EMEA, and LATAM: traffic zero-rating with GGSN DPI, URL redirection, HTTP header enrichment, and SMS/SMPP binds.",
     "metrics": [
       {

@@ -1,10 +1,6 @@
 import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { categories, type Category } from './data/categories';
-
-const categoryKeys = Object.keys(categories) as [Category, ...Category[]];
-
 // Case studies: one markdown file per system in src/content/work/.
 // The diagram is data (nodes on a grid + edges), rendered as SVG.
 const work = defineCollection({
@@ -57,7 +53,6 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    category: z.enum(categoryKeys),
     context: z.string().optional(),
     tags: z.array(z.string()).min(1),
     metrics: z.array(z.object({ value: z.string(), label: z.string() })).max(3).default([]),

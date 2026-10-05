@@ -247,10 +247,6 @@
     background: inherit;
     animation: led-pulse 2.2s var(--ease-out) infinite;
   }
-  .led--off {
-    background: var(--color-line-strong);
-    box-shadow: none;
-  }
   .led--amber {
     background: var(--color-amber);
     box-shadow: 0 0 10px color-mix(in oklab, var(--color-amber) 70%, transparent);
