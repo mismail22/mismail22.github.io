@@ -30,11 +30,15 @@
 @utility container-page {
   margin-inline: auto;
   width: 100%;
-  max-width: 76rem;
+  max-width: 88rem;
   padding-inline: 1.25rem;
 
   @variant sm {
     padding-inline: 2rem;
+  }
+
+  @variant xl {
+    padding-inline: 3rem;
   }
 }
 
