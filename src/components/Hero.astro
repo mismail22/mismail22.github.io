@@ -3,7 +3,7 @@ import ArrowRight from '@lucide/astro/icons/arrow-right';
 import Button from './ui/Button.astro';
 import BrandIcon from './ui/BrandIcon.astro';
 import { site } from '../data/site';
-import { formatValue } from '../lib/format';
+import TrackRecord from './TrackRecord.astro';
 
 const linkedin = site.socials.find((s) => s.icon === 'linkedin');
 ---
@@ -73,32 +73,7 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
 
   <!-- Track record -->
   <div class="container-page pb-8" data-reveal style="--i: 6">
-    <div class="panel ticks overflow-hidden rounded-2xl backdrop-blur-sm">
-      <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
-      <div class="flex items-center gap-2.5 border-b border-line px-5 py-2.5">
-        <span class="led" aria-hidden="true"></span>
-        <span class="sys-label">Track record</span>
-      </div>
-      <dl class="grid grid-cols-2 md:grid-cols-4">
-        {
-          site.heroTelemetry.map((item, i) => (
-            <div class:list={['flex flex-col-reverse gap-1 border-line px-5 py-4', i % 2 === 0 && 'border-r', i < 2 && 'max-md:border-b', i < 3 && 'md:border-r']}>
-              <dt class="text-xs text-muted">{item.label}</dt>
-              <dd class="font-mono text-xl font-semibold text-fg tabular-nums sm:text-2xl">
-                {'from' in item && <span class="text-muted">{item.from}→</span>}
-                <span
-                  data-count={item.to}
-                  data-count-from={'from' in item ? parseFloat(item.from) : 0}
-                  data-suffix={'suffix' in item ? item.suffix : ''}
-                >
-                  {formatValue(item.to, { suffix: 'suffix' in item ? item.suffix : '' })}
-                </span>
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
+    <TrackRecord />
   </div>
 </section>
 

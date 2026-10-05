@@ -4,7 +4,7 @@
     "title": "Nine-figure inventory misclassification",
     "year": "2026",
     "severity": "high",
-    "impact": "Inventory had been misclassified for five years, misstating a nine-figure amount.",
+    "impact": "A nine-figure amount had been misclassified in internal inventory data for five years.",
     "cause": "A one-character typo in a mapping literal, plus an unanchored pattern match that matched far more than intended.",
     "fix": "Ran an AI-assisted audit comparing what each pipeline claimed to do with what its code did, then verified every candidate against real data.",
     "result": "Both defects surfaced; peer data teams adopted the method the same week.",

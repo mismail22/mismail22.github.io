@@ -12,16 +12,17 @@ export const site = {
   // Hero headline, split so the second half can be de-emphasized.
   headline: ['I turn risky, manual infrastructure work', 'into guarded, automated systems.'],
   intro:
-    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier grew an R&D infrastructure team from 5 to 24 people. MBA (Honors), Boston University.',
+    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier built and led an R&D infrastructure team. MBA (Honors), Boston University.',
   location: 'Menlo Park, CA',
   status: 'Open to Staff+ IC & infra EM roles',
 
-  // Hero "Track record" bar. `to` is animated; `from` is shown before an arrow.
+  // Hero "Track record": result as the big value, baseline/context in the
+  // caption, and a small visual of the change. `count` animates the number.
   heroTelemetry: [
-    { label: 'Years in infra', to: 16 },
-    { label: 'Racks swept', to: 27000, suffix: '+' },
-    { label: 'Disposal cycle', from: '81', to: 10, suffix: 'd' },
-    { label: 'Team built', from: '5', to: 24 },
+    { label: 'In infrastructure', value: '16', unit: 'yrs', count: { to: 16 }, caption: 'Vodafone 5 · Meta 11', viz: 'ruler' },
+    { label: 'Fleet on my platform', value: 'Multi-$B', caption: '27,000+ racks in the first guarded sweep', viz: 'scale' },
+    { label: 'To retire hardware', value: '10', unit: 'days', count: { from: 81, to: 10 }, caption: 'down from 81 days', viz: 'shrink' },
+    { label: 'Team I built', value: '24', count: { from: 5, to: 24 }, caption: 'from 5 people, in two years', viz: 'dots' },
   ],
   stack: ['Python', 'Hack/PHP', 'SQL', 'GraphQL/React', 'BGP', 'Workflow orchestration', 'LLM agents'],
 
@@ -54,10 +55,8 @@ export const site = {
   ],
   teamProof: [
     { value: '96.85%', label: 'repair SLA vs 95% target' },
-    { value: '90%+', label: 'MTTR improvement, year one' },
     { value: '382', label: 'lab deployments in six months' },
     { value: '10 → 3', label: 'days to resolve help requests' },
-    { value: '+43%', label: 'devices at flat headcount' },
     { value: '37 → 83%', label: 'partner incident engagement' },
   ],
   teamNotes: ['Promoted a direct report into a lab-operations lead role', 'Mentored 4 engineers through complex technical designs', '19 behavioral interview loops'],

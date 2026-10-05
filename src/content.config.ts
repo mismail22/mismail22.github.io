@@ -98,13 +98,18 @@ const skills = defineCollection({
   }),
 });
 
-// Impact ledger rows (numbers that aren't already in the hero bar)
+// Impact cards: one outcome each, with a small data-driven visual.
 const telemetry = defineCollection({
   loader: file('src/data/telemetry.json'),
   schema: z.object({
     value: z.string(),
-    label: z.string(),
-    href: z.string(),
+    headline: z.string(),
+    context: z.string(),
+    meta: z.string(),
+    evidence: z.object({ href: z.string(), kind: z.string() }),
+    span: z.enum(['wide', 'narrow']),
+    viz: z.enum(['timeline', 'blocks', 'shrink', 'matrix', 'chain', 'percentile']),
+    vizData: z.record(z.string(), z.union([z.string(), z.number()])),
     order: z.number(),
   }),
 });

@@ -1,30 +1,115 @@
 [
   {
-    "id": "stranded-capacity",
+    "id": "defect",
+    "order": 1,
+    "value": "9-figure",
+    "headline": "Five-year-old data defect, caught by AI",
+    "context": "I designed an AI-assisted code audit that found a one-character typo and an over-broad pattern match misclassifying internal inventory data for five years. Peer data teams adopted the method within a week.",
+    "meta": "AI-assisted audit · 2026",
+    "evidence": {
+      "href": "/work/ai-native-engineering",
+      "kind": "case study"
+    },
+    "span": "wide",
+    "viz": "timeline",
+    "vizData": {
+      "start": 2021,
+      "end": 2026,
+      "hidden": "defect hidden",
+      "found": "found"
+    }
+  },
+  {
+    "id": "capacity",
+    "order": 2,
     "value": "~3 Tbps",
-    "label": "Backbone capacity restored with one fix to network workflow tooling",
-    "href": "#incidents",
-    "order": 1
+    "headline": "Stranded backbone capacity back in service",
+    "context": "I root-caused why capacity-restoration tickets were silently failing to open and shipped the fix myself.",
+    "meta": "Network workflow tooling · 2021",
+    "evidence": {
+      "href": "#incidents",
+      "kind": "incident"
+    },
+    "span": "narrow",
+    "viz": "blocks",
+    "vizData": {
+      "count": 3,
+      "unit": "Tbps",
+      "before": "stranded",
+      "after": "restored"
+    }
   },
   {
-    "id": "acl-changes",
-    "value": "162",
-    "label": "ACL policy changes generated from my first policy script, shipped with network and security partners",
-    "href": "/work/network-automation",
-    "order": 2
+    "id": "mttr",
+    "order": 3,
+    "value": "90%+",
+    "headline": "Faster incident repair, in year one",
+    "context": "As engineering manager for R&D infrastructure, I built the reliability practice (SLAs, on-call, escalation) from scratch while the device fleet grew 43%.",
+    "meta": "R&D infrastructure · 2022",
+    "evidence": {
+      "href": "#team",
+      "kind": "team story"
+    },
+    "span": "narrow",
+    "viz": "shrink",
+    "vizData": {
+      "ratio": 0.1,
+      "fromLabel": "Time to repair, before",
+      "toLabel": "Year one"
+    }
   },
   {
-    "id": "audit",
-    "value": "5 yrs",
-    "label": "How long a nine-figure data defect hid before my AI-assisted audit found it",
-    "href": "/work/ai-native-engineering",
-    "order": 3
+    "id": "workflows",
+    "order": 4,
+    "value": "102",
+    "headline": "Production network workflows I own",
+    "context": "Peering turn-up, circuit migrations, and carrier-grade router modeling, composed from 314 reusable blocks, with risky options like BGP GTSM staged opt-in.",
+    "meta": "Network automation · 2024–now",
+    "evidence": {
+      "href": "/work/network-automation",
+      "kind": "case study"
+    },
+    "span": "wide",
+    "viz": "matrix",
+    "vizData": {
+      "count": 102,
+      "cols": 34
+    }
   },
   {
-    "id": "lab-availability",
-    "value": "99.5%",
-    "label": "Lab network availability restored, the first time in seven months",
-    "href": "#team",
-    "order": 4
+    "id": "rma",
+    "order": 5,
+    "value": "1,600+",
+    "headline": "Hardware returns automated across five orgs",
+    "context": "I tech-led end-to-end RMA automation spanning five engineering organizations, which earned a top-5% performance rating and a promotion.",
+    "meta": "Tooling & automation · 2021",
+    "evidence": {
+      "href": "#systems",
+      "kind": "project"
+    },
+    "span": "wide",
+    "viz": "chain",
+    "vizData": {
+      "count": 5,
+      "label": "engineering orgs"
+    }
+  },
+  {
+    "id": "ai",
+    "order": 6,
+    "value": "Top 1%",
+    "headline": "AI-assisted engineering, company-wide",
+    "context": "By internal telemetry, my AI-assisted development is in the 99th percentile at Meta, and I shipped a 9-tool LLM agent in one week.",
+    "meta": "Internal telemetry · 2026",
+    "evidence": {
+      "href": "/work/ai-native-engineering",
+      "kind": "case study"
+    },
+    "span": "narrow",
+    "viz": "percentile",
+    "vizData": {
+      "value": 99,
+      "label": "P99"
+    }
   }
 ]

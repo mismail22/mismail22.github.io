@@ -1,0 +1,115 @@
+---
+// Hero "instrument cluster": result as the big number, baseline in the
+// caption, and a micro-visual encoding the change. Only the hero counts up.
+import { site } from '../data/site';
+import { formatValue } from '../lib/format';
+
+type Item = (typeof site.heroTelemetry)[number];
+const count = (item: Item) => ('count' in item ? item.count : undefined);
+---
+
+<div class="track panel ticks overflow-hidden rounded-2xl">
+  <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+  <div class="flex items-center justify-between border-b border-line px-5 py-2.5 sm:px-6">
+    <span class="flex items-center gap-2.5"><span class="led" aria-hidden="true"></span><span class="sys-label">Track record</span></span>
+    <span class="font-mono text-xs text-dim">2010 → 2026</span>
+  </div>
+  <dl class="grid grid-cols-2 md:grid-cols-4">
+    {
+      site.heroTelemetry.map((item, i) => {
+        const c = count(item);
+        return (
+          <div class:list={['flex flex-col gap-3 border-line p-[clamp(1rem,0.8rem+0.8vw,1.5rem)]', i % 2 === 0 && 'border-r', i < 2 && 'max-md:border-b', i < 3 && 'md:border-r']}>
+            <dt class="text-sm text-muted">{item.label}</dt>
+            <dd class="order-first font-mono text-[clamp(1.75rem,1.2rem+2vw,2.75rem)] leading-none font-medium tracking-[-0.035em] text-fg tabular-nums">
+              {c ? (
+                <span data-count={c.to} data-count-from={'from' in c ? c.from : 0}>
+                  {formatValue(c.to)}
+                </span>
+              ) : (
+                item.value
+              )}
+              {'unit' in item && <span class="ml-1.5 text-[0.45em] tracking-normal text-muted">{item.unit}</span>}
+            </dd>
+
+            <div class="h-5" aria-hidden="true">
+              {item.viz === 'ruler' && (
+                <span class="flex h-1.5 gap-[3px]">
+                  {Array.from({ length: 16 }, (_, s) => (
+                    <span class:list={['seg flex-1 rounded-[1px]', s < 5 ? 'bg-line-strong' : 'bg-accent']} style={`--d: ${s}`} />
+                  ))}
+                </span>
+              )}
+              {item.viz === 'scale' && (
+                <span class="relative block h-1.5 rounded-full bg-line/70">
+                  <span class="grow-bar absolute inset-y-0 left-0 w-[90%] rounded-full bg-accent" />
+                  {[0, 1, 2, 3].map((t) => (
+                    <span class="absolute top-2.5 font-mono text-[9px] text-dim" style={`left: calc(${t * 33.33}% - ${t === 3 ? 14 : 0}px)`}>
+                      {t * 10}k
+                    </span>
+                  ))}
+                </span>
+              )}
+              {item.viz === 'shrink' && (
+                <span class="flex flex-col gap-1">
+                  <span class="block h-1 rounded-full bg-line-strong" />
+                  <span class="block h-1 rounded-full">
+                    <span class="shrink-bar block h-full w-full rounded-full bg-accent" style="--ratio: 0.123" />
+                  </span>
+                </span>
+              )}
+              {item.viz === 'dots' && (
+                <span class="grid grid-cols-12 gap-[3px]">
+                  {Array.from({ length: 24 }, (_, d) => (
+                    <span class:list={['dot aspect-square rounded-full', d < 5 ? 'bg-accent' : 'dot--new border border-accent/60']} style={`--d: ${d}`} />
+                  ))}
+                </span>
+              )}
+            </div>
+
+            <p class="text-xs leading-snug text-muted">{item.caption}</p>
+          </div>
+        );
+      })
+    }
+  </dl>
+</div>
+
+<style>
+  /* Solid backdrop instead of blur: blurring over the animated canvas repaints every frame. */
+  .track {
+    background: rgb(12 14 17 / 0.88);
+  }
+
+  .grow-bar,
+  .shrink-bar {
+    transform-origin: left;
+  }
+
+  .shrink-bar {
+    transform: scaleX(var(--ratio));
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .grow-bar,
+    .shrink-bar {
+      transition: transform 800ms var(--ease-out) 400ms;
+    }
+    .seg,
+    .dot--new {
+      transition: opacity 300ms var(--ease-out);
+      transition-delay: calc(400ms + var(--d) * 40ms);
+    }
+
+    :global(.js) :global([data-reveal]:not(.is-in)) .grow-bar {
+      transform: scaleX(0);
+    }
+    :global(.js) :global([data-reveal]:not(.is-in)) .shrink-bar {
+      transform: scaleX(1);
+    }
+    :global(.js) :global([data-reveal]:not(.is-in)) .seg,
+    :global(.js) :global([data-reveal]:not(.is-in)) .dot--new {
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,37 +1,53 @@
 ---
 import { getCollection } from 'astro:content';
-import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import ImpactViz from './ui/ImpactViz.astro';
 import Section from './ui/Section.astro';
 import { withBase } from '../lib/format';
 
-// Unboxed ledger: big number, label, link to the evidence. Only numbers that
-// aren't already in the hero's track-record bar.
-const rows = (await getCollection('telemetry')).sort((a, b) => a.data.order - b.data.order).map((r) => r.data);
+// Outcome cards in an asymmetric bento (7/5, 5/7, 7/5 on desktop).
+const cards = (await getCollection('telemetry')).sort((a, b) => a.data.order - b.data.order).map((c) => c.data);
 const resolve = (href: string) => (href.startsWith('/') ? withBase(href) : href);
 ---
 
-<Section id="impact" variant="annotation" title="Impact, measured.">
-  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-    <p class="text-xl leading-relaxed text-pretty text-muted lg:sticky lg:top-28 lg:col-span-4 lg:self-start" data-reveal>
-      A few numbers that matter, each linked to the work behind it. Systems first; the team story comes later.
-    </p>
-    <ol class="divide-y divide-line border-y border-line lg:col-span-8">
-      {
-        rows.map((row, i) => (
-          <li data-reveal style={`--i: ${i}`}>
-            <a
-              href={resolve(row.href)}
-              class="group grid grid-cols-1 items-baseline gap-x-8 gap-y-2 py-7 sm:grid-cols-[minmax(10rem,auto)_1fr_auto]"
-            >
-              <span class="font-mono text-[clamp(2.5rem,5vw,4rem)] leading-none font-medium tracking-tight text-fg tabular-nums">
-                {row.value}
+<Section
+  id="impact"
+  variant="annotation"
+  title="Outcomes, with receipts."
+  intro="What changed because I was there. Each card links to the work behind it."
+>
+  <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+    {
+      cards.map((c, i) => (
+        <li class:list={[c.span === 'wide' ? 'lg:col-span-7' : 'lg:col-span-5']} data-reveal style={`--i: ${i % 2}`}>
+          <a
+            href={resolve(c.evidence.href)}
+            class="panel panel--link group flex h-full flex-col rounded-2xl p-[clamp(1.25rem,1rem+1vw,2rem)]"
+          >
+            <p class="flex items-center justify-between gap-4 font-mono text-[11px] text-muted">
+              <span>
+                <span class="text-accent">{String(i + 1).padStart(2, '0')}</span> · {c.meta}
               </span>
-              <span class="text-base leading-relaxed text-muted transition-colors group-hover:text-fg">{row.label}</span>
-              <ArrowUpRight class="hidden size-5 text-muted transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent sm:block" aria-hidden="true" />
-            </a>
-          </li>
-        ))
-      }
-    </ol>
-  </div>
+              <span class="tracking-widest uppercase">{c.evidence.kind}</span>
+            </p>
+
+            <div class="mt-6 border-b border-line pb-5">
+              <ImpactViz viz={c.viz} data={c.vizData} />
+            </div>
+
+            <p class="mt-6 font-mono text-[clamp(2.5rem,1.8rem+2.6vw,4rem)] leading-none font-medium tracking-[-0.04em] text-fg tabular-nums">
+              {c.value}
+            </p>
+            <h3 class="mt-3 text-xl leading-snug font-medium tracking-[-0.015em] text-fg">{c.headline}</h3>
+            <p class="mt-2 flex-1 leading-relaxed text-pretty text-prose">{c.context}</p>
+
+            <span class="mt-6 inline-flex items-center gap-2 border-t border-line pt-4 text-sm text-muted transition-colors group-hover:text-accent">
+              See the {c.evidence.kind}
+              <ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </Section>
