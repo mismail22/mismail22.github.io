@@ -1,6 +1,8 @@
-// Hero "fleet topology": a decorative canvas graph with packets flowing along
-// links. Nodes near the cursor brighten and lean toward it. The loop runs only
-// while the hero is on screen and the tab is visible; reduced-motion and
+// Hero "career map": a decorative canvas topology with packets flowing along
+// links. The career sites (Cairo → Singapore → Menlo Park) are labeled and
+// joined by a brighter path that a packet travels along. Nodes near the cursor
+// brighten and lean toward it. The loop runs only while the hero is on screen
+// and the tab is visible, drops to ~15fps when idle, and reduced-motion /
 // save-data visitors get a single static frame.
 
 type Node = { x: number; y: number; bx: number; by: number; r: number; energy: number; label?: string };
@@ -16,10 +18,10 @@ const COLORS = {
 
 // Career sites anchor the graph (normalized coordinates on desktop).
 const SITES = [
-  { label: 'CAI · 2010', x: 0.58, y: 0.7 },
-  { label: 'SIN · 2015', x: 0.74, y: 0.36 },
-  { label: 'MPK · 2018', x: 0.88, y: 0.62 },
-  { label: 'MPK · NOW', x: 0.8, y: 0.18 },
+  { label: 'CAI · 2010', x: 0.64, y: 0.72 },
+  { label: 'SIN · 2015', x: 0.76, y: 0.4 },
+  { label: 'MPK · 2018', x: 0.9, y: 0.64 },
+  { label: 'MPK · NOW', x: 0.84, y: 0.2 },
 ];
 
 function mulberry32(seed: number) {
@@ -53,6 +55,9 @@ export function initTopology(canvas: HTMLCanvasElement) {
   let visible = true;
   let frame = 0;
   let last = 0;
+  let lastDraw = 0;
+  let lastPointer = performance.now();
+  let career = 0; // 0..SITES.length-1, position of the career packet
 
   function build() {
     const rect = canvas.getBoundingClientRect();
@@ -65,9 +70,9 @@ export function initTopology(canvas: HTMLCanvasElement) {
 
     const desktop = width >= 768;
     const rand = mulberry32(7);
-    const count = desktop ? 46 : 24;
+    const count = desktop ? 32 : 16;
     // Desktop keeps the left side calm for the headline.
-    const minX = desktop ? 0.38 : 0.02;
+    const minX = desktop ? 0.48 : 0.02;
 
     nodes = [];
     for (const site of SITES) {
@@ -107,10 +112,10 @@ export function initTopology(canvas: HTMLCanvasElement) {
       }
     });
 
-    packets = Array.from({ length: desktop ? 22 : 10 }, () => ({
+    packets = Array.from({ length: desktop ? 15 : 7 }, () => ({
       edge: Math.floor(rand() * edges.length),
       t: rand(),
-      speed: 0.12 + rand() * 0.22,
+      speed: (0.12 + rand() * 0.22) * 0.7,
       forward: rand() > 0.5,
     }));
   }
@@ -128,6 +133,8 @@ export function initTopology(canvas: HTMLCanvasElement) {
       n.y += (ty - n.y) * Math.min(1, dt * 6);
       n.energy = Math.max(n.label ? 0.6 : 0, n.energy - dt * 0.9);
     }
+
+    career = (career + dt * 0.18) % (SITES.length - 1 + 0.6);
 
     for (const p of packets) {
       p.t += p.speed * dt;
@@ -160,6 +167,24 @@ export function initTopology(canvas: HTMLCanvasElement) {
       ctx!.lineTo(b.x, b.y);
       ctx!.stroke();
     }
+
+    // Career path: the four labeled sites in order, with one packet on it.
+    const sites = nodes.slice(0, SITES.length);
+    ctx!.strokeStyle = rgba(COLORS.accent, 0.28);
+    ctx!.lineWidth = 1.25;
+    ctx!.setLineDash([4, 5]);
+    ctx!.beginPath();
+    sites.forEach((n, i) => (i ? ctx!.lineTo(n.x, n.y) : ctx!.moveTo(n.x, n.y)));
+    ctx!.stroke();
+    ctx!.setLineDash([]);
+    const seg = Math.min(Math.floor(career), SITES.length - 2);
+    const t = Math.min(1, career - seg);
+    const a = sites[seg];
+    const b = sites[seg + 1];
+    ctx!.fillStyle = rgba(COLORS.accent, 0.95);
+    ctx!.beginPath();
+    ctx!.arc(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 2.4, 0, Math.PI * 2);
+    ctx!.fill();
 
     for (const p of packets) {
       const e = edges[p.edge];
@@ -199,19 +224,23 @@ export function initTopology(canvas: HTMLCanvasElement) {
       ctx!.beginPath();
       ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx!.fill();
-      if (n.label && width >= 768) {
-        ctx!.fillStyle = rgba(COLORS.node, 0.45);
+      if (n.label && width >= 640) {
+        ctx!.fillStyle = n.label.endsWith('NOW') ? rgba(COLORS.accent, 0.9) : rgba(COLORS.node, 0.6);
         ctx!.fillText(n.label, n.x + 9, n.y + 3.5);
       }
     }
   }
 
   function loop(now: number) {
-    const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+    frame = requestAnimationFrame(loop);
+    // After 12s without pointer movement, drop to ~15fps to save battery.
+    const idle = now - lastPointer > 12000;
+    if (idle && now - lastDraw < 66) return;
+    const dt = Math.min(0.08, (now - last) / 1000 || 0.016);
     last = now;
+    lastDraw = now;
     step(dt);
     draw();
-    frame = requestAnimationFrame(loop);
   }
 
   function start() {
@@ -236,6 +265,7 @@ export function initTopology(canvas: HTMLCanvasElement) {
   section.addEventListener('pointermove', (event) => {
     const rect = canvas.getBoundingClientRect();
     pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top, active: true };
+    lastPointer = performance.now();
   });
   section.addEventListener('pointerleave', () => (pointer.active = false));
 

@@ -1,42 +1,37 @@
 [
   {
     "id": "guardrails",
-    "kind": "technical",
     "title": "Guardrails before bulk operations.",
-    "body": "The inventory platform's CLI ships with confirm flags, batch-size caps, mandatory filters, and value-at-risk thresholds. I design for the day someone runs the wrong command against tens of thousands of racks.",
-    "proof": { "value": "27,000+", "label": "racks in the first bulk sweep" },
+    "body": "Destructive commands ship with a required confirm flag, batch caps, mandatory filters, and value thresholds. I design for the day someone runs the wrong command against tens of thousands of racks.",
+    "proof": { "value": "27,000+", "label": "racks in the first guarded sweep" },
     "order": 1
   },
   {
-    "id": "real-time",
-    "kind": "technical",
-    "title": "Real-time over stale when decisions depend on it.",
-    "body": "I replaced lagging batch analytics with live computation, so operations and finance decide from the same sub-second numbers instead of last week's export.",
+    "id": "compute-on-read",
+    "title": "Compute on read when decisions can't wait for exports.",
+    "body": "I replaced lagging batch analytics with computation over live data, filtered at the source, so operations and finance decide from the same current numbers.",
     "proof": { "value": "81 → 10", "label": "days per disposal cycle" },
     "order": 2
   },
   {
     "id": "agents-orchestrate",
-    "kind": "technical",
     "title": "Agents orchestrate tools; they don't replace them.",
-    "body": "My LLM agents call the same guarded commands people use, and my AI-assisted audits pair model reasoning with human verification. That combination surfaced a data defect that had been hiding for five years.",
+    "body": "My LLM agent reuses the platform's existing commands instead of inventing new write paths, and AI-assisted audits end in human verification against real data.",
     "proof": { "value": "1 week", "label": "to ship a 9-tool LLM agent" },
     "order": 3
   },
   {
-    "id": "operating-model",
-    "kind": "team",
-    "title": "Build the operating model before the headcount.",
-    "body": "Before growing R&D infrastructure from 5 to 24 people, I defined onboarding, role boundaries, escalation paths, and the hiring bar for a mix of FTEs, contractors, and MSP partners.",
-    "proof": { "value": "5 → 24", "label": "people in two years" },
+    "id": "simplest-first",
+    "title": "The simplest viable design goes first.",
+    "body": "A carrier-grade router system went through several elaborate proposals before the simple one shipped. Now the boring design is the baseline every alternative has to beat on a named risk.",
+    "proof": { "value": "~480 h", "label": "saved per year by the design that shipped" },
     "order": 4
   },
   {
-    "id": "shared-ownership",
-    "kind": "team",
-    "title": "Shared ownership beats escalation.",
-    "body": "A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams. The same three teams partnered on 162 production changes consolidating ACL policy.",
-    "proof": { "value": "37% → 83%", "label": "partner incident engagement" },
+    "id": "assert-outputs",
+    "title": "Assert on outputs, not just inputs.",
+    "body": "Classification logic now ships with checks on what it produces (totals, match counts, unmatched rows), so the next defect fails a check the day it lands.",
+    "proof": { "value": "5 yrs", "label": "a defect survived without output checks" },
     "order": 5
   }
 ]

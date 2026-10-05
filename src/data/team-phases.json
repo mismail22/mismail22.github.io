@@ -12,7 +12,7 @@
     "phase": "Reliability",
     "when": "Year one",
     "title": "A reliability practice from scratch",
-    "detail": "99% availability, a 96.85% repair SLA against a 95% target, and a 90%+ MTTR improvement. Device fleet grew 43% (1,823 → 2,623) at flat headcount.",
+    "detail": "Repair SLAs, on-call, and repair processes built from scratch while the lab device fleet grew from 1,823 to 2,623.",
     "order": 2
   },
   {
@@ -20,7 +20,7 @@
     "phase": "Scale",
     "when": "Mar 2024 · 24 people",
     "title": "A team that runs itself",
-    "detail": "Team incident handling rose from 40% to 75% through training and documentation. A multi-vendor RFP across ~1,000 labs and a Tier 2 move to an MSP cut support costs with no SLA regression.",
+    "detail": "Training and documentation took team incident handling from 40% to 75%. A multi-vendor RFP and a Tier 2 move to an MSP cut support costs with no SLA regression.",
     "order": 3
   }
 ]

@@ -5,24 +5,25 @@
 export const site = {
   name: 'Mohanad Ismail',
   handle: 'mohanad',
+  role: 'Tech Lead · Infrastructure Platforms & Automation · Meta',
   title: 'Mohanad Ismail · Infrastructure Platforms & Network Automation',
   description:
-    '16 years in network and infrastructure engineering, 11 at Meta. Architected the governance platform for $7B+ in data-center rack assets, automated network policy across thousands of devices, and grew an R&D infrastructure team from 5 to 24.',
+    'Network and infrastructure engineer, 16 years, 11 at Meta. Architected the real-time platform governing a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge and lab networks, and grew an R&D infrastructure team from 5 to 24.',
   // Hero headline, split so the second half can be de-emphasized.
-  headline: ['I build infrastructure platforms and network automation,', "and I've built the team that runs them."],
+  headline: ['I turn risky, manual infrastructure work', 'into guarded, automated systems.'],
   intro:
-    '16 years in network and infrastructure engineering, 11 at Meta. I architected the governance platform for $7B+ in data-center rack assets, automated network policy across thousands of devices, and grew an R&D infrastructure team from 5 to 24 engineers.',
+    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the real-time platform governing a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier grew an R&D infrastructure team from 5 to 24 people. MBA (Honors), Boston University.',
   location: 'Menlo Park, CA',
-  status: 'Open to Staff+ infrastructure and infrastructure engineering-management roles',
+  status: 'Open to Staff+ IC & infra EM roles',
 
-  // Hero status bar: three systems readouts, one team readout.
-  // `to` is animated; `from` is shown before an arrow.
+  // Hero "Track record" bar. `to` is animated; `from` is shown before an arrow.
   heroTelemetry: [
-    { label: 'Rack assets', prefix: '$', to: 7, suffix: 'B+' },
-    { label: 'Net changes', to: 162 },
-    { label: 'Cycle', from: '81', to: 10, suffix: 'd' },
-    { label: 'Org', from: '5', to: 24 },
+    { label: 'Years in infra', to: 16 },
+    { label: 'Racks swept', to: 27000, suffix: '+' },
+    { label: 'Disposal cycle', from: '81', to: 10, suffix: 'd' },
+    { label: 'Team built', from: '5', to: 24 },
   ],
+  stack: ['Python', 'Hack/PHP', 'SQL', 'GraphQL/React', 'BGP', 'Workflow orchestration', 'LLM agents'],
 
   // Optional public email. Leave empty to keep it off the site.
   email: '' as string,
@@ -40,15 +41,35 @@ export const site = {
     // { label: 'X', handle: 'yourhandle', href: 'https://x.com/yourhandle', icon: 'x' },
   ],
 
-  // Team section extras
+  // Team section
+  teamPrinciples: [
+    {
+      title: 'Build the operating model before the headcount.',
+      body: 'Before growing from 5 to 24, I defined onboarding, role boundaries, escalation paths, and the hiring bar for a mix of FTEs, contractors, and MSP partners.',
+    },
+    {
+      title: 'Shared ownership beats escalation.',
+      body: 'A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams; partner engagement went from 37% to 83%.',
+    },
+  ],
+  teamProof: [
+    { value: '96.85%', label: 'repair SLA vs 95% target' },
+    { value: '90%+', label: 'MTTR improvement, year one' },
+    { value: '382', label: 'lab deployments in six months' },
+    { value: '10 → 3', label: 'days to resolve help requests' },
+    { value: '+43%', label: 'devices at flat headcount' },
+    { value: '37 → 83%', label: 'partner incident engagement' },
+  ],
   teamNotes: ['Promoted a direct report into a lab-operations lead role', 'Mentored 4 engineers through complex technical designs', '19 behavioral interview loops'],
+  teamClosing:
+    'In 2024 I moved into a hands-on tech-lead role to architect the fleet platform, while completing an MBA with Honors (2025).',
 
   education: [
     {
       school: 'Boston University, Questrom School of Business',
       degree: 'MBA, With Honors',
       period: '2024 – 2025',
-      note: 'GPA 3.68 · Analytics, strategic leadership, risk management · Led a team to a top-5% finish in an international strategy simulation',
+      note: 'GPA 3.68 · analytics, strategic leadership, risk management · led a team to a top-5% finish in an international strategy simulation',
     },
     {
       school: 'Cairo University',
@@ -56,6 +77,8 @@ export const site = {
       period: '2003 – 2008',
     },
   ],
+
+  humanNote: 'Off the keyboard: ranked 12th at the 2016 Windsurfing World Championship.',
 } as const;
 
 export type SocialIcon = (typeof site.socials)[number]['icon'] | 'x';

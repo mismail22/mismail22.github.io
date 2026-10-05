@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Section from './ui/Section.astro';
+
+type Skill = Awaited<ReturnType<typeof getCollection<'skills'>>>[number]['data'];
+
+const skills = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order).map((s) => s.data);
+
+const categories = [
+  { key: 'languages', title: 'Languages' },
+  { key: 'networking', title: 'Networking' },
+  { key: 'platforms', title: 'Platforms & infrastructure' },
+  { key: 'data', title: 'Data' },
+  { key: 'ai', title: 'AI / ML' },
+  { key: 'reliability', title: 'Reliability' },
+  { key: 'leadership', title: 'Leadership' },
+] as const;
+
+const tiers = { expert: 3, proficient: 2, working: 1 } as const;
+const tierLabel = { expert: 'Expert', proficient: 'Proficient', working: 'Working' } as const;
+---
+
+<Section
+  id="skills"
+  navGroup="systems"
+  index="02"
+  eyebrow="Skills matrix"
+  title="What I actually work in."
+  intro="Tiers reflect hands-on depth, with years and the evidence behind each one. Drawn from about 900 shipped code changes since 2015."
+>
+  <div class="overflow-hidden rounded-2xl border border-line">
+    <div class="hidden grid-cols-[15rem_8rem_4rem_1fr] gap-6 border-b border-line bg-surface px-6 py-3 lg:grid" aria-hidden="true">
+      <span class="sys-label">Skill</span>
+      <span class="sys-label">Tier</span>
+      <span class="sys-label">Years</span>
+      <span class="sys-label">Evidence</span>
+    </div>
+    {
+      categories.map((cat) => {
+        const rows = skills.filter((s) => s.category === cat.key);
+        const groups: [string | null, Skill[]][] = [
+          [null, rows.filter((r) => !r.earlier)],
+          ['Earlier career', rows.filter((r) => r.earlier)],
+        ];
+        return (
+          <section aria-labelledby={`skills-${cat.key}`} class="border-b border-line last:border-b-0">
+            <h3 id={`skills-${cat.key}`} class="bg-surface/60 px-6 py-3 text-sm font-medium text-fg">
+              {cat.title}
+            </h3>
+            {groups.map(([label, list]) =>
+              list.length === 0 ? null : (
+                <>
+                  {label && <p class="px-6 pt-4 pb-1 font-mono text-xs text-muted">{label}</p>}
+                  <ul class="divide-y divide-line/70">
+                    {list.map((s) => (
+                      <li class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-1.5 px-6 py-4 lg:grid-cols-[15rem_8rem_4rem_1fr] lg:items-baseline">
+                        <span class="text-[0.9375rem] text-fg">{s.skill}</span>
+                        <span class="flex items-center gap-2 justify-self-end lg:justify-self-start">
+                          <span class="flex gap-1" aria-hidden="true">
+                            {[1, 2, 3].map((n) => (
+                              <span class:list={['size-1.5 rounded-full', n <= tiers[s.tier] ? 'bg-accent' : 'bg-line-strong']} />
+                            ))}
+                          </span>
+                          <span class="font-mono text-xs text-muted">{tierLabel[s.tier]}</span>
+                        </span>
+                        <span class="hidden font-mono text-xs text-muted lg:block">{s.years}y</span>
+                        <span class="col-span-2 text-sm leading-relaxed text-muted lg:col-span-1">
+                          <span class="font-mono text-xs lg:hidden">{s.years}y · </span>
+                          {s.evidence}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ),
+            )}
+          </section>
+        );
+      })
+    }
+  </div>
+  <p class="mt-6 max-w-3xl text-sm leading-relaxed text-muted" data-reveal>
+    Built on hyperscaler-internal equivalents of container scheduling, config management, feature flags, and service discovery.
+  </p>
+</Section>

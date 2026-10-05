@@ -1,60 +1,30 @@
 [
   {
-    "id": "disposal-cycle",
-    "group": "systems",
-    "label": "Fleet disposal cycle after automation",
-    "detail": "Fleet governance platform",
-    "from": "81",
-    "to": 10,
-    "suffix": " days",
+    "id": "stranded-capacity",
+    "value": "~3 Tbps",
+    "label": "Backbone capacity restored with one fix to network workflow tooling",
+    "href": "#incidents",
     "order": 1
   },
   {
-    "id": "bulk-sweep",
-    "group": "systems",
-    "label": "Racks covered by the first guardrailed bulk sweep",
-    "detail": "Fleet governance platform",
-    "to": 27000,
-    "suffix": "+",
+    "id": "acl-changes",
+    "value": "162",
+    "label": "ACL policy changes generated from my first policy script, shipped with network and security partners",
+    "href": "/work/network-automation",
     "order": 2
   },
   {
-    "id": "stranded-capacity",
-    "group": "systems",
-    "label": "Backbone capacity restored with a single fix",
-    "detail": "Network workflow tooling",
-    "prefix": "~",
-    "to": 3,
-    "suffix": " Tbps",
+    "id": "audit",
+    "value": "5 yrs",
+    "label": "How long a nine-figure data defect hid before my AI-assisted audit found it",
+    "href": "/work/ai-native-engineering",
     "order": 3
   },
   {
-    "id": "repair-sla",
-    "group": "systems",
-    "label": "Repair SLA against a 95% target",
-    "detail": "~1,000 R&D labs",
-    "to": 96.85,
-    "decimals": 2,
-    "suffix": "%",
+    "id": "lab-availability",
+    "value": "99.5%",
+    "label": "Lab network availability restored, the first time in seven months",
+    "href": "#team",
     "order": 4
-  },
-  {
-    "id": "org-size",
-    "group": "team",
-    "label": "People in the R&D infrastructure team I built",
-    "detail": "Feb 2022 → Mar 2024 · FTEs, contractors, MSP partners",
-    "from": "5",
-    "to": 24,
-    "order": 5
-  },
-  {
-    "id": "partner-engagement",
-    "group": "team",
-    "label": "Partner-team incident engagement",
-    "detail": "After a shared-ownership charter",
-    "from": "37%",
-    "to": 83,
-    "suffix": "%",
-    "order": 6
   }
 ]

@@ -44,5 +44,28 @@
       "Computer vision"
     ],
     "order": 2
+  },
+  {
+    "id": "carrier-integrations",
+    "title": "Carrier Integrations",
+    "context": "Facebook · 2015 – 2018",
+    "category": "network",
+    "summary": "Launched integrations with 10+ mobile carriers across APAC, EMEA, and LATAM: traffic zero-rating with GGSN DPI, URL redirection, HTTP header enrichment, and SMS/SMPP binds.",
+    "metrics": [
+      {
+        "value": "10+",
+        "label": "carriers integrated"
+      },
+      {
+        "value": "~75",
+        "label": "IPsec tunnel builds and key rotations"
+      }
+    ],
+    "tags": [
+      "GGSN / DPI",
+      "SMPP",
+      "IPsec"
+    ],
+    "order": 3
   }
 ]

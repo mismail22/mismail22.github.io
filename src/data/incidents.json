@@ -1,14 +1,36 @@
 [
   {
+    "id": "data-integrity",
+    "title": "Nine-figure inventory misclassification",
+    "year": "2026",
+    "severity": "high",
+    "impact": "Inventory had been misclassified for five years, misstating a nine-figure amount.",
+    "cause": "A one-character typo in a mapping literal, plus an unanchored pattern match that matched far more than intended.",
+    "fix": "Ran an AI-assisted audit comparing what each pipeline claimed to do with what its code did, then verified every candidate against real data.",
+    "result": "Both defects surfaced; peer data teams adopted the method the same week.",
+    "order": 1
+  },
+  {
+    "id": "lab-monitoring",
+    "title": "Lab networks with monitoring blind spots",
+    "year": "2023",
+    "severity": "medium",
+    "impact": "Lab network availability had missed target for seven months.",
+    "cause": "About half of the Wi-Fi access points weren't covered by central monitoring.",
+    "fix": "Onboarded Wi-Fi alerting into central monitoring, doubling coverage to ~2,500 access points, and drove remediation with the team.",
+    "result": "99.5% availability, the first time in seven months.",
+    "order": 2
+  },
+  {
     "id": "backbone-drain",
     "title": "40-terabit backbone capacity drain",
     "year": "2021",
     "severity": "high",
-    "impact": "~40 Tbps of backbone capacity drained, pushing protected capacity below demand in a region.",
+    "impact": "~40 Tbps of backbone capacity drained.",
     "cause": "An automated traffic-shift workflow got stuck mid-run and left circuits drained.",
     "fix": "Paged into the incident; worked with the response team on the fix that recovered the stuck workflow and un-drained the circuits.",
     "result": "~40 Tbps of backbone capacity restored.",
-    "order": 1
+    "order": 3
   },
   {
     "id": "stranded-capacity",
@@ -19,7 +41,7 @@
     "cause": "Network tickets failed to create when descriptions exceeded a size limit, so capacity-restoration work never started.",
     "fix": "Root-caused it and landed a fix that truncates oversized descriptions safely.",
     "result": "~3 Tbps restored with one fix.",
-    "order": 2
+    "order": 4
   },
   {
     "id": "ticket-flood",
@@ -30,7 +52,7 @@
     "cause": "Priority misassignment in the outage-automation logic.",
     "fix": "Traced the misassignment and corrected the priority mapping.",
     "result": "52% month-over-month drop in critical-ticket volume.",
-    "order": 3
+    "order": 5
   },
   {
     "id": "api-timeouts",
@@ -41,7 +63,7 @@
     "cause": "A polling-based API design.",
     "fix": "Re-implemented the APIs on a push model.",
     "result": "57% faster; timeouts eliminated.",
-    "order": 4
+    "order": 6
   },
   {
     "id": "email-intake",
@@ -52,6 +74,6 @@
     "cause": "A fragile legacy helpdesk ingestion path.",
     "fix": "Built a replacement email-to-ticket pipeline with three ML classifiers routing requests.",
     "result": "99% availability across 45,147 emails, ~20× fewer outage hours.",
-    "order": 5
+    "order": 7
   }
 ]

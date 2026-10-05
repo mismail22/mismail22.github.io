@@ -1,6 +1,7 @@
 ---
 // Renders a case-study architecture diagram from data: nodes sit on a grid
-// (col/row), edges are drawn as curves with animated "traffic".
+// (col/row), edges are drawn as curves with animated "traffic". Nodes with a
+// `callout` get a numbered badge that links to the matching decision record.
 import type { CollectionEntry } from 'astro:content';
 
 type Diagram = CollectionEntry<'work'>['data']['diagram'];
@@ -8,22 +9,29 @@ type Diagram = CollectionEntry<'work'>['data']['diagram'];
 interface Props {
   diagram: Diagram;
   label: string;
-  // Thumbnail mode: smaller text, no sub-labels
+  // Thumbnail mode: smaller, no sub-labels or callouts
   compact?: boolean;
+  // Swap rows and columns (top-to-bottom flow for narrow screens)
+  vertical?: boolean;
+  // 'hover' animates traffic only while a parent .group is hovered
+  flow?: 'always' | 'hover';
+  // Prefix for callout links, e.g. "#decision-" → #decision-1
+  calloutHref?: string;
   class?: string;
 }
 
-const { diagram, label, compact = false, class: className } = Astro.props;
+const { diagram, label, compact = false, vertical = false, flow = 'always', calloutHref, class: className } = Astro.props;
 
-const COL_W = 200;
-const ROW_H = compact ? 80 : 96;
-const W = 164;
+const COL_W = vertical ? 178 : 200;
+const ROW_H = compact ? 80 : vertical ? 92 : 100;
+const W = vertical ? 158 : 164;
 const H = compact ? 44 : 58;
-const PAD = 12;
+const PAD = 14;
 
-const pos = new Map(diagram.nodes.map((n) => [n.id, { x: PAD + n.col * COL_W, y: PAD + n.row * ROW_H }]));
-const width = PAD * 2 + Math.max(...diagram.nodes.map((n) => n.col)) * COL_W + W;
-const height = PAD * 2 + Math.max(...diagram.nodes.map((n) => n.row)) * ROW_H + H;
+const place = (n: Diagram['nodes'][number]) => (vertical ? { c: n.row, r: n.col } : { c: n.col, r: n.row });
+const pos = new Map(diagram.nodes.map((n) => [n.id, { x: PAD + place(n).c * COL_W, y: PAD + place(n).r * ROW_H }]));
+const width = PAD * 2 + Math.max(...diagram.nodes.map((n) => place(n).c)) * COL_W + W;
+const height = PAD * 2 + Math.max(...diagram.nodes.map((n) => place(n).r)) * ROW_H + H;
 
 // Leave from the side facing the target; curve with a smooth cubic.
 const edgePath = (from: string, to: string) => {
@@ -48,9 +56,15 @@ const edgePath = (from: string, to: string) => {
 };
 
 const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
+const showCallouts = !compact && Boolean(calloutHref);
 ---
 
-<svg viewBox={`0 0 ${width} ${height}`} class:list={['arch', compact && 'arch--compact', className]} role="img" aria-label={label}>
+<svg
+  viewBox={`0 0 ${width} ${height}`}
+  class:list={['arch', compact && 'arch--compact', flow === 'hover' && 'arch--flow-hover', className]}
+  role="img"
+  aria-label={label}
+>
   <defs>
     <marker id={markerId} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L8,4 L0,8 z" class="arch-arrow"></path>
@@ -72,7 +86,6 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
   {
     diagram.nodes.map((n) => {
       const p = pos.get(n.id)!;
-      const confirm = n.sub?.includes('CONFIRM');
       return (
         <g transform={`translate(${p.x} ${p.y})`} class={`arch-node arch-node--${n.kind}`}>
           <rect width={W} height={H} rx="10" />
@@ -80,9 +93,17 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
             {n.label}
           </text>
           {!compact && n.sub && (
-            <text x={W / 2} y={H / 2 + 13} text-anchor="middle" class:list={['arch-sub', confirm && 'arch-sub--confirm']}>
+            <text x={W / 2} y={H / 2 + 13} text-anchor="middle" class="arch-sub">
               {n.sub}
             </text>
+          )}
+          {showCallouts && n.callout && (
+            <a href={`${calloutHref}${n.callout}`} class="arch-callout" aria-label={`Decision ${n.callout}`}>
+              <circle cx={W - 2} cy="2" r="10" />
+              <text x={W - 2} y="6" text-anchor="middle">
+                {n.callout}
+              </text>
+            </a>
           )}
         </g>
       );
@@ -94,6 +115,7 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
   .arch {
     width: 100%;
     height: auto;
+    overflow: visible;
     font-family: var(--font-mono);
   }
 
@@ -117,6 +139,18 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
     animation: arch-flow 1.6s linear infinite;
   }
 
+  /* Thumbnails: traffic only while the card is hovered. */
+  .arch--flow-hover .arch-flow {
+    opacity: 0;
+    animation-play-state: paused;
+    transition: opacity 300ms ease;
+  }
+
+  :global(.group:hover) .arch--flow-hover .arch-flow {
+    opacity: 0.7;
+    animation-play-state: running;
+  }
+
   .arch-node rect {
     fill: var(--color-surface-2);
     stroke: var(--color-line-strong);
@@ -129,7 +163,7 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
   }
 
   .arch-node--guard rect {
-    stroke: var(--color-accent);
+    stroke: var(--color-amber);
     stroke-dasharray: 4 3;
   }
 
@@ -157,8 +191,22 @@ const markerId = `arrow-${Math.random().toString(36).slice(2, 8)}`;
     font-size: 9.5px;
   }
 
-  .arch-sub--confirm {
-    fill: #fbbf24;
+  .arch-callout circle {
+    fill: var(--color-canvas);
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+    transition: fill 150ms ease;
+  }
+
+  .arch-callout text {
+    fill: var(--color-accent);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .arch-callout:hover circle,
+  .arch-callout:focus-visible circle {
+    fill: color-mix(in oklab, var(--color-accent) 25%, var(--color-canvas));
   }
 
   @keyframes arch-flow {

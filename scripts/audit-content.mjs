@@ -18,6 +18,8 @@ const BANNED = [
   [/mohanad\.amr|492-9777|mismail@meta/g, 'personal contact detail'],
   [/mailto:/g, 'public email link'],
   [/Network Engineer, Automation|Environments Lead|Network Operations Engineer|Senior Network Engineer/g, 'internal job title (use resume titles)'],
+  [/\$\s?\d[\d,.]*\s?(?:M|B|K|million|billion)\b\+?/g, 'exact dollar figure (use magnitudes on the public site)'],
+  [/\b(?:Kubernetes|Docker|Terraform|Ansible|InfiniBand|RoCE\w*)\b/g, 'unsupported skill claim (keep off the site, or move to the AI/HPC journey line)'],
 ];
 
 const files = [];
@@ -31,9 +33,12 @@ const files = [];
 
 const text = (html) => html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ');
 
+// The one defensible AI/HPC mention (journey) is allowed; anything else is flagged.
+const ALLOWED = [/source-of-truth data for AI\/HPC fabric devices \(InfiniBand, RoCEv2\)/g];
+
 let problems = 0;
 for (const file of files) {
-  const html = readFileSync(file, 'utf8');
+  const html = ALLOWED.reduce((h, re) => h.replace(re, '[allowed]'), readFileSync(file, 'utf8'));
   for (const [pattern, why] of BANNED) {
     for (const match of html.matchAll(pattern)) {
       const at = Math.max(0, match.index - 50);

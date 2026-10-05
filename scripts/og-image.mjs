@@ -26,16 +26,16 @@ const svg = `
   <g fill="#34d399"><circle cx="820" cy="120" r="5"/><circle cx="960" cy="210" r="7"/><circle cx="1080" cy="150" r="5"/><circle cx="900" cy="340" r="5"/><circle cx="1060" cy="390" r="6"/></g>
   </g>
   <circle cx="92" cy="122" r="6" fill="#34d399"/>
-  <text x="110" y="129" font-family="Menlo, monospace" font-size="20" letter-spacing="3" fill="#34d399">OPEN TO STAFF+ INFRA &amp; INFRA ENG-MANAGEMENT ROLES</text>
+  <text x="110" y="129" font-family="Menlo, monospace" font-size="20" letter-spacing="3" fill="#34d399">OPEN TO STAFF+ IC &amp; INFRA EM ROLES</text>
   <text x="84" y="268" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="104" font-weight="700" letter-spacing="-4" fill="#e6e8eb">Mohanad Ismail</text>
-  <text x="88" y="340" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="36" fill="#e6e8eb">I build infrastructure platforms and network automation,</text>
-  <text x="88" y="390" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="36" fill="#9aa1ab">and I’ve built the team that runs them.</text>
+  <text x="88" y="340" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" fill="#e6e8eb">I turn risky, manual infrastructure work</text>
+  <text x="88" y="390" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" fill="#9aa1ab">into guarded, automated systems.</text>
   <rect x="84" y="470" width="1032" height="76" rx="16" fill="#0c0e11" stroke="#1d2126"/>
   <g font-family="Menlo, monospace" font-size="22" fill="#9aa1ab">
-    <text x="116" y="516">RACK ASSETS <tspan fill="#e6e8eb">$7B+</tspan></text>
-    <text x="400" y="516">NET CHANGES <tspan fill="#e6e8eb">162</tspan></text>
-    <text x="660" y="516">CYCLE <tspan fill="#e6e8eb">81→10d</tspan></text>
-    <text x="880" y="516">ORG <tspan fill="#34d399">5→24</tspan></text>
+    <text x="116" y="516">YEARS <tspan fill="#e6e8eb">16</tspan></text>
+    <text x="330" y="516">RACKS SWEPT <tspan fill="#e6e8eb">27,000+</tspan></text>
+    <text x="640" y="516">CYCLE <tspan fill="#e6e8eb">81→10d</tspan></text>
+    <text x="880" y="516">TEAM <tspan fill="#34d399">5→24</tspan></text>
   </g>
 </svg>`;
 

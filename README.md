@@ -8,14 +8,14 @@ All content lives in `src/data/`. You don't need to touch any components.
 
 | File | What it controls |
 | --- | --- |
-| `site.ts` | Name, headline, status, hero status bar, team notes, education, optional email/resume, social links, Formspree ID, SEO text |
+| `site.ts` | Name, role, headline, status, track-record bar, stack strip, team section content, education, optional email/resume, social links, Formspree ID, SEO text |
 | `../content/work/*.md` | **Case studies** (one markdown file each): front matter for title, metrics, stack and the architecture diagram; body for the write-up |
-| `telemetry.json` | Impact tiles (systems first, then team) |
+| `telemetry.json` | Impact ledger rows (keep them different from the hero bar) |
 | `incidents.json` | Incident log entries (impact, root cause, fix, result) |
-| `principles.json` | "How I build" principles and their proof points |
+| `principles.json` | "How I build" engineering principles and their proof points |
 | `team-phases.json` | Team-build timeline |
-| `toolbox.json` | Skills, each with where it was used and the evidence |
-| `projects.json` | Smaller "More work" cards |
+| `skills.json` | Skills matrix: category, tier (expert / proficient / working), years, evidence |
+| `projects.json` | "More work" rows |
 | `experience.json` | Release-log (journey) entries |
 
 The JSON files are validated against schemas in `src/content.config.ts`. A typo, such as an unknown category or a missing field, fails the build with a clear error instead of shipping a broken page.
@@ -45,11 +45,11 @@ Append an object to `src/data/projects.json`:
 
 ### Add a case study
 
-Copy one of the files in `src/content/work/`, change the front matter and the write-up, and it gets its own page at `/work/<file-name>` plus a card on the home page. Diagram nodes sit on a grid (`col`, `row`); `kind` controls styling (`source`, `core`, `guard`, `surface`, `target`); `edges` are `[from, to]` pairs.
+Copy one of the files in `src/content/work/`, change the front matter and the write-up, and it gets its own page at `/work/<file-name>` plus a chapter on the home page. Front matter holds the TL;DR (3 bullets), metrics, decision records, the lesson and its pull quote, and the diagram. Diagram nodes sit on a grid (`col`, `row`); `kind` controls styling (`source`, `core`, `guard`, `surface`, `target`); `callout: n` links a node to decision n; `edges` are `[from, to]` pairs.
 
 ### Content audit
 
-`npm run audit` (also run by the deploy workflow) fails if the built site contains `[CONFIRM]` markers, internal tool names, incident IDs, or personal contact details. `npm run audit -- --numbers` also lists every numeric claim for a final fact check.
+`npm run audit` (also run by the deploy workflow) fails if the built site contains `[CONFIRM]` markers, internal tool names or job titles, incident IDs, personal contact details, exact dollar figures, or skills without evidence. `npm run audit -- --numbers` also lists every numeric claim for a final fact check.
 
 ### Other updates
 
@@ -116,9 +116,9 @@ src/
 ├─ data/                 # ← all editable content
 ├─ layouts/BaseLayout.astro
 ├─ content/work/         # case studies (markdown)
-├─ components/           # Navbar, Hero, Telemetry, Systems, Incidents, Principles, TeamBuild, Toolbox, Journey, Contact, Footer
+├─ components/           # Navbar, Hero, Telemetry (impact ledger), Systems, Skills, Incidents, Principles, TeamBuild, Journey, Contact, Footer
 │  └─ ui/                # Section, Panel, ArchDiagram, Button, Tag, BrandIcon
-├─ scripts/              # motion, topology (hero graph), nav, contact-form
+├─ scripts/              # motion, topology (hero career map), nav, toc, contact-form
 ├─ styles/global.css     # Tailwind import + design tokens (@theme)
 └─ pages/                # index.astro, work/[slug].astro, 404.astro
 ```

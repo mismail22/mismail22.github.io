@@ -19,7 +19,7 @@ function formatCount(el: HTMLElement, value: number) {
 function countUp(el: HTMLElement) {
   const to = Number(el.dataset.count);
   const from = Number(el.dataset.countFrom ?? 0);
-  const duration = 1400;
+  const duration = 900;
   const start = performance.now();
   const tick = (now: number) => {
     const t = Math.min(1, (now - start) / duration);
@@ -58,13 +58,13 @@ if (reduceMotion || !('IntersectionObserver' in window)) {
   counters.forEach((el) => observer.observe(el));
 }
 
-// --- Panel spotlight (fine pointers only) ----------------------------------
+// --- Spotlight on clickable panels (fine pointers only) --------------------
 
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   document.addEventListener(
     'pointermove',
     (event) => {
-      const panel = (event.target as HTMLElement).closest<HTMLElement>('.panel');
+      const panel = (event.target as HTMLElement).closest<HTMLElement>('.panel--link');
       if (!panel) return;
       const rect = panel.getBoundingClientRect();
       panel.style.setProperty('--x', `${event.clientX - rect.left}px`);

@@ -1,6 +1,5 @@
 ---
 import ArrowRight from '@lucide/astro/icons/arrow-right';
-import MapPin from '@lucide/astro/icons/map-pin';
 import Button from './ui/Button.astro';
 import BrandIcon from './ui/BrandIcon.astro';
 import { site } from '../data/site';
@@ -10,82 +9,100 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
 ---
 
 <section id="top" class="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
-  <!-- Decorative layers: grid, live topology, readability gradients -->
+  <!-- Decorative layers: grid, career-map topology, readability gradients -->
   <div class="bg-grid absolute inset-0 -z-30 [mask-image:radial-gradient(ellipse_90%_80%_at_70%_30%,#000_30%,transparent_100%)]" aria-hidden="true"></div>
-  <canvas class="absolute inset-0 -z-20 size-full opacity-0 transition-opacity duration-1000 [&.is-ready]:opacity-100" data-topology aria-hidden="true"></canvas>
+  <canvas class="absolute inset-0 -z-20 size-full opacity-0 transition-opacity duration-1000 max-sm:[&.is-ready]:opacity-35 sm:[&.is-ready]:opacity-100" data-topology aria-hidden="true"></canvas>
   <div
-    class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,var(--color-canvas)_0%,rgb(7_8_10/0.85)_30%,transparent_65%)] max-md:bg-[linear-gradient(180deg,rgb(7_8_10/0.55)_0%,rgb(7_8_10/0.9)_45%,var(--color-canvas)_100%)]"
+    class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,var(--color-canvas)_0%,rgb(7_8_10/0.82)_32%,transparent_55%)] max-md:bg-[linear-gradient(180deg,rgb(7_8_10/0.5)_0%,rgb(7_8_10/0.88)_45%,var(--color-canvas)_100%)]"
     aria-hidden="true"
   >
   </div>
   <div class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-b from-transparent to-canvas" aria-hidden="true"></div>
 
-  <div class="container-page flex flex-1 flex-col justify-center pt-32 pb-12">
-    <p class="sys-label flex flex-wrap items-center gap-x-3 gap-y-2" data-reveal>
-      <span class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-accent">
-        <span class="led led--pulse" aria-hidden="true"></span>
-        {site.status}
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <MapPin class="size-3.5" aria-hidden="true" />
-        {site.location}
-      </span>
-    </p>
+  <div class="container-page grid flex-1 grid-cols-12 items-center pt-32 pb-10">
+    <div class="col-span-12 lg:col-span-7">
+      <p class="flex flex-wrap items-center gap-x-4 gap-y-3 text-sm text-muted" data-reveal>
+        <span class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-accent">
+          <span class="led led--pulse" aria-hidden="true"></span>
+          {site.status}
+        </span>
+        <span>{site.role}</span>
+      </p>
 
-    <h1 class="mt-8 text-6xl font-semibold tracking-[-0.045em] sm:text-8xl lg:text-[7.5rem] lg:leading-[0.95]" data-reveal style="--i: 1">
-      {site.name}
-    </h1>
+      <h1
+        class="mt-8 text-[clamp(3.25rem,1.5rem+6vw,6.5rem)] leading-[0.92] font-semibold tracking-[-0.045em]"
+        data-reveal
+        style="--i: 1"
+      >
+        {site.name}
+      </h1>
 
-    <p class="mt-7 max-w-3xl text-2xl leading-snug font-medium tracking-[-0.02em] text-balance sm:text-4xl" data-reveal style="--i: 2">
-      {site.headline[0]}
-      <span class="text-muted">{site.headline[1]}</span>
-    </p>
+      <p class="mt-7 max-w-[30ch] text-[clamp(1.5rem,1rem+1.6vw,2.25rem)] leading-tight font-medium tracking-[-0.02em] text-balance" data-reveal style="--i: 2">
+        {site.headline[0]} <span class="text-muted">{site.headline[1]}</span>
+      </p>
 
-    <p class="mt-6 max-w-xl text-base leading-relaxed text-muted" data-reveal style="--i: 3">
-      {site.intro}
-    </p>
+      <p class="mt-6 max-w-xl text-base leading-relaxed text-muted" data-reveal style="--i: 3">
+        {site.intro}
+      </p>
 
-    <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--i: 4">
-      <Button href="#systems" class="rounded-full">
-        Systems I built
-        <ArrowRight class="size-4" aria-hidden="true" />
-      </Button>
-      <Button href="#team" variant="secondary" class="rounded-full">
-        Teams I built
-        <ArrowRight class="size-4" aria-hidden="true" />
-      </Button>
-      {
-        linkedin && (
-          <Button href={linkedin.href} variant="ghost" class="rounded-full" target="_blank" rel="noopener me">
-            <BrandIcon name="linkedin" class="size-4" />
-            LinkedIn
-          </Button>
-        )
-      }
+      <div class="mt-9 flex flex-wrap items-center gap-3" data-reveal style="--i: 4">
+        <Button href="#systems" class="rounded-full">
+          Hiring a Staff engineer
+          <ArrowRight class="size-4" aria-hidden="true" />
+        </Button>
+        <Button href="#team" variant="secondary" class="rounded-full">
+          Hiring an EM
+          <ArrowRight class="size-4" aria-hidden="true" />
+        </Button>
+        {
+          linkedin && (
+            <a
+              href={linkedin.href}
+              target="_blank"
+              rel="noopener me"
+              class="inline-flex size-11 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+              aria-label="LinkedIn profile"
+            >
+              <BrandIcon name="linkedin" class="size-5" />
+            </a>
+          )
+        }
+      </div>
+
+      <ul class="mt-9 flex flex-wrap gap-2" aria-label="Core stack" data-reveal style="--i: 5">
+        {site.stack.map((s) => <li class="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">{s}</li>)}
+      </ul>
     </div>
   </div>
 
-  <!-- Live status bar -->
-  <div class="container-page pb-8" data-reveal style="--i: 5">
-    <dl class="panel grid grid-cols-2 overflow-hidden rounded-2xl backdrop-blur-sm md:grid-cols-[auto_repeat(4,1fr)]">
-      <div class="col-span-2 flex items-center gap-2.5 border-b border-line px-5 py-3 md:col-span-1 md:border-r md:border-b-0">
-        <span class="led led--pulse" aria-hidden="true"></span>
-        <span class="sys-label text-accent">Live</span>
+  <!-- Track record -->
+  <div class="container-page pb-8" data-reveal style="--i: 6">
+    <div class="panel ticks overflow-hidden rounded-2xl backdrop-blur-sm">
+      <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+      <div class="flex items-center gap-2.5 border-b border-line px-5 py-2.5">
+        <span class="led" aria-hidden="true"></span>
+        <span class="sys-label">Track record</span>
       </div>
-      {
-        site.heroTelemetry.map((item, i) => (
-          <div class:list={['flex items-baseline justify-between gap-3 px-5 py-3.5', i % 2 === 0 && 'border-r border-line', i < 2 && 'max-md:border-b', 'md:border-r md:last:border-r-0']}>
-            <dt class="sys-label">{item.label}</dt>
-            <dd class="font-mono text-base font-medium text-fg tabular-nums">
-              {'from' in item && <span class="text-muted">{item.from} → </span>}
-              <span data-count={item.to} data-count-from={'from' in item ? parseFloat(item.from) : 0} data-prefix={'prefix' in item ? item.prefix : ''} data-suffix={'suffix' in item ? item.suffix : ''}>
-                {formatValue(item.to, { prefix: 'prefix' in item ? item.prefix : '', suffix: 'suffix' in item ? item.suffix : '' })}
-              </span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
+      <dl class="grid grid-cols-2 md:grid-cols-4">
+        {
+          site.heroTelemetry.map((item, i) => (
+            <div class:list={['flex flex-col-reverse gap-1 border-line px-5 py-4', i % 2 === 0 && 'border-r', i < 2 && 'max-md:border-b', i < 3 && 'md:border-r']}>
+              <dt class="text-xs text-muted">{item.label}</dt>
+              <dd class="font-mono text-xl font-semibold text-fg tabular-nums sm:text-2xl">
+                {'from' in item && <span class="text-muted">{item.from}→</span>}
+                <span
+                  data-count={item.to}
+                  data-count-from={'from' in item ? parseFloat(item.from) : 0}
+                  data-suffix={'suffix' in item ? item.suffix : ''}
+                >
+                  {formatValue(item.to, { suffix: 'suffix' in item ? item.suffix : '' })}
+                </span>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </div>
 </section>
 

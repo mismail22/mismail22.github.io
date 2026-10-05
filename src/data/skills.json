@@ -1,0 +1,37 @@
+[
+  { "id": "hack-php", "category": "languages", "skill": "Hack / PHP", "tier": "expert", "years": 8, "evidence": "~340 landed changes: platform backends, typed ORM schemas, APIs, feature-flagged rollouts.", "order": 1 },
+  { "id": "python", "category": "languages", "skill": "Python", "tier": "proficient", "years": 8, "evidence": "Network workflow steps, three production ML classifiers, RPC clients, data pipelines.", "order": 2 },
+  { "id": "sql", "category": "languages", "skill": "SQL (distributed query engines)", "tier": "proficient", "years": 3, "evidence": "Warehouse pipelines and the audit that surfaced a five-year-old classification defect.", "order": 3 },
+  { "id": "react-graphql", "category": "languages", "skill": "React + GraphQL", "tier": "proficient", "years": 2, "evidence": "~220 changes: schema and mutations, Relay hooks, optimistic updates, operator dashboards.", "order": 4 },
+  { "id": "thrift", "category": "languages", "skill": "Thrift / RPC IDL", "tier": "working", "years": 6, "evidence": "Service handlers and client migrations for network tooling.", "order": 5 },
+
+  { "id": "bgp", "category": "networking", "skill": "BGP", "tier": "proficient", "years": 15, "evidence": "Added GTSM (RFC 5082) to peering turn-up as an opt-in, default-off option; pre/post BGP session snapshots for circuit migrations; carrier routing since 2010.", "order": 10 },
+  { "id": "acl-vlan", "category": "networking", "skill": "ACL / VLAN policy as code", "tier": "expert", "years": 3, "evidence": "Wrote the first policy script that seeded 162 generated ACL changes; 40+ VLAN migrations with network and security partners.", "order": 11 },
+  { "id": "edge-peering", "category": "networking", "skill": "Edge, peering & carrier-grade routers", "tier": "proficient", "years": 3, "evidence": "Juniper PTX10003: infrastructure ports defined in config so the peering interface selector never allocates them; 34 circuit migrations.", "order": 12 },
+  { "id": "dc-physical", "category": "networking", "skill": "DC physical layer", "tier": "proficient", "years": 6, "evidence": "Patch-panel initialization that resolves non-standard rack locations (~72 hours/month saved); line-card bootstrap built into device add.", "order": 13 },
+  { "id": "ospf", "category": "networking", "skill": "OSPF", "tier": "working", "years": 5, "evidence": "Mobile-network backbone routing, 2010–2015.", "order": 14 },
+  { "id": "ipsec", "category": "networking", "skill": "IPsec site-to-site VPN", "tier": "proficient", "years": 3, "evidence": "~75 carrier tunnel builds and key rotations for messaging integrations.", "earlier": true, "order": 15 },
+  { "id": "packet-core", "category": "networking", "skill": "Mobile packet core (GGSN/SGSN, DPI, SMPP)", "tier": "expert", "years": 8, "evidence": "Zero-rating, header enrichment, and SMPP launches with 10+ carriers; operated a national GPRS/LTE core.", "earlier": true, "order": 16 },
+
+  { "id": "workflows", "category": "platforms", "skill": "Workflow orchestration", "tier": "expert", "years": 7, "evidence": "Owned 102 workflows built from 314 reusable blocks; moved polling steps to event wake-ups (57% faster).", "order": 20 },
+  { "id": "sot", "category": "platforms", "skill": "Network source of truth & desired state", "tier": "proficient", "years": 6, "evidence": "Device and site mapping that fills source-of-truth gaps for migrations; data-quality rules.", "order": 21 },
+  { "id": "flags", "category": "platforms", "skill": "Config as code & feature flags", "tier": "proficient", "years": 10, "evidence": "Flag-gated read-path migrations ramped to 100%, then the flag removed.", "order": 22 },
+  { "id": "cli", "category": "platforms", "skill": "Guarded CLIs & internal APIs", "tier": "proficient", "years": 3, "evidence": "Required --confirm, --batch-limit (default 50, max 500), value thresholds, and mandatory filters.", "order": 23 },
+
+  { "id": "pipelines", "category": "data", "skill": "Batch data pipelines", "tier": "proficient", "years": 3, "evidence": "3.9M-row legacy migration at 100% key parity; fixed partition lag by reading the latest landed day.", "order": 30 },
+  { "id": "schema", "category": "data", "skill": "Schema design & key migrations", "tier": "proficient", "years": 3, "evidence": "Four entity types moved to platform-native keys via an ID map and a flag-gated cutover.", "order": 31 },
+
+  { "id": "agents", "category": "ai", "skill": "LLM agents & tool calling", "tier": "proficient", "years": 2, "evidence": "9-tool agent (3 platform tools + 6 CLI commands) shipped in one week.", "order": 40 },
+  { "id": "rag", "category": "ai", "skill": "Retrieval (RAG)", "tier": "proficient", "years": 2, "evidence": "Two-stage retrieval over ~1,000 workflow blocks: ~10 minutes to seconds, used by three teams.", "order": 41 },
+  { "id": "llm-audit", "category": "ai", "skill": "LLM-assisted code & data audits", "tier": "proficient", "years": 1, "evidence": "Found a nine-figure misclassification hidden for five years.", "order": 42 },
+  { "id": "nlp", "category": "ai", "skill": "NLP classification", "tier": "proficient", "years": 2, "evidence": "Three production email classifiers (94%, ~70%, 63% accuracy).", "order": 43 },
+  { "id": "cv", "category": "ai", "skill": "Computer vision / OCR", "tier": "working", "years": 1, "evidence": "Rack-serial OCR that cut manual audit validation by 80%.", "order": 44 },
+  { "id": "ai-dev", "category": "ai", "skill": "AI-assisted development", "tier": "expert", "years": 2, "evidence": "Top 1% company-wide by internal telemetry; reusable agent skills adopted by peers.", "order": 45 },
+
+  { "id": "incidents", "category": "reliability", "skill": "Incident response", "tier": "proficient", "years": 10, "evidence": "Four high-severity incidents in one half, including a 40-terabit backbone drain.", "order": 50 },
+  { "id": "slo", "category": "reliability", "skill": "SLA design & on-call", "tier": "proficient", "years": 2, "evidence": "96.85% repair SLA against a 95% target; 99% availability; 90%+ MTTR improvement.", "order": 51 },
+  { "id": "monitoring", "category": "reliability", "skill": "Monitoring & alerting", "tier": "proficient", "years": 9, "evidence": "Detectors since 2016; ~2,500 access points onboarded; incident alert detection up 31%.", "order": 52 },
+
+  { "id": "org", "category": "leadership", "skill": "Org building & hiring", "tier": "expert", "years": 4, "evidence": "Grew a team from 5 to 24 (FTEs, contractors, MSPs); 19 interview loops; mentored 4 engineers.", "order": 60 },
+  { "id": "vendors", "category": "leadership", "skill": "Vendor strategy", "tier": "proficient", "years": 2, "evidence": "Multi-vendor RFP across ~1,000 labs; moved Tier 2 support to an MSP.", "order": 61 }
+]

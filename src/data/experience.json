@@ -1,18 +1,26 @@
 [
   {
     "id": "meta-tech-lead",
-    "role": "Tech Lead, Infrastructure Platforms & AI",
+    "role": "Tech Lead, Infrastructure Platforms & Automation",
     "company": "Meta",
     "location": "Menlo Park, CA",
     "start": "2024-03",
     "end": null,
     "highlights": [
-      "Architected the governance platform for $7B+ in data-center rack assets, with real-time computation, guardrailed bulk operations, and an audit trail designed with finance.",
-      "Automated fleet disposition and rebalancing: cycle time cut from 81 to 10 days, $300M+ rebalanced, and an estimated $100–200M reduction in aging inventory.",
-      "Spearheaded automation for AI/HPC network infrastructure (InfiniBand, RoCEv2) across thousands of devices (80%+ data-accuracy gain), and designed a carrier-grade router system saving ~480 hours a year.",
-      "Shipped a 9-tool LLM agent in one week. An AI-assisted code audit surfaced a nine-figure misclassification undetected for five years. Mentored 4 engineers."
+      "Architected the governance platform for a multi-billion-dollar data-center rack inventory: computation on live data, guarded bulk operations, and an audit trail designed with finance.",
+      "Automated fleet disposition and rebalancing: cycle time from 81 to 10 days, hundreds of millions of dollars in assets rebalanced, and an estimated nine-figure reduction in aging inventory.",
+      "Owned network workflow automation (102 workflows, 314 blocks): BGP GTSM in peering turn-up, PTX10003 port modeling, circuit-migration and patch-panel automation. Automated network source-of-truth data for AI/HPC fabric devices (InfiniBand, RoCEv2).",
+      "Shipped a 9-tool LLM agent in one week; an AI-assisted code audit surfaced a nine-figure misclassification hidden for five years. Led engineering design for an audit-automation program replacing a commercial tool. Mentored 4 engineers."
     ],
-    "tags": ["React", "GraphQL", "PHP/Hack", "SQL", "LLM agents", "Network automation"]
+    "tags": [
+      "Hack/PHP",
+      "React",
+      "GraphQL",
+      "SQL",
+      "Python",
+      "BGP",
+      "LLM agents"
+    ]
   },
   {
     "id": "meta-rd-infrastructure",
@@ -23,11 +31,17 @@
     "end": "2024-03",
     "highlights": [
       "Built and led R&D infrastructure for ~1,000 labs across data centers and VR/AR environments, growing the team from 5 to 24 FTEs, contractors, and MSP partners.",
-      "Architected the lab automation framework, and drove 162 production code changes consolidating ACL policy plus 40+ VLAN migrations with network and security partners.",
-      "Reached a 96.85% repair SLA against a 95% target, 99% availability, and a 90%+ MTTR improvement, while supporting 43% device growth at flat headcount.",
-      "Directed a multi-vendor RFP across ~750 physical and ~250 logical labs and moved Tier 2 support to an MSP."
+      "Delivered 382 lab deployments in six months and cut the deployment backlog from 108 to 18, while supporting 43% device growth at flat headcount.",
+      "Architected the lab automation framework; wrote the first ACL policy script that seeded 162 generated changes, plus 40+ VLAN migrations with network and security partners.",
+      "Reached a 96.85% repair SLA against a 95% target, 99% availability, and a 90%+ MTTR improvement; ran a multi-vendor RFP across ~1,000 labs and moved Tier 2 support to an MSP."
     ],
-    "tags": ["Lab automation", "ACL / VLAN", "Reliability", "Vendor management", "Org design"]
+    "tags": [
+      "Lab automation",
+      "ACL / VLAN",
+      "Reliability",
+      "Vendor management",
+      "Org design"
+    ]
   },
   {
     "id": "meta-senior-swe",
@@ -42,7 +56,12 @@
       "Rebuilt network workflow APIs on a push model (57% faster, timeouts eliminated) and fixed outage-automation priority logic (52% fewer critical tickets).",
       "Shipped a computer-vision OCR pipeline for rack audits that cut manual validation by 80%."
     ],
-    "tags": ["Python", "Network workflows", "Incident response", "Computer vision"]
+    "tags": [
+      "Python",
+      "Network workflows",
+      "Incident response",
+      "Computer vision"
+    ]
   },
   {
     "id": "facebook-swe",
@@ -53,9 +72,14 @@
     "end": "2020-04",
     "highlights": [
       "Built three production ML classifiers for email-to-ticket routing (94%, ~70%, 63% accuracy) and the pipeline that replaced legacy intake: 45,147 emails at 99% availability.",
-      "Drove an org-wide ticketing migration blocked for years, avoiding an estimated ~$100K tool purchase, and led the Zero-Touch Operations program for automated logical network repairs."
+      "Drove an org-wide ticketing migration blocked for years, avoiding a third-party tool purchase, and led the Zero-Touch Operations program for automated logical network repairs."
     ],
-    "tags": ["Python", "NLP", "Data pipelines", "Network operations"]
+    "tags": [
+      "Python",
+      "NLP",
+      "Data pipelines",
+      "Network operations"
+    ]
   },
   {
     "id": "facebook-mobile-operator",
@@ -67,7 +91,11 @@
     "highlights": [
       "Launched integrations with 10+ telecom carriers across APAC, EMEA, and LATAM: traffic zero-rating (GGSN DPI), URL redirection, HTTP header enrichment, and SMS/SMPP binds for products serving billions of users."
     ],
-    "tags": ["Carrier integrations", "GGSN / DPI", "SMPP"]
+    "tags": [
+      "Carrier integrations",
+      "GGSN / DPI",
+      "SMPP"
+    ]
   },
   {
     "id": "vodafone-egypt",
@@ -79,6 +107,12 @@
     "highlights": [
       "Operated the GPRS/LTE packet core (Cisco ASR5K GGSN, Ericsson SGSN, Juniper SBR, F5 BIG-IP), administered MPBN routers (BGP/OSPF certified), and automated operations with UNIX scripting."
     ],
-    "tags": ["Packet core", "BGP / OSPF", "Cisco", "Ericsson", "Juniper"]
+    "tags": [
+      "Packet core",
+      "BGP / OSPF",
+      "Cisco",
+      "Ericsson",
+      "Juniper"
+    ]
   }
 ]

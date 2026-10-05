@@ -6,8 +6,6 @@ import Footer from '../../components/Footer.astro';
 import Navbar from '../../components/Navbar.astro';
 import ArchDiagram from '../../components/ui/ArchDiagram.astro';
 import Button from '../../components/ui/Button.astro';
-import Panel from '../../components/ui/Panel.astro';
-import Tag from '../../components/ui/Tag.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site';
 import { withBase } from '../../lib/format';
@@ -28,7 +26,23 @@ interface Props {
 
 const { entry, index, next } = Astro.props;
 const { data } = entry;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+
+// Table of contents: markdown sections, then the decision records and lesson.
+const sections = headings.filter((h) => h.depth === 2);
+const toc = [
+  ...sections.map((h) => ({ id: h.slug, text: h.text })),
+  { id: 'decisions', text: 'Key decisions' },
+  { id: 'lesson', text: "What I'd do differently" },
+];
+const num = (n: number) => String(n).padStart(2, '0');
+const legend = [
+  { kind: 'source', label: 'Source data' },
+  { kind: 'core', label: 'Core service' },
+  { kind: 'guard', label: 'Safety check' },
+  { kind: 'surface', label: 'Interface' },
+  { kind: 'target', label: 'Outcome / target' },
+];
 ---
 
 <BaseLayout title={`${data.title} · ${site.name}`} description={data.summary}>
@@ -37,62 +51,205 @@ const { Content } = await render(entry);
     <article class="relative pt-32 pb-24 sm:pt-40">
       <div class="bg-grid absolute inset-x-0 top-0 -z-10 h-[32rem] [mask-image:linear-gradient(to_bottom,#000,transparent)]" aria-hidden="true"></div>
 
-      <div class="container-page">
-        <a href={withBase('/#systems')} class="inline-flex items-center gap-2 font-mono text-xs text-muted hover:text-fg" data-reveal>
+      <!-- Header -->
+      <header class="container-page">
+        <a href={withBase('/#systems')} class="no-print inline-flex items-center gap-2 font-mono text-xs text-muted hover:text-fg">
           <ArrowLeft class="size-3.5" aria-hidden="true" />
           All systems
         </a>
+        <p class="mt-8 font-mono text-xs text-muted">
+          <span class="text-accent">Case {num(index + 1)}</span> · {data.role} · {data.period}
+        </p>
+        <h1 class="mt-4 max-w-4xl text-[clamp(2.5rem,1.6rem+3.6vw,4.5rem)] leading-[1.02] font-medium tracking-[-0.04em] text-balance">{data.title}</h1>
+        <p class="mt-5 max-w-3xl text-xl leading-snug text-pretty text-muted sm:text-2xl">{data.tagline}</p>
+        <p class="mt-6 font-mono text-xs text-muted">{data.stack.join(' · ')}</p>
 
-        <header class="mt-8 max-w-4xl">
-          <p class="sys-label" data-reveal>
-            <span class="text-accent">Case {String(index + 1).padStart(2, '0')}</span> · {data.period} · {data.role}
-          </p>
-          <h1 class="mt-5 text-5xl font-semibold tracking-[-0.04em] text-balance sm:text-6xl" data-reveal style="--i: 1">{data.title}</h1>
-          <p class="mt-5 text-xl leading-snug text-pretty text-muted sm:text-2xl" data-reveal style="--i: 2">{data.tagline}</p>
-          <ul class="mt-8 flex flex-wrap gap-1.5" aria-label="Stack" data-reveal style="--i: 3">
-            {data.stack.map((s) => <Tag label={s} />)}
-          </ul>
-        </header>
+        <div class="mt-10 grid gap-8 lg:grid-cols-12">
+          <aside class="rounded-2xl border border-accent/25 bg-accent/[0.04] p-6 lg:col-span-5" aria-label="TL;DR">
+            <p class="font-mono text-xs text-accent">TL;DR</p>
+            <ul class="mt-3 space-y-2.5 text-[0.9375rem] leading-relaxed text-prose">
+              {
+                data.tldr.map((t) => (
+                  <li class="flex gap-3">
+                    <span class="mt-[0.7em] h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
+                    {t}
+                  </li>
+                ))
+              }
+            </ul>
+          </aside>
+          <dl class="grid grid-cols-2 gap-x-8 gap-y-6 self-center lg:col-span-7 lg:grid-cols-2">
+            {
+              data.metrics.map((m) => (
+                <div class="flex flex-col-reverse gap-1 border-l border-line pl-5">
+                  <dt class="text-sm text-muted">{m.label}</dt>
+                  <dd class="font-mono text-[clamp(1.75rem,1.2rem+1.6vw,2.75rem)] leading-none font-medium tracking-tight text-fg tabular-nums">{m.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </header>
 
-        <dl class="panel mt-12 grid grid-cols-2 divide-line overflow-hidden lg:grid-cols-4 lg:divide-x" data-reveal style="--i: 4">
-          {
-            data.metrics.map((m) => (
-              <div class="flex flex-col-reverse gap-1 border-line p-6 max-lg:border-b max-lg:odd:border-r">
-                <dt class="text-sm text-muted">{m.label}</dt>
-                <dd class="font-mono text-3xl font-medium tracking-tight text-fg tabular-nums">{m.value}</dd>
-              </div>
-            ))
-          }
-        </dl>
-
-        <Panel ticks class="mt-6 p-4 sm:p-6">
-          <p class="sys-label mb-4 flex items-center gap-2"><span class="led led--pulse" aria-hidden="true"></span>Architecture</p>
-          <div class="overflow-x-auto">
-            <div class="min-w-[760px]">
-              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} />
+      <!-- Architecture band -->
+      <figure class="mt-16 border-y border-line bg-band py-10 sm:py-14">
+        <div class="container-page">
+          <figcaption class="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <span class="sys-label">Architecture</span>
+            <ul class="flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-muted" aria-label="Legend">
+              {
+                legend.map((l) => (
+                  <li class="flex items-center gap-2">
+                    <span class={`legend-swatch legend-swatch--${l.kind}`} aria-hidden="true" />
+                    {l.label}
+                  </li>
+                ))
+              }
+              <li class="flex items-center gap-2">
+                <span class="flex size-4 items-center justify-center rounded-full border border-accent text-[9px] text-accent" aria-hidden="true">1</span>
+                Decision
+              </li>
+            </ul>
+          </figcaption>
+          <div class="bg-dots rounded-2xl border border-line p-4 sm:p-6" style={`view-transition-name: diagram-${entry.id}`}>
+            <div class="hidden md:block">
+              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" />
+            </div>
+            <div class="mx-auto max-w-sm md:hidden">
+              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" vertical />
             </div>
           </div>
-        </Panel>
-
-        <div class="prose-cp mx-auto mt-16 max-w-3xl" data-reveal>
-          <Content />
         </div>
+      </figure>
 
-        <nav class="mx-auto mt-20 grid max-w-3xl gap-4 sm:grid-cols-2" aria-label="More">
-          <Panel as="a" href={withBase(`/work/${next.id}`)} class="group p-6 hover:border-line-strong">
-            <p class="sys-label">Next case study</p>
-            <p class="mt-3 flex items-center justify-between gap-3 text-lg font-semibold text-fg">
-              {next.data.title}
-              <ArrowRight class="size-5 text-accent transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </p>
-          </Panel>
-          <Panel class="flex flex-col justify-between gap-4 p-6">
-            <p class="sys-label">Want the deeper version?</p>
-            <Button href={withBase('/#contact')} class="self-start rounded-full">Get in touch</Button>
-          </Panel>
+      <!-- Body with sticky table of contents -->
+      <div class="container-page mt-16 grid gap-10 lg:grid-cols-12">
+        <nav class="lg:col-span-3" aria-label="On this page" data-toc>
+          <ol class="flex gap-2 overflow-x-auto pb-2 lg:sticky lg:top-28 lg:flex-col lg:gap-1 lg:overflow-visible lg:border-l lg:border-line lg:pb-0">
+            {
+              toc.map((item, i) => (
+                <li class="shrink-0">
+                  <a
+                    href={`#${item.id}`}
+                    class="toc-link flex gap-3 rounded-full border border-line px-3 py-1.5 text-sm whitespace-nowrap text-muted transition-colors hover:text-fg lg:-ml-px lg:rounded-none lg:border-0 lg:border-l lg:border-transparent lg:py-1.5 lg:pl-4 lg:whitespace-normal"
+                    data-toc-link
+                  >
+                    <span class="font-mono text-xs text-dim">{num(i + 1)}</span>
+                    {item.text}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
         </nav>
+
+        <div class="lg:col-span-9">
+          <div class="prose-cp">
+            <Content />
+          </div>
+
+          <!-- Decision records -->
+          <section id="decisions" class="mt-16 max-w-[64ch]" data-toc-target aria-labelledby="decisions-title">
+            <p class="font-mono text-xs text-accent">{num(sections.length + 1)}</p>
+            <h2 id="decisions-title" class="mt-2 text-[1.75rem] leading-tight font-medium tracking-[-0.02em]">Key decisions</h2>
+            <ol class="mt-6 space-y-5">
+              {
+                data.decisions.map((d, i) => (
+                  <li id={`decision-${i + 1}`} class="scroll-mt-28 rounded-2xl border border-line bg-surface p-6 target:border-accent/60">
+                    <h3 class="flex items-start gap-3 text-lg leading-snug font-medium text-fg">
+                      <span class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-accent font-mono text-xs text-accent">{i + 1}</span>
+                      {d.title}
+                    </h3>
+                    <dl class="mt-4 grid gap-x-8 gap-y-4 text-[0.9375rem] leading-relaxed sm:grid-cols-2">
+                      {d.alternative && (
+                        <div>
+                          <dt class="sys-label">Alternative considered</dt>
+                          <dd class="mt-1 text-prose">{d.alternative}</dd>
+                        </div>
+                      )}
+                      <div class:list={[!d.alternative && 'sm:col-span-2']}>
+                        <dt class="sys-label">Why</dt>
+                        <dd class="mt-1 text-prose">{d.why}</dd>
+                      </div>
+                      {d.tradeoff && (
+                        <div class="sm:col-span-2">
+                          <dt class="sys-label">Trade-off</dt>
+                          <dd class="mt-1 text-prose">{d.tradeoff}</dd>
+                        </div>
+                      )}
+                    </dl>
+                  </li>
+                ))
+              }
+            </ol>
+          </section>
+
+          <!-- Lesson -->
+          <section id="lesson" class="mt-16 max-w-[64ch]" data-toc-target aria-labelledby="lesson-title">
+            <p class="font-mono text-xs text-accent">{num(sections.length + 2)}</p>
+            <h2 id="lesson-title" class="mt-2 text-[1.75rem] leading-tight font-medium tracking-[-0.02em]">What I'd do differently</h2>
+            <blockquote class="mt-6 border-l-2 border-accent pl-6 text-[1.75rem] leading-snug font-normal tracking-[-0.015em] text-balance text-fg">
+              {data.pullQuote}
+            </blockquote>
+            <p class="mt-6 text-[1.0625rem] leading-[1.75] text-prose">{data.lesson}</p>
+          </section>
+
+          <nav class="mt-20 grid max-w-[64ch] gap-4 sm:grid-cols-2" aria-label="More">
+            <a href={withBase(`/work/${next.id}`)} class="panel panel--link group block p-6">
+              <p class="font-mono text-xs text-muted">Next case study</p>
+              <p class="mt-3 flex items-center justify-between gap-3 text-lg font-medium text-fg">
+                {next.data.title}
+                <ArrowRight class="size-5 text-accent transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </p>
+            </a>
+            <div class="panel flex flex-col justify-between gap-4 p-6">
+              <p class="font-mono text-xs text-muted">Want the deeper version?</p>
+              <Button href={withBase('/#contact')} class="self-start rounded-full">Get in touch</Button>
+            </div>
+          </nav>
+        </div>
       </div>
     </article>
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .legend-swatch {
+    width: 14px;
+    height: 10px;
+    border-radius: 3px;
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-surface-2);
+  }
+  .legend-swatch--core {
+    border-color: color-mix(in oklab, var(--color-accent) 55%, transparent);
+    background: var(--color-surface);
+  }
+  .legend-swatch--guard {
+    border: 1px dashed var(--color-amber);
+  }
+  .legend-swatch--surface {
+    border-style: dotted;
+  }
+  .legend-swatch--target {
+    border-color: var(--color-accent);
+    background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
+  }
+
+  .toc-link[aria-current='true'] {
+    color: var(--color-fg);
+    border-color: var(--color-accent);
+  }
+
+  @media (min-width: 64rem) {
+    .toc-link[aria-current='true'] {
+      border-color: transparent;
+      border-left-color: var(--color-accent);
+    }
+  }
+</style>
+
+<script>
+  import '../../scripts/toc';
+</script>

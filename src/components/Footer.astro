@@ -1,20 +1,17 @@
 ---
 import { site } from '../data/site';
 
-const year = new Date().getFullYear();
+const built = new Date();
+const year = built.getFullYear();
+const deployed = built.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
 
 <footer class="border-t border-line">
-  <div class="container-page flex flex-col gap-4 py-10 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-    <p class="flex items-center gap-2.5">
-      <span class="led led--pulse" aria-hidden="true"></span>
-      All systems operational
-    </p>
+  <div class="container-page flex flex-col gap-3 py-8 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+    <p>© {year} {site.name}</p>
     <p>
-      © {year} {site.name} · Built with Astro ·
-      <a href={site.repo} target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-4 hover:text-fg">
-        Source
-      </a>
+      Last deployed <time datetime={built.toISOString()}>{deployed}</time> · Built with Astro ·
+      <a href={site.repo} target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-4 hover:text-fg">Source</a>
     </p>
   </div>
 </footer>

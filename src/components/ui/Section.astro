@@ -1,32 +1,47 @@
 ---
+// Two header styles keep the page from feeling repetitive:
+// - instrument: a mono "01 / Label" line above the title (data-heavy sections)
+// - annotation: just a large title (editorial sections)
+// `band` gives a section a full-bleed background to break up the rhythm.
 interface Props {
   id: string;
-  index: string;
-  eyebrow: string;
   title: string;
+  index?: string;
+  eyebrow?: string;
   intro?: string;
+  variant?: 'instrument' | 'annotation';
+  band?: 'none' | 'cool' | 'warm';
   // Nav item this section highlights, when it isn't the section's own id
   navGroup?: string;
   class?: string;
 }
 
-const { id, index, eyebrow, title, intro, navGroup, class: className } = Astro.props;
+const { id, title, index, eyebrow, intro, variant = 'instrument', band = 'none', navGroup, class: className } = Astro.props;
+
+const bands = {
+  none: '',
+  cool: 'bg-band border-y border-line',
+  warm: 'bg-band-warm border-y border-line',
+};
 ---
 
-<section id={id} data-nav-group={navGroup} aria-labelledby={`${id}-title`} class:list={['relative py-24 sm:py-32', className]}>
+<section
+  id={id}
+  data-nav-group={navGroup}
+  aria-labelledby={`${id}-title`}
+  class:list={['relative', band === 'none' ? 'py-24 sm:py-36' : 'py-24 sm:py-32', bands[band], className]}
+>
   <div class="container-page">
-    <header class="mb-14 max-w-3xl">
-      <p class="sys-label flex items-center gap-3" data-reveal>
-        <span class="text-accent">SYS.{index}</span>
-        <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
-        {eyebrow}
-      </p>
-      <h2
-        id={`${id}-title`}
-        class="mt-5 text-4xl font-semibold tracking-[-0.035em] text-balance sm:text-5xl"
-        data-reveal
-        style="--i: 1"
-      >
+    <header class:list={['max-w-3xl', variant === 'annotation' ? 'mb-12 sm:mb-16' : 'mb-12']}>
+      {
+        variant === 'instrument' && eyebrow && (
+          <p class="sys-label" data-reveal>
+            {index && <span class="text-accent">{index} / </span>}
+            {eyebrow}
+          </p>
+        )
+      }
+      <h2 id={`${id}-title`} class:list={['text-display', variant === 'instrument' && 'mt-4']} data-reveal style="--i: 1">
         {title}
       </h2>
       {

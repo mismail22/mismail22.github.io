@@ -5,6 +5,7 @@ export const categories = {
   'ai-ml': 'AI / ML',
   leadership: 'Leadership',
   tools: 'Tools',
+  network: 'Network',
 } as const;
 
 export type Category = keyof typeof categories;

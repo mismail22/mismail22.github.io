@@ -7,11 +7,30 @@ const sections = [...document.querySelectorAll<HTMLElement>('main section[id]')]
 // belongs to "Leadership").
 const groupOf = (section: Element) => (section as HTMLElement).dataset.navGroup ?? section.id;
 
-function setActive(id: string | null) {
-  for (const link of links) {
-    if (id && link.hash === `#${id}`) link.setAttribute('aria-current', 'true');
-    else link.removeAttribute('aria-current');
+// Desktop: a pill slides under the active link.
+const pill = document.querySelector<HTMLElement>('[data-nav-pill]');
+const pillList = pill?.parentElement;
+
+function movePill(target: HTMLAnchorElement | undefined) {
+  if (!pill || !pillList) return;
+  if (!target || !pillList.contains(target)) {
+    pill.style.opacity = '0';
+    return;
   }
+  pill.style.width = `${target.offsetWidth}px`;
+  pill.style.transform = `translateX(${target.offsetLeft}px)`;
+  pill.style.opacity = '1';
+}
+
+function setActive(id: string | null) {
+  let desktopTarget: HTMLAnchorElement | undefined;
+  for (const link of links) {
+    if (id && link.hash === `#${id}`) {
+      link.setAttribute('aria-current', 'true');
+      if (pillList?.contains(link)) desktopTarget = link;
+    } else link.removeAttribute('aria-current');
+  }
+  movePill(desktopTarget);
 }
 
 // A section is "current" when it crosses a thin band just above the middle of
@@ -68,3 +87,5 @@ document.addEventListener('keydown', (event) => {
 window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
   if (event.matches) setMenu(false);
 });
+
+export {};
