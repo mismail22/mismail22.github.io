@@ -77,14 +77,29 @@ const roles = (await getCollection('experience')).sort((a, b) => b.data.start.lo
   <ul class="mt-4 divide-y divide-line border-y border-line">
     {
       site.education.map((edu, i) => (
-        <li class="grid gap-x-10 gap-y-1 py-5 sm:grid-cols-[1fr_auto]" data-reveal style={`--i: ${i}`}>
-          <div>
+        <li class="grid grid-cols-[2.75rem_1fr] gap-x-4 gap-y-1 py-5 sm:grid-cols-[2.75rem_1fr_auto] sm:gap-x-6" data-reveal style={`--i: ${i}`}>
+          {
+            'badge' in edu ? (
+              <span
+                class="flex size-11 items-center justify-center rounded-xl text-sm font-bold tracking-tight text-white"
+                style={`background-color: ${edu.badge.color}`}
+                aria-hidden="true"
+              >
+                {edu.badge.text}
+              </span>
+            ) : (
+              <span class="flex size-11 items-center justify-center rounded-xl border border-line bg-surface-2 text-muted" aria-hidden="true">
+                <GraduationCap class="size-5" />
+              </span>
+            )
+          }
+          <div class="self-center">
             <p class="font-medium text-fg">
               {edu.degree} <span class="font-normal text-muted">· {edu.school}</span>
             </p>
             {'note' in edu && <p class="mt-1 text-sm leading-relaxed text-muted">{edu.note}</p>}
           </div>
-          <p class="font-mono text-xs text-muted sm:text-right">{edu.period}</p>
+          <p class="col-start-2 font-mono text-xs text-muted sm:col-start-auto sm:self-center sm:text-right">{edu.period}</p>
         </li>
       ))
     }

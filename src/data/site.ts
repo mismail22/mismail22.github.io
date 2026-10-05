@@ -68,6 +68,8 @@ export const site = {
     {
       school: 'Boston University, Questrom School of Business',
       degree: 'MBA, With Honors',
+      // Text badge in the school's color (not the trademarked logo)
+      badge: { text: 'BU', color: '#CC0000' },
       period: 'Jan 2024 – Jan 2026',
       note: 'GPA 3.68 · analytics, strategic leadership, risk management · led a team to a top-5% finish in an international strategy simulation',
     },
