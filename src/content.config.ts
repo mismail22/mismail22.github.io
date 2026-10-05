@@ -81,14 +81,13 @@ const experience = defineCollection({
   }),
 });
 
-// Skills matrix: every skill carries a proficiency tier, years, and evidence.
+// Skills matrix: every skill carries a proficiency tier and evidence.
 const skills = defineCollection({
   loader: file('src/data/skills.json'),
   schema: z.object({
     category: z.enum(['languages', 'networking', 'platforms', 'data', 'ai', 'reliability', 'leadership']),
     skill: z.string(),
     tier: z.enum(['expert', 'proficient', 'working']),
-    years: z.number().int().min(1),
     evidence: z.string(),
     // Earlier-career skills render in a separate sub-row
     earlier: z.boolean().default(false),
