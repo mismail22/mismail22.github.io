@@ -1,67 +1,99 @@
 ---
-import ArrowDown from '@lucide/astro/icons/arrow-down';
-import FileText from '@lucide/astro/icons/file-text';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
 import MapPin from '@lucide/astro/icons/map-pin';
 import Button from './ui/Button.astro';
+import BrandIcon from './ui/BrandIcon.astro';
 import { site } from '../data/site';
-import { withBase } from '../lib/format';
+import { formatValue } from '../lib/format';
+
+const linkedin = site.socials.find((s) => s.icon === 'linkedin');
 ---
 
-<section id="top" class="relative isolate overflow-hidden">
-  <div class="bg-grid absolute inset-0 -z-10" aria-hidden="true"></div>
-  <div class="bg-glow absolute inset-0 -z-10" aria-hidden="true"></div>
+<section id="top" class="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
+  <!-- Decorative layers: grid, live topology, readability gradients -->
+  <div class="bg-grid absolute inset-0 -z-30 [mask-image:radial-gradient(ellipse_90%_80%_at_70%_30%,#000_30%,transparent_100%)]" aria-hidden="true"></div>
+  <canvas class="absolute inset-0 -z-20 size-full opacity-0 transition-opacity duration-1000 [&.is-ready]:opacity-100" data-topology aria-hidden="true"></canvas>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,var(--color-canvas)_0%,rgb(7_8_10/0.85)_30%,transparent_65%)] max-md:bg-[linear-gradient(180deg,rgb(7_8_10/0.55)_0%,rgb(7_8_10/0.9)_45%,var(--color-canvas)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-b from-transparent to-canvas" aria-hidden="true"></div>
 
-  <div class="container-page pt-20 pb-24 sm:pt-32 sm:pb-36">
-    <p
-      class="inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-sm text-muted"
-    >
-      <span class="relative flex size-2" aria-hidden="true">
-        <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60"></span>
-        <span class="relative inline-flex size-2 rounded-full bg-accent"></span>
+  <div class="container-page flex flex-1 flex-col justify-center pt-32 pb-12">
+    <p class="sys-label flex flex-wrap items-center gap-x-3 gap-y-2" data-reveal>
+      <span class="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-accent">
+        <span class="led led--pulse" aria-hidden="true"></span>
+        {site.status}
       </span>
-      <span class="inline-flex items-center gap-1">
+      <span class="inline-flex items-center gap-1.5">
         <MapPin class="size-3.5" aria-hidden="true" />
         {site.location}
       </span>
-      <span class="text-line-strong" aria-hidden="true">|</span>
-      <span class="text-fg">{site.status}</span>
     </p>
 
-    <h1 class="mt-7 text-5xl font-semibold tracking-tight sm:text-7xl">{site.name}</h1>
+    <h1 class="mt-8 text-6xl font-semibold tracking-[-0.045em] sm:text-8xl lg:text-[7.5rem] lg:leading-[0.95]" data-reveal style="--i: 1">
+      {site.name}
+    </h1>
 
-    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-muted sm:text-xl">
-      {site.headline}
+    <p class="mt-7 max-w-3xl text-2xl leading-snug font-medium tracking-[-0.02em] text-balance sm:text-4xl" data-reveal style="--i: 2">
+      {site.headline[0]}
+      <span class="text-muted">{site.headline[1]}</span>
     </p>
 
-    <ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm text-muted" aria-label="Focus areas">
-      {
-        site.focus.map((item, i) => (
-          <li class="flex items-center gap-3">
-            {i > 0 && (
-              <span class="text-accent" aria-hidden="true">
-                ·
-              </span>
-            )}
-            {item}
-          </li>
-        ))
-      }
-    </ul>
+    <p class="mt-6 max-w-xl text-base leading-relaxed text-muted" data-reveal style="--i: 3">
+      {site.intro}
+    </p>
 
-    <div class="mt-10 flex flex-wrap gap-3">
-      <Button href="#projects">
-        View Work
-        <ArrowDown class="size-4" aria-hidden="true" />
+    <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--i: 4">
+      <Button href="#impact" class="rounded-full">
+        View impact
+        <ArrowRight class="size-4" aria-hidden="true" />
       </Button>
-      <Button href="#contact" variant="secondary">Contact Me</Button>
+      <Button href="#contact" variant="secondary" class="rounded-full">Get in touch</Button>
       {
-        site.resume && (
-          <Button href={withBase(site.resume)} variant="ghost" target="_blank" rel="noopener">
-            <FileText class="size-4" aria-hidden="true" />
-            Resume
+        linkedin && (
+          <Button href={linkedin.href} variant="ghost" class="rounded-full" target="_blank" rel="noopener me">
+            <BrandIcon name="linkedin" class="size-4" />
+            LinkedIn
           </Button>
         )
       }
     </div>
   </div>
+
+  <!-- Live status bar -->
+  <div class="container-page pb-8" data-reveal style="--i: 5">
+    <dl class="panel grid grid-cols-2 overflow-hidden rounded-2xl backdrop-blur-sm md:grid-cols-[auto_repeat(4,1fr)]">
+      <div class="col-span-2 flex items-center gap-2.5 border-b border-line px-5 py-3 md:col-span-1 md:border-r md:border-b-0">
+        <span class="led led--pulse" aria-hidden="true"></span>
+        <span class="sys-label text-accent">Live</span>
+      </div>
+      {
+        site.heroTelemetry.map((item, i) => (
+          <div class:list={['flex items-baseline justify-between gap-3 px-5 py-3.5', i % 2 === 0 && 'border-r border-line', i < 2 && 'max-md:border-b', 'md:border-r md:last:border-r-0']}>
+            <dt class="sys-label">{item.label}</dt>
+            <dd class="font-mono text-base font-medium text-fg tabular-nums">
+              {'from' in item && <span class="text-muted">{item.from} → </span>}
+              <span data-count={item.to} data-prefix={'prefix' in item ? item.prefix : ''} data-suffix={item.suffix}>
+                {formatValue(item.to, { prefix: 'prefix' in item ? item.prefix : '', suffix: item.suffix })}
+              </span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
 </section>
+
+<script>
+  import { initTopology } from '../scripts/topology';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-topology]');
+  if (canvas) {
+    const start = () => initTopology(canvas);
+    // Draw after first paint so the headline is the LCP element.
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 800 });
+    else setTimeout(start, 200);
+  }
+</script>

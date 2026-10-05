@@ -1,7 +1,11 @@
-// Active-section highlighting and the mobile menu.
+// Active-section LED in the nav and the mobile menu.
 
 const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
 const sections = [...document.querySelectorAll<HTMLElement>('main section[id]')];
+
+// Sections can share a nav item via data-nav-group (e.g. the team story
+// belongs to "Leadership").
+const groupOf = (section: Element) => (section as HTMLElement).dataset.navGroup ?? section.id;
 
 function setActive(id: string | null) {
   for (const link of links) {
@@ -15,7 +19,7 @@ function setActive(id: string | null) {
 const observer = new IntersectionObserver(
   (entries) => {
     for (const entry of entries) {
-      if (entry.isIntersecting) setActive(entry.target.id);
+      if (entry.isIntersecting) setActive(groupOf(entry.target));
     }
   },
   { rootMargin: '-40% 0px -55% 0px' },
@@ -31,7 +35,7 @@ window.addEventListener(
     ticking = true;
     requestAnimationFrame(() => {
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-      if (atBottom && sections.length) setActive(sections[sections.length - 1].id);
+      if (atBottom && sections.length) setActive(groupOf(sections[sections.length - 1]));
       ticking = false;
     });
   },
@@ -61,6 +65,6 @@ document.addEventListener('keydown', (event) => {
     toggle.focus();
   }
 });
-window.matchMedia('(min-width: 48rem)').addEventListener('change', (event) => {
+window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
   if (event.matches) setMenu(false);
 });

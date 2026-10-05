@@ -6,20 +6,29 @@ import { site } from '../data/site';
 import { withBase } from '../lib/format';
 
 const links = [
-  { href: '#about', label: 'About' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
+  { href: '#impact', label: 'Impact' },
+  { href: '#leadership', label: 'Leadership' },
+  { href: '#platforms', label: 'Platforms' },
+  { href: '#mba', label: 'MBA' },
+  { href: '#journey', label: 'Journey' },
   { href: '#contact', label: 'Contact' },
 ];
 ---
 
-<header class="sticky top-0 z-50 border-b border-line/60 bg-canvas/80 backdrop-blur-md">
-  <nav class="container-page flex h-16 items-center justify-between" aria-label="Primary">
-    <a href="#top" class="rounded font-mono text-sm font-semibold tracking-tight">
-      <span class="text-accent">~/</span>{site.handle}
+<div class="fixed inset-x-0 top-0 z-[55] h-px origin-left scale-x-0 bg-accent" data-scroll-progress aria-hidden="true"></div>
+
+<header class="fixed inset-x-0 top-3 z-50 px-3 sm:top-4">
+  <nav
+    class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 rounded-full border border-line bg-canvas/70 py-2 pr-2 pl-5 shadow-[0_8px_32px_rgb(0_0_0/0.35)] backdrop-blur-xl"
+    aria-label="Primary"
+  >
+    <a href="#top" class="flex items-center gap-2.5 rounded-full font-mono text-sm font-medium tracking-tight">
+      <span class="led led--pulse" aria-hidden="true"></span>
+      {site.handle}
+      <span class="text-muted">/infra</span>
     </a>
 
-    <ul class="hidden items-center gap-1 md:flex">
+    <ul class="hidden items-center gap-0.5 lg:flex">
       {
         links.map((link) => (
           <li>
@@ -31,46 +40,39 @@ const links = [
       }
     </ul>
 
-    {
-      site.resume && (
-        <Button href={withBase(site.resume)} variant="secondary" size="sm" class="hidden md:inline-flex" target="_blank" rel="noopener">
-          Resume
-        </Button>
-      )
-    }
-
-    <button
-      type="button"
-      class="inline-flex size-10 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-fg md:hidden"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      aria-label="Open menu"
-      data-menu-toggle
-    >
-      <Menu class="size-5" aria-hidden="true" data-icon-open />
-      <X class="hidden size-5" aria-hidden="true" data-icon-close />
-    </button>
+    <div class="flex items-center gap-2">
+      {
+        site.resume && (
+          <Button href={withBase(site.resume)} variant="secondary" size="sm" class="hidden rounded-full lg:inline-flex" target="_blank" rel="noopener">
+            Resume
+          </Button>
+        )
+      }
+      <Button href="#contact" size="sm" class="hidden rounded-full sm:inline-flex">Get in touch</Button>
+      <button
+        type="button"
+        class="inline-flex size-10 items-center justify-center rounded-full text-muted hover:bg-surface-2 hover:text-fg lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        data-menu-toggle
+      >
+        <Menu class="size-5" aria-hidden="true" data-icon-open />
+        <X class="hidden size-5" aria-hidden="true" data-icon-close />
+      </button>
+    </div>
   </nav>
 
-  <div id="mobile-menu" class="hidden border-t border-line/60 md:hidden" data-mobile-menu>
-    <ul class="container-page flex flex-col gap-1 py-3">
+  <div id="mobile-menu" class="mx-auto mt-2 hidden max-w-5xl rounded-2xl border border-line bg-canvas/95 p-2 backdrop-blur-xl lg:hidden" data-mobile-menu>
+    <ul class="grid gap-0.5 sm:grid-cols-2">
       {
         links.map((link) => (
           <li>
-            <a href={link.href} class="nav-link block text-base" data-nav-link>
+            <a href={link.href} class="nav-link flex w-full rounded-xl px-4 py-3 text-base" data-nav-link>
               {link.label}
             </a>
           </li>
         ))
-      }
-      {
-        site.resume && (
-          <li>
-            <a href={withBase(site.resume)} class="nav-link block text-base" target="_blank" rel="noopener">
-              Resume
-            </a>
-          </li>
-        )
       }
     </ul>
   </div>

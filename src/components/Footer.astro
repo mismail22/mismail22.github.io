@@ -4,11 +4,14 @@ import { site } from '../data/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line/60">
-  <div class="container-page flex flex-col gap-3 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-    <p>© {year} {site.name}</p>
+<footer class="border-t border-line">
+  <div class="container-page flex flex-col gap-4 py-10 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+    <p class="flex items-center gap-2.5">
+      <span class="led led--pulse" aria-hidden="true"></span>
+      All systems operational
+    </p>
     <p>
-      Built with Astro &amp; Tailwind CSS ·
+      © {year} {site.name} · Built with Astro ·
       <a href={site.repo} target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-4 hover:text-fg">
         Source
       </a>

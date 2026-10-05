@@ -8,10 +8,13 @@ All content lives in `src/data/`. You don't need to touch any components.
 
 | File | What it controls |
 | --- | --- |
-| `site.ts` | Name, headline, location/status badge, bio, stats, education, optional email/resume, social links, Formspree ID, SEO text |
+| `site.ts` | Name, headline, status badge, hero status bar, MBA section, education, optional email/resume, social links, Formspree ID, SEO text |
 | `projects.json` | Project cards. Order, category, metrics, tags, and optional repo/demo links |
 | `experience.json` | Experience timeline entries |
-| `skills.json` | Skill groups in the About section |
+| `skills.json` | Capability matrix under Platforms |
+| `telemetry.json` | Impact metric tiles (people first, then platform) |
+| `leadership.json` | "How I lead" principles and their proof points |
+| `org-growth.json` | Team-building story milestones and headcount |
 | `categories.ts` | Project filter categories and their labels |
 
 The JSON files are validated against schemas in `src/content.config.ts`. A typo, such as an unknown category or a missing field, fails the build with a clear error instead of shipping a broken page.
@@ -103,9 +106,9 @@ src/
 ├─ content.config.ts     # Schemas for the JSON data
 ├─ data/                 # ← all editable content
 ├─ layouts/BaseLayout.astro
-├─ components/           # Navbar, Hero, About, Projects, ProjectCard, Experience, Contact, ContactForm, Footer
-│  └─ ui/                # Section, Button, Tag, BrandIcon
-├─ scripts/              # nav.ts, project-filter.ts, contact-form.ts
+├─ components/           # Navbar, Hero, Telemetry, Leadership, OrgGrowth, Projects, Business, Journey, Contact, Footer
+│  └─ ui/                # Section, Panel, Button, Tag, BrandIcon
+├─ scripts/              # motion, topology (hero graph), org-growth, nav, project-filter, contact-form
 ├─ styles/global.css     # Tailwind import + design tokens (@theme)
 └─ pages/                # index.astro, 404.astro
 ```

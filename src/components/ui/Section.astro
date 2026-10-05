@@ -5,22 +5,37 @@ interface Props {
   eyebrow: string;
   title: string;
   intro?: string;
+  // Nav item this section highlights, when it isn't the section's own id
+  navGroup?: string;
+  class?: string;
 }
 
-const { id, index, eyebrow, title, intro } = Astro.props;
+const { id, index, eyebrow, title, intro, navGroup, class: className } = Astro.props;
 ---
 
-<section id={id} aria-labelledby={`${id}-title`} class="border-t border-line/60 py-20 sm:py-28">
+<section id={id} data-nav-group={navGroup} aria-labelledby={`${id}-title`} class:list={['relative py-24 sm:py-32', className]}>
   <div class="container-page">
-    <header class="mb-12 max-w-2xl">
-      <p class="font-mono text-xs tracking-widest text-accent uppercase">
-        <span class="text-muted">{index} /</span>
+    <header class="mb-14 max-w-3xl">
+      <p class="sys-label flex items-center gap-3" data-reveal>
+        <span class="text-accent">SYS.{index}</span>
+        <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
         {eyebrow}
       </p>
-      <h2 id={`${id}-title`} class="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+      <h2
+        id={`${id}-title`}
+        class="mt-5 text-4xl font-semibold tracking-[-0.035em] text-balance sm:text-5xl"
+        data-reveal
+        style="--i: 1"
+      >
         {title}
       </h2>
-      {intro && <p class="mt-4 text-base leading-relaxed text-muted">{intro}</p>}
+      {
+        intro && (
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-pretty text-muted" data-reveal style="--i: 2">
+            {intro}
+          </p>
+        )
+      }
     </header>
     <slot />
   </div>

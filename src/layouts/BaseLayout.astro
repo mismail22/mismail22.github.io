@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import geistMonoLatin from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
 import { site } from '../data/site';
 import { withBase } from '../lib/format';
 
@@ -22,11 +23,13 @@ const ogImage = new URL(withBase('og-image.png'), Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#07080a" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
     <link rel="sitemap" href={withBase('sitemap-index.xml')} />
-    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistMonoLatin} as="font" type="font/woff2" crossorigin />
+    <script is:inline>document.documentElement.classList.add('js');</script>
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -61,5 +64,8 @@ const ogImage = new URL(withBase('og-image.png'), Astro.site);
       Skip to content
     </a>
     <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

@@ -1,11 +1,14 @@
 ---
-import About from '../components/About.astro';
+import Business from '../components/Business.astro';
 import Contact from '../components/Contact.astro';
-import Experience from '../components/Experience.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
+import Journey from '../components/Journey.astro';
+import Leadership from '../components/Leadership.astro';
 import Navbar from '../components/Navbar.astro';
+import OrgGrowth from '../components/OrgGrowth.astro';
 import Projects from '../components/Projects.astro';
+import Telemetry from '../components/Telemetry.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -13,9 +16,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <Navbar />
   <main id="main" tabindex="-1" class="focus:outline-none">
     <Hero />
-    <About />
+    <Telemetry />
+    <Leadership />
+    <OrgGrowth />
     <Projects />
-    <Experience />
+    <Business />
+    <Journey />
     <Contact />
   </main>
   <Footer />

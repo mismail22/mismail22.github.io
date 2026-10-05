@@ -44,4 +44,42 @@ const skills = defineCollection({
   }),
 });
 
-export const collections = { projects, experience, skills };
+const telemetry = defineCollection({
+  loader: file('src/data/telemetry.json'),
+  schema: z.object({
+    group: z.enum(['people', 'platform']),
+    label: z.string(),
+    detail: z.string().optional(),
+    // Shown before an arrow, e.g. "5" in "5 → 24"
+    from: z.string().optional(),
+    // Final value; animated from 0 (or from `from`) when scrolled into view
+    to: z.number(),
+    prefix: z.string().default(''),
+    suffix: z.string().default(''),
+    decimals: z.number().int().min(0).max(3).default(0),
+    order: z.number(),
+  }),
+});
+
+const leadership = defineCollection({
+  loader: file('src/data/leadership.json'),
+  schema: z.object({
+    title: z.string(),
+    body: z.string(),
+    proof: z.object({ value: z.string(), label: z.string() }),
+    order: z.number(),
+  }),
+});
+
+const orgGrowth = defineCollection({
+  loader: file('src/data/org-growth.json'),
+  schema: z.object({
+    phase: z.string(),
+    title: z.string(),
+    detail: z.string(),
+    headcount: z.number().int().min(1).max(24),
+    order: z.number(),
+  }),
+});
+
+export const collections = { projects, experience, skills, telemetry, leadership, orgGrowth };

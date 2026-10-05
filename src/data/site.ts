@@ -1,16 +1,28 @@
 // Single place for personal details. Edit this file to update the hero,
-// about section, contact links and SEO metadata.
+// MBA section, contact links and SEO metadata. Longer lists live in the
+// JSON files next to this one.
 
 export const site = {
   name: 'Mohanad Ismail',
   handle: 'mohanad',
   title: 'Mohanad Ismail · Engineering Leader, Infrastructure & Platforms',
   description:
-    'Engineering leader with 16 years in large-scale infrastructure, 11 at Meta. Builds infrastructure organizations, reliability practices, and automation platforms that scale.',
-  headline: 'Engineering leader building infrastructure organizations and platforms that scale.',
-  focus: ['Infrastructure', 'Platforms', 'Reliability', 'Applied AI'],
+    'Engineering leader with 16 years in large-scale infrastructure, 11 at Meta. Grew a 5-person team into a 24-engineer global organization and built the governance platform behind a $7B data-center fleet. MBA with Honors.',
+  // Hero headline, split so the second half can be de-emphasized.
+  headline: ['I build engineering organizations,', 'and the infrastructure platforms they run.'],
+  intro:
+    '16 years in large-scale infrastructure, 11 at Meta. I grew a 5-person team into a 24-engineer global organization, then returned to hands-on technical leadership to architect the governance platform behind a $7B data-center fleet.',
   location: 'Menlo Park, CA',
   status: 'Open to infrastructure leadership roles',
+
+  // Hero status bar. `to` is animated; `from` is shown before an arrow.
+  heroTelemetry: [
+    { label: 'Org', from: '5', to: 24, suffix: ' eng' },
+    { label: 'Fleet', prefix: '$', to: 7, suffix: 'B' },
+    { label: 'Avail', to: 99, suffix: '%' },
+    { label: 'Vendor cost', prefix: '−', to: 40, suffix: '%' },
+  ],
+
   // Optional public email. Leave empty to keep it off the site.
   email: '' as string,
   // Path inside /public (e.g. 'resume.pdf'). Leave empty to hide the Resume buttons.
@@ -22,35 +34,34 @@ export const site = {
   repo: 'https://github.com/mismail22/mismail22.github.io',
 
   socials: [
+    { label: 'LinkedIn', handle: 'mohanad-ismail-egy7', href: 'https://www.linkedin.com/in/mohanad-ismail-egy7', icon: 'linkedin' },
     { label: 'GitHub', handle: 'mismail22', href: 'https://github.com/mismail22', icon: 'github' },
-    {
-      label: 'LinkedIn',
-      handle: 'mohanad-ismail-egy7',
-      href: 'https://www.linkedin.com/in/mohanad-ismail-egy7',
-      icon: 'linkedin',
-    },
     // { label: 'X', handle: 'yourhandle', href: 'https://x.com/yourhandle', icon: 'x' },
   ],
 
-  bio: [
-    "I'm an engineering leader with 16 years in large-scale infrastructure, 11 of them at Meta. I grew a 5-person design team into a 24-engineer global infrastructure organization, then returned to hands-on technical leadership to architect the governance platform behind a $7B data-center fleet.",
-    'My focus is where reliability, automation, and cost meet: SLO-driven operations, workflow platforms that remove manual toil, and vendor and capacity governance that holds up to finance scrutiny.',
-    'I completed an MBA with Honors at Boston University Questrom in 2025, and I bring AI-native engineering practices (agentic workflows, RAG, LLM tooling) to how teams plan and ship.',
-  ],
-
-  stats: [
-    { value: '16', label: 'years in infrastructure' },
-    { value: '24', label: 'engineers in the org I built' },
-    { value: '$7B', label: 'fleet under governance' },
-    { value: '40%', label: 'vendor cost reduction' },
-  ],
+  mba: {
+    school: 'Boston University, Questrom School of Business',
+    degree: 'Master of Business Administration',
+    honors: 'With Honors',
+    period: '2024 – 2025',
+    gpa: '3.68',
+    note: 'Led a 5-person team to a top-5% finish in an international country-manager strategy simulation.',
+    coursework: ['Analytics', 'Strategic leadership', 'Risk management', 'Global business'],
+    // How the business training shows up in engineering work.
+    applied: [
+      { value: '$5M → ~$3M', label: 'Annual budget after a multi-vendor RFP, with no SLA regression' },
+      { value: '$100–200M', label: 'Trapped capital unlocked by automating fleet disposition' },
+      { value: 'SOX', label: 'Compliant governance platform built with finance as a partner' },
+      { value: '1,000+', label: 'Lab environments under ongoing capacity and cost governance' },
+    ],
+    toolkit: ['P&L and budget ownership', 'Vendor strategy and negotiation', 'Capacity and cost governance', 'Risk management', 'Analytics', 'Cross-functional partnership'],
+  },
 
   education: [
     {
       school: 'Boston University, Questrom School of Business',
       degree: 'MBA, With Honors',
       period: '2024 – 2025',
-      note: 'GPA 3.68. Analytics, strategic leadership, risk management. Top-5% finish in an international strategy simulation.',
     },
     {
       school: 'Cairo University',

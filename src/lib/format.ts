@@ -23,3 +23,12 @@ export function splitMetrics(text: string): { text: string; metric: boolean }[] 
     .map((part, i) => ({ text: part, metric: i % 2 === 1 }))
     .filter((part) => part.text !== '');
 }
+
+/** Final display string for an animated metric, e.g. formatValue(96.85, { decimals: 2, suffix: '%' }) → "96.85%". */
+export function formatValue(value: number, opts: { prefix?: string; suffix?: string; decimals?: number } = {}): string {
+  const number = value.toLocaleString('en-US', {
+    minimumFractionDigits: opts.decimals ?? 0,
+    maximumFractionDigits: opts.decimals ?? 0,
+  });
+  return `${opts.prefix ?? ''}${number}${opts.suffix ?? ''}`;
+}

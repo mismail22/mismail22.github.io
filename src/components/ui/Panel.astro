@@ -1,0 +1,30 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types';
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
+  ticks?: boolean;
+  reveal?: boolean;
+  delay?: number;
+};
+
+const { as: Tag = 'div', ticks = false, reveal = true, delay = 0, class: className, ...attrs } = Astro.props;
+---
+
+<Tag
+  class:list={['panel', ticks && 'ticks', className]}
+  data-reveal={reveal ? '' : undefined}
+  style={delay ? `--i: ${delay}` : undefined}
+  {...attrs}
+>
+  {
+    ticks && (
+      <>
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+        <i aria-hidden="true" />
+      </>
+    )
+  }
+  <slot />
+</Tag>
