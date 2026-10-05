@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import BrandIcon from './ui/BrandIcon.astro';
+import Tag from './ui/Tag.astro';
+import { categories } from '../data/categories';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { project } = Astro.props;
+const hasLinks = Boolean(project.repo || project.demo);
+---
+
+<article
+  class="group flex flex-col rounded-xl border border-line bg-surface p-6 transition duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface-2"
+  data-project
+  data-category={project.category}
+>
+  <header class="flex items-center justify-between gap-3 font-mono text-xs">
+    <span class="text-accent">{categories[project.category]}</span>
+    {project.context && <span class="text-muted">{project.context}</span>}
+  </header>
+
+  <h3 class="mt-4 text-lg font-semibold tracking-tight text-fg">{project.title}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-muted">{project.summary}</p>
+
+  {
+    project.metrics.length > 0 && (
+      <dl class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-5">
+        {project.metrics.map((metric) => (
+          <div class="flex flex-col-reverse gap-0.5">
+            <dt class="text-xs text-muted">{metric.label}</dt>
+            <dd class="font-mono text-base font-semibold text-fg">{metric.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Tech stack">
+    {project.tags.map((tag) => <Tag label={tag} />)}
+  </ul>
+
+  {
+    hasLinks && (
+      <footer class="mt-auto flex gap-2 pt-6">
+        {project.repo && (
+          <a
+            href={project.repo}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex h-9 items-center gap-2 rounded-lg border border-line-strong px-3 text-sm text-fg transition-colors hover:border-accent/50"
+          >
+            <BrandIcon name="github" class="size-4" />
+            Repo
+            <span class="sr-only">for {project.title} on GitHub</span>
+          </a>
+        )}
+        {project.demo && (
+          <a
+            href={project.demo}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex h-9 items-center gap-2 rounded-lg bg-accent px-3 text-sm font-medium text-on-accent transition-colors hover:bg-accent-strong"
+          >
+            Live Demo
+            <ArrowUpRight class="size-4" aria-hidden="true" />
+            <span class="sr-only">of {project.title}</span>
+          </a>
+        )}
+      </footer>
+    )
+  }
+</article>

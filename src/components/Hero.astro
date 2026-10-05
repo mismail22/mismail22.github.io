@@ -1,0 +1,67 @@
+---
+import ArrowDown from '@lucide/astro/icons/arrow-down';
+import FileText from '@lucide/astro/icons/file-text';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Button from './ui/Button.astro';
+import { site } from '../data/site';
+import { withBase } from '../lib/format';
+---
+
+<section id="top" class="relative isolate overflow-hidden">
+  <div class="bg-grid absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="bg-glow absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  <div class="container-page pt-20 pb-24 sm:pt-32 sm:pb-36">
+    <p
+      class="inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-sm text-muted"
+    >
+      <span class="relative flex size-2" aria-hidden="true">
+        <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60"></span>
+        <span class="relative inline-flex size-2 rounded-full bg-accent"></span>
+      </span>
+      <span class="inline-flex items-center gap-1">
+        <MapPin class="size-3.5" aria-hidden="true" />
+        {site.location}
+      </span>
+      <span class="text-line-strong" aria-hidden="true">|</span>
+      <span class="text-fg">{site.status}</span>
+    </p>
+
+    <h1 class="mt-7 text-5xl font-semibold tracking-tight sm:text-7xl">{site.name}</h1>
+
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-muted sm:text-xl">
+      {site.headline}
+    </p>
+
+    <ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-sm text-muted" aria-label="Focus areas">
+      {
+        site.focus.map((item, i) => (
+          <li class="flex items-center gap-3">
+            {i > 0 && (
+              <span class="text-accent" aria-hidden="true">
+                ·
+              </span>
+            )}
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <Button href="#projects">
+        View Work
+        <ArrowDown class="size-4" aria-hidden="true" />
+      </Button>
+      <Button href="#contact" variant="secondary">Contact Me</Button>
+      {
+        site.resume && (
+          <Button href={withBase(site.resume)} variant="ghost" target="_blank" rel="noopener">
+            <FileText class="size-4" aria-hidden="true" />
+            Resume
+          </Button>
+        )
+      }
+    </div>
+  </div>
+</section>

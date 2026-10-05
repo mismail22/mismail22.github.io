@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import GraduationCap from '@lucide/astro/icons/graduation-cap';
+import Section from './ui/Section.astro';
+import Tag from './ui/Tag.astro';
+import { site } from '../data/site';
+import { formatMonth, splitMetrics } from '../lib/format';
+
+// Most recent first
+const roles = (await getCollection('experience')).sort((a, b) => b.data.start.localeCompare(a.data.start));
+---
+
+<Section
+  id="experience"
+  index="03"
+  eyebrow="Experience"
+  title="16 years, from mobile core to fleet-scale platforms"
+>
+  <ol class="relative ml-1.5 border-l border-line">
+    {
+      roles.map(({ data }) => {
+        const current = data.end === null;
+        return (
+          <li class="relative pb-12 pl-8 last:pb-0 sm:pl-10">
+            <span
+              class:list={[
+                'absolute top-1.5 -left-[5px] size-2.5 rounded-full ring-4 ring-canvas',
+                current ? 'bg-accent' : 'border border-line-strong bg-canvas',
+              ]}
+              aria-hidden="true"
+            />
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <h3 class="text-base font-semibold text-fg sm:text-lg">
+                {data.role}
+                <span class="font-normal text-muted"> · {data.company}</span>
+              </h3>
+              <p class="shrink-0 font-mono text-xs text-muted">
+                <time datetime={data.start}>{formatMonth(data.start)}</time>
+                {' – '}
+                {current ? (
+                  <span class="text-accent">Present</span>
+                ) : (
+                  <time datetime={data.end!}>{formatMonth(data.end!)}</time>
+                )}
+              </p>
+            </div>
+            <p class="mt-1 text-sm text-muted">{data.location}</p>
+
+            <ul class="mt-4 max-w-3xl space-y-2.5">
+              {data.highlights.map((highlight) => (
+                <li class="relative pl-5 text-sm leading-relaxed text-muted before:absolute before:top-[0.6em] before:left-0 before:h-px before:w-2.5 before:bg-line-strong">
+                  {splitMetrics(highlight).map((part) =>
+                    part.metric ? <span class="font-mono text-fg">{part.text}</span> : part.text,
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {data.tags.length > 0 && (
+              <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Focus areas">
+                {data.tags.map((tag) => (
+                  <Tag label={tag} />
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+
+  <div class="mt-16">
+    <h3 class="flex items-center gap-2 font-mono text-xs tracking-widest text-muted uppercase">
+      <GraduationCap class="size-4 text-accent" aria-hidden="true" />
+      Education
+    </h3>
+    <div class="mt-5 grid gap-4 md:grid-cols-2">
+      {
+        site.education.map((edu) => (
+          <article class="rounded-xl border border-line bg-surface p-5">
+            <div class="flex items-baseline justify-between gap-4">
+              <h4 class="font-semibold text-fg">{edu.degree}</h4>
+              <p class="shrink-0 font-mono text-xs text-muted">{edu.period}</p>
+            </div>
+            <p class="mt-1 text-sm text-muted">{edu.school}</p>
+            {'note' in edu && <p class="mt-3 text-sm leading-relaxed text-muted">{edu.note}</p>}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</Section>

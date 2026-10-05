@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line/60">
+  <div class="container-page flex flex-col gap-3 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+    <p>© {year} {site.name}</p>
+    <p>
+      Built with Astro &amp; Tailwind CSS ·
+      <a href={site.repo} target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-4 hover:text-fg">
+        Source
+      </a>
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "leadership",
+    "title": "Leadership & Management",
+    "icon": "users",
+    "items": ["Org design", "Hiring & talent development", "Performance management", "P&L ownership ($5M)", "Vendor strategy & RFPs", "Agile / Scrum", "Cross-functional partnership"],
+    "order": 1
+  },
+  {
+    "id": "reliability",
+    "title": "Infrastructure & Reliability",
+    "icon": "shield",
+    "items": ["SLO / SLA / SLI design", "Error budgets", "On-call design", "Incident response", "Blameless postmortems", "MTTR reduction", "Capacity planning"],
+    "order": 2
+  },
+  {
+    "id": "platforms",
+    "title": "Platforms & Networking",
+    "icon": "network",
+    "items": ["Distributed systems", "Real-time data platforms", "Pipeline orchestration", "CI/CD", "Kubernetes", "Docker", "BGP / OSPF", "InfiniBand / RoCEv2"],
+    "order": 3
+  },
+  {
+    "id": "automation",
+    "title": "Automation & Tools",
+    "icon": "workflow",
+    "items": ["Python", "Ansible", "Terraform", "Workflow automation", "Network programmability"],
+    "order": 4
+  },
+  {
+    "id": "applied-ai",
+    "title": "Applied AI",
+    "icon": "brain",
+    "items": ["AI-assisted engineering", "Agentic systems", "RAG", "LLM applications", "NLP", "Computer vision"],
+    "order": 5
+  }
+]

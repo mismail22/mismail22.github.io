@@ -1,0 +1,66 @@
+---
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import Mail from '@lucide/astro/icons/mail';
+import ContactForm from './ContactForm.astro';
+import BrandIcon from './ui/BrandIcon.astro';
+import Section from './ui/Section.astro';
+import { site } from '../data/site';
+
+const linkClass =
+  'group flex items-center gap-4 rounded-xl border border-line bg-surface p-4 transition-colors duration-200 hover:border-accent/40 hover:bg-surface-2';
+const iconClass =
+  'flex size-10 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-muted transition-colors group-hover:text-accent';
+---
+
+<Section
+  id="contact"
+  index="04"
+  eyebrow="Contact"
+  title="Let's talk"
+  intro="Hiring for infrastructure or platform leadership, or want to compare notes on reliability and automation? Reach out on LinkedIn or GitHub."
+>
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+    <ul class="space-y-3 lg:col-span-5">
+      {
+        site.email && (
+          <li>
+            <a href={`mailto:${site.email}`} class={linkClass}>
+              <span class={iconClass}>
+                <Mail class="size-5" aria-hidden="true" />
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-medium text-fg">Email</span>
+                <span class="block truncate font-mono text-sm text-muted">{site.email}</span>
+              </span>
+              <ArrowUpRight class="size-4 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
+            </a>
+          </li>
+        )
+      }
+      {
+        site.socials.map((social) => (
+          <li>
+            <a href={social.href} target="_blank" rel="noopener me" class={linkClass}>
+              <span class={iconClass}>
+                <BrandIcon name={social.icon} class="size-5" />
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-medium text-fg">{social.label}</span>
+                <span class="block truncate font-mono text-sm text-muted">{social.handle}</span>
+              </span>
+              <ArrowUpRight class="size-4 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      site.formspreeId && (
+        <div class="lg:col-span-7">
+          <ContactForm />
+        </div>
+      )
+    }
+  </div>
+</Section>

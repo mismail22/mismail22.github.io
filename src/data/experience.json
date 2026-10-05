@@ -1,0 +1,84 @@
+[
+  {
+    "id": "meta-tech-lead",
+    "role": "Tech Lead, Infrastructure Platforms & Automation",
+    "company": "Meta",
+    "location": "Menlo Park, CA",
+    "start": "2024-03",
+    "end": null,
+    "highlights": [
+      "Created the governance platform that gives operations and finance a single source of truth across a $7B data-center fleet.",
+      "Automated fleet disposition, cutting cycle time from 81 to 10 days. Unlocked $100M–$200M in trapped capital and drove $300M+ in asset rebalancing.",
+      "Introduced AI-assisted engineering and sprint-based delivery, doubling quarterly output. Peer teams now use the same method.",
+      "Drove a zero-downtime peering-circuit migration strategy that cleared a multi-quarter bottleneck for 34 circuits."
+    ],
+    "tags": ["Platform strategy", "Automation", "Applied AI", "Networking"]
+  },
+  {
+    "id": "meta-engineering-manager",
+    "role": "Engineering Manager, R&D Infrastructure",
+    "company": "Meta",
+    "location": "Menlo Park, CA",
+    "start": "2022-02",
+    "end": "2024-03",
+    "highlights": [
+      "Grew a 5-person team into a 24-engineer global infrastructure organization. Defined the org structure, hiring bar, and operating model for a mix of FTEs, contractors, and managed-service providers.",
+      "Cut a $5M vendor portfolio by 40% through a competitive RFP and contract renegotiation, with no SLA regression across 1,000+ lab environments.",
+      "Built the reliability practice from scratch: 99% availability, a 96.85% repair SLA against a 95% target, and a 90%+ MTTR improvement in year one.",
+      "Supported 43% fleet growth at flat headcount. Cut project closure from 47 to 2.25 days and raised partner incident participation from 37% to 83%."
+    ],
+    "tags": ["Org design", "Hiring", "Vendor strategy", "SRE"]
+  },
+  {
+    "id": "meta-senior-swe",
+    "role": "Senior Software Engineer, Tooling & Automation",
+    "company": "Meta",
+    "location": "Menlo Park, CA",
+    "start": "2020-04",
+    "end": "2022-02",
+    "highlights": [
+      "Tech-led a hardware RMA automation program across five organizations, processing 1,600+ returns for seven-figure savings. Earned a top-5% rating and a merit promotion.",
+      "Led incident response on four high-severity events, including mitigating a 40-terabit backbone-capacity drain and unlocking 3 terabits of stranded capacity.",
+      "Cut critical-ticket volume 52% month over month by root-causing a priority misassignment in outage automation.",
+      "Shipped production NLP and OCR systems. The email classifier filters 67% of inbound mail, saving ~73 person-days a year."
+    ],
+    "tags": ["Python", "Incident response", "NLP", "Computer vision"]
+  },
+  {
+    "id": "facebook-swe",
+    "role": "Software Engineer, Tooling & Automation",
+    "company": "Facebook",
+    "location": "Menlo Park, CA",
+    "start": "2018-04",
+    "end": "2020-04",
+    "highlights": [
+      "Unblocked a ticketing migration that had stalled for years by rescoping access controls with Security and shipping three production ML classifiers.",
+      "Replaced a fragile legacy system with an email-ingestion pipeline processing 45,000+ emails per cycle at 99% availability, avoiding ~$100K in third-party tooling."
+    ],
+    "tags": ["Python", "ML classifiers", "Data pipelines"]
+  },
+  {
+    "id": "facebook-mobile-operator",
+    "role": "Mobile Operator Support Engineer",
+    "company": "Facebook",
+    "location": "Singapore",
+    "start": "2015-04",
+    "end": "2018-04",
+    "highlights": [
+      "Managed integrations with 10+ telecom carriers across APAC, EMEA, and LATAM for messaging products serving billions of users."
+    ],
+    "tags": ["Carrier integrations", "Messaging"]
+  },
+  {
+    "id": "vodafone-egypt",
+    "role": "Mobile Internet & Data Support Engineer",
+    "company": "Vodafone Egypt",
+    "location": "Cairo, Egypt",
+    "start": "2010-03",
+    "end": "2015-04",
+    "highlights": [
+      "Ran mobile-core operations across Cisco, Ericsson, and Juniper stacks. Owned vendor escalations and built the team's first automation."
+    ],
+    "tags": ["Mobile core", "Cisco", "Ericsson", "Juniper"]
+  }
+]

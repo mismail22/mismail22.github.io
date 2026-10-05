@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+import Section from './ui/Section.astro';
+import { categories, type Category } from '../data/categories';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+// Only offer filters for categories that actually have projects.
+const used = (Object.keys(categories) as Category[]).filter((key) =>
+  projects.some((p) => p.data.category === key),
+);
+const filters = [{ key: 'all', label: 'All' }, ...used.map((key) => ({ key, label: categories[key] }))];
+---
+
+<Section
+  id="projects"
+  index="02"
+  eyebrow="Featured work"
+  title="Selected projects"
+  intro="Case studies from my work at Meta, described at a public level of detail, plus open-source work."
+>
+  {
+    used.length > 1 && (
+      <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div
+          role="group"
+          aria-label="Filter projects by category"
+          class="flex flex-wrap gap-1 rounded-lg border border-line bg-surface p-1"
+          data-project-filter
+        >
+          {filters.map((filter, i) => (
+            <button
+              type="button"
+              data-filter={filter.key}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              class="rounded-md px-3 py-1.5 text-sm text-muted transition-colors duration-150 hover:text-fg aria-pressed:bg-surface-2 aria-pressed:text-fg aria-pressed:shadow-[inset_0_0_0_1px_var(--color-line-strong)]"
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+        <p class="font-mono text-xs text-muted" aria-live="polite" data-project-count>
+          {projects.length} projects
+        </p>
+      </div>
+    )
+  }
+
+  <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    {projects.map(({ data }) => <ProjectCard project={data} />)}
+  </div>
+</Section>
+
+<script>
+  import '../scripts/project-filter';
+</script>

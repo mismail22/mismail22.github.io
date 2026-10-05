@@ -1,0 +1,22 @@
+---
+import ArrowLeft from '@lucide/astro/icons/arrow-left';
+import Button from '../components/ui/Button.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { withBase } from '../lib/format';
+---
+
+<BaseLayout title={`Page not found · ${site.name}`}>
+  <main id="main" class="relative isolate flex min-h-dvh items-center">
+    <div class="bg-grid absolute inset-0 -z-10" aria-hidden="true"></div>
+    <div class="container-page">
+      <p class="font-mono text-sm text-accent">404</p>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">This page doesn't exist</h1>
+      <p class="mt-4 max-w-md text-muted">The link may be outdated, or the page may have moved.</p>
+      <Button href={withBase('/')} class="mt-8">
+        <ArrowLeft class="size-4" aria-hidden="true" />
+        Back to home
+      </Button>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "fleet-governance-platform",
+    "title": "Fleet Governance Platform",
+    "context": "Meta · 2024 – present",
+    "category": "platforms",
+    "summary": "A real-time, SOX-compliant source of truth that gives operations and finance one view of a $7B data-center fleet. Built with five partner organizations, it enables asset decisions that were previously impossible.",
+    "metrics": [
+      { "value": "$7B", "label": "fleet under governance" },
+      { "value": "5", "label": "partner organizations" }
+    ],
+    "tags": ["Real-time data platform", "Pipeline orchestration", "Python", "SOX controls"],
+    "order": 1
+  },
+  {
+    "id": "fleet-disposition-automation",
+    "title": "Automated Fleet Disposition",
+    "context": "Meta · 2024 – present",
+    "category": "automation",
+    "summary": "Turned a manual disposal process into an automated workflow platform, consolidating 102 fragmented workflows and eliminating an entire class of production incidents.",
+    "metrics": [
+      { "value": "81 → 10", "label": "days per cycle" },
+      { "value": "$100–200M", "label": "trapped capital unlocked" },
+      { "value": "$300M+", "label": "assets rebalanced" }
+    ],
+    "tags": ["Workflow automation", "Python", "Data pipelines"],
+    "order": 2
+  },
+  {
+    "id": "ai-assisted-code-audit",
+    "title": "AI-Assisted Code Audit",
+    "context": "Meta · 2024 – present",
+    "category": "ai-ml",
+    "summary": "An AI-assisted method for auditing data-pipeline logic. It surfaced a nine-figure inventory misclassification that had gone undetected for five years, and peer data teams adopted it the same week.",
+    "metrics": [
+      { "value": "5 yrs", "label": "undetected issue surfaced" },
+      { "value": "< 1 wk", "label": "to peer-team adoption" }
+    ],
+    "tags": ["LLM agents", "RAG", "Code analysis"],
+    "order": 3
+  },
+  {
+    "id": "reliability-practice",
+    "title": "Reliability Engineering Practice",
+    "context": "Meta · 2022 – 2024",
+    "category": "leadership",
+    "summary": "Built a reliability practice from scratch for a global R&D infrastructure org: SLOs, on-call rotations, and blameless postmortems across 1,000+ lab environments.",
+    "metrics": [
+      { "value": "99%", "label": "availability" },
+      { "value": "96.85%", "label": "repair SLA vs 95% target" },
+      { "value": "90%+", "label": "MTTR improvement" }
+    ],
+    "tags": ["SLOs", "On-call design", "Incident response", "Postmortems"],
+    "order": 4
+  },
+  {
+    "id": "rma-automation",
+    "title": "Hardware RMA Automation",
+    "context": "Meta · 2020 – 2022",
+    "category": "automation",
+    "summary": "Tech-led a hardware lifecycle automation program across five engineering organizations. Earned a top-5% performance rating and a merit promotion.",
+    "metrics": [
+      { "value": "1,600+", "label": "returns processed" },
+      { "value": "7-figure", "label": "cost savings" }
+    ],
+    "tags": ["Python", "Workflow automation", "Hardware lifecycle"],
+    "order": 5
+  },
+  {
+    "id": "ops-ml-systems",
+    "title": "Production ML for Operations",
+    "context": "Meta · 2018 – 2022",
+    "category": "ai-ml",
+    "summary": "Shipped an NLP email classifier and an OCR rack-audit pipeline that removed manual classification bottlenecks from the operations workflow.",
+    "metrics": [
+      { "value": "67%", "label": "inbound mail auto-filtered" },
+      { "value": "~73", "label": "person-days saved / yr" }
+    ],
+    "tags": ["Python", "NLP", "Computer vision", "ML classifiers"],
+    "order": 6
+  },
+  {
+    "id": "portfolio-site",
+    "title": "This Portfolio",
+    "context": "Open source",
+    "category": "tools",
+    "summary": "A static personal site with no client-side framework, built with Astro and Tailwind CSS. Content lives in typed JSON, and GitHub Actions deploys it to GitHub Pages.",
+    "tags": ["Astro", "Tailwind CSS", "TypeScript", "GitHub Actions"],
+    "repo": "https://github.com/mismail22/mismail22.github.io",
+    "demo": "https://mismail22.github.io",
+    "order": 7
+  }
+]
