@@ -62,13 +62,13 @@ export const site = {
   ],
   teamNotes: ['Promoted a direct report into a lab-operations lead role', 'Mentored 4 engineers through complex technical designs', '19 behavioral interview loops'],
   teamClosing:
-    'In 2024 I moved into a hands-on tech-lead role to architect the fleet platform, while completing an MBA with Honors (2025).',
+    'In 2024 I moved into a hands-on tech-lead role to architect the fleet platform, while completing a two-year MBA with Honors (2026).',
 
   education: [
     {
       school: 'Boston University, Questrom School of Business',
       degree: 'MBA, With Honors',
-      period: '2024 – 2025',
+      period: 'Jan 2024 – Jan 2026',
       note: 'GPA 3.68 · analytics, strategic leadership, risk management · led a team to a top-5% finish in an international strategy simulation',
     },
     {
