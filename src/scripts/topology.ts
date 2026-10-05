@@ -138,7 +138,7 @@ export function initTopology(canvas: HTMLCanvasElement) {
       n.energy = Math.max(n.label ? 0.6 : 0, n.energy - dt * 0.9);
     }
 
-    career = (career + dt * 0.18) % (SITES.length - 1 + 0.6);
+    career = (career + (Number.isFinite(dt) ? dt : 0) * 0.18) % (SITES.length - 1 + 0.6);
 
     for (const p of packets) {
       p.t += p.speed * dt;
@@ -185,10 +185,12 @@ export function initTopology(canvas: HTMLCanvasElement) {
     const t = Math.min(1, career - seg);
     const a = sites[seg];
     const b = sites[seg + 1];
-    ctx!.fillStyle = rgba(COLORS.accent, 0.95);
-    ctx!.beginPath();
-    ctx!.arc(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 2.4, 0, Math.PI * 2);
-    ctx!.fill();
+    if (a && b) {
+      ctx!.fillStyle = rgba(COLORS.accent, 0.95);
+      ctx!.beginPath();
+      ctx!.arc(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 2.4, 0, Math.PI * 2);
+      ctx!.fill();
+    }
 
     for (const p of packets) {
       const e = edges[p.edge];
