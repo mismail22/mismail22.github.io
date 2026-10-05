@@ -20,7 +20,9 @@
       "Python",
       "BGP",
       "LLM agents"
-    ]
+    ],
+    "org": "meta",
+    "logo": "meta"
   },
   {
     "id": "meta-rd-infrastructure",
@@ -41,7 +43,9 @@
       "Reliability",
       "Vendor management",
       "Org design"
-    ]
+    ],
+    "org": "meta",
+    "logo": "meta"
   },
   {
     "id": "meta-senior-swe",
@@ -61,7 +65,9 @@
       "Network workflows",
       "Incident response",
       "Computer vision"
-    ]
+    ],
+    "org": "meta",
+    "logo": "meta"
   },
   {
     "id": "facebook-swe",
@@ -79,7 +85,9 @@
       "NLP",
       "Data pipelines",
       "Network operations"
-    ]
+    ],
+    "org": "meta",
+    "logo": "facebook"
   },
   {
     "id": "facebook-mobile-operator",
@@ -95,7 +103,9 @@
       "Carrier integrations",
       "GGSN / DPI",
       "SMPP"
-    ]
+    ],
+    "org": "meta",
+    "logo": "facebook"
   },
   {
     "id": "vodafone-egypt",
@@ -113,6 +123,8 @@
       "Cisco",
       "Ericsson",
       "Juniper"
-    ]
+    ],
+    "org": "vodafone",
+    "logo": "vodafone"
   }
 ]

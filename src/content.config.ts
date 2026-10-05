@@ -78,6 +78,9 @@ const experience = defineCollection({
     end: z.string().regex(/^\d{4}-\d{2}$/).nullable(),
     highlights: z.array(z.string()).min(1),
     tags: z.array(z.string()).default([]),
+    // Employer group (roles at the same company are shown together) and logo
+    org: z.enum(['meta', 'vodafone']),
+    logo: z.enum(['meta', 'facebook', 'vodafone']),
   }),
 });
 

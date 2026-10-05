@@ -64,6 +64,12 @@ export const site = {
   teamClosing:
     'In 2024 I moved into a hands-on tech-lead role to architect the fleet platform, while completing a two-year MBA with Honors (2026).',
 
+  // Employers in the experience section (roles are grouped by `org`)
+  orgs: [
+    { id: 'meta', name: 'Meta', note: 'formerly Facebook', period: 'Apr 2015 – present', tenure: '11 years', locations: 'Menlo Park, CA · Singapore', logo: 'meta' },
+    { id: 'vodafone', name: 'Vodafone Egypt', period: 'Mar 2010 – Apr 2015', tenure: '5 years', locations: 'Cairo, Egypt', logo: 'vodafone' },
+  ],
+
   education: [
     {
       school: 'Boston University, Questrom School of Business',
