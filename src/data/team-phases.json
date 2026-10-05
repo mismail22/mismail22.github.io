@@ -12,14 +12,14 @@
     "phase": "Reliability",
     "when": "Year one",
     "title": "A reliability practice from scratch",
-    "detail": "Repair SLAs, on-call, and repair processes built from scratch while the lab device fleet grew from 1,823 to 2,623.",
+    "detail": "Repair SLAs, on-call rotations, and escalation processes built from scratch while the lab device fleet grew from 1,823 to 2,623.",
     "order": 2
   },
   {
     "id": "scale",
     "phase": "Scale",
     "when": "Mar 2024 · 24 people",
-    "title": "A team that runs itself",
+    "title": "A team that handles its own incidents",
     "detail": "Training and documentation took team incident handling from 40% to 75%. A multi-vendor RFP and a Tier 2 move to an MSP cut support costs with no SLA regression.",
     "order": 3
   }

@@ -34,7 +34,7 @@
   },
   {
     "id": "stranded-capacity",
-    "title": "Capacity stranded by a truncation bug",
+    "title": "Capacity stranded by oversized tickets",
     "year": "2021",
     "severity": "high",
     "impact": "~3 Tbps of capacity left stranded and unusable.",

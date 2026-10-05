@@ -17,13 +17,13 @@ tldr:
 decisions:
   - title: Agents orchestrate tools; they don't replace them
     alternative: A free-form agent with its own write access.
-    why: The 9-tool agent calls three platform tools and six existing CLI commands, so it goes through the same code paths, reviews, and logs as people using those commands.
+    why: The 9-tool agent calls three platform tools and six existing CLI commands, so it goes through the same code paths as people using those commands.
   - title: Models widen the search, humans decide what's true
     why: The model proposes candidate defects quickly; verification queries against the real data decide which ones are real. That keeps false positives out of anything that gets reported.
   - title: Package the method, not just the finding
     why: Writing the audit up as a repeatable procedure is what let peer data teams adopt it within days instead of re-deriving it.
 pullQuote: The five years is the real finding.
-lesson: The typo and the over-matching pattern weren't hard bugs. They survived five years because nothing checked what the classification logic produced. The audit fixed this instance, but an audit is a one-time sweep. What I do now is ship classification rules with assertions on their outputs (expected totals, match counts, unmatched rows), so the next defect fails a check the day it lands instead of waiting years for someone to look.
+lesson: The typo and the over-matching pattern weren't hard bugs. They survived five years because nothing checked what the classification logic produced. The audit caught this instance, but an audit is a one-time sweep. What I do now is ship classification rules with assertions on their outputs (expected totals, match counts, unmatched rows), so the next defect fails a check the day it lands instead of waiting years for someone to look.
 diagram:
   nodes:
     - { id: code, label: Pipeline code, col: 0, row: 0, kind: source }

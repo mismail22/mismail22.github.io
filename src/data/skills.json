@@ -26,7 +26,7 @@
   { "id": "llm-audit", "category": "ai", "skill": "LLM-assisted code & data audits", "tier": "proficient", "years": 1, "evidence": "Found a nine-figure misclassification hidden for five years.", "order": 42 },
   { "id": "nlp", "category": "ai", "skill": "NLP classification", "tier": "proficient", "years": 2, "evidence": "Three production email classifiers (94%, ~70%, 63% accuracy).", "order": 43 },
   { "id": "cv", "category": "ai", "skill": "Computer vision / OCR", "tier": "working", "years": 1, "evidence": "Rack-serial OCR that cut manual audit validation by 80%.", "order": 44 },
-  { "id": "ai-dev", "category": "ai", "skill": "AI-assisted development", "tier": "expert", "years": 2, "evidence": "Top 1% company-wide by internal telemetry; reusable agent skills adopted by peers.", "order": 45 },
+  { "id": "ai-dev", "category": "ai", "skill": "AI-assisted development", "tier": "expert", "years": 2, "evidence": "Top 1% for AI-assisted coding company-wide (internal telemetry); reusable agent skills adopted by peers.", "order": 45 },
 
   { "id": "incidents", "category": "reliability", "skill": "Incident response", "tier": "proficient", "years": 10, "evidence": "Four high-severity incidents in one half, including a 40-terabit backbone drain.", "order": 50 },
   { "id": "slo", "category": "reliability", "skill": "SLA design & on-call", "tier": "proficient", "years": 2, "evidence": "96.85% repair SLA against a 95% target; 99% availability; 90%+ MTTR improvement.", "order": 51 },

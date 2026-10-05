@@ -11,14 +11,14 @@ metrics:
   - { value: '~480 h', label: 'saved per year (router system)' }
   - { value: '57%', label: 'faster workflows (push over polling)' }
 tldr:
-  - Owned a 102-workflow network automation estate built from 314 reusable, tested blocks.
+  - Owned a 102-workflow network automation estate built from 314 reusable blocks.
   - Added protocol-level safety to peering (BGP GTSM, session snapshots) and modeled carrier-grade router ports so automation can't misuse them.
   - Seeded ACL policy as code with my first script; the team scaled it to 162 generated changes.
 decisions:
   - title: Add GTSM as an opt-in stage, default off
     alternative: Turn TTL security on for every new peering session at once.
     why: GTSM (RFC 5082) protects BGP sessions from spoofed packets, but enabling it on a session the peer hasn't configured would drop it. An optional flag on peering turn-up, defaulting to off, let teams adopt it session by session.
-    tradeoff: Slower fleet-wide coverage in exchange for zero surprise outages.
+    tradeoff: Slower fleet-wide coverage, in exchange for adopting it session by session without putting working peers at risk.
   - title: Model reserved ports in config, not in people's heads
     why: On Juniper PTX10003 routers, infrastructure interfaces are defined in a config file keyed by hardware position, so the peering interface selector never allocates them to a customer.
   - title: Wake on events instead of polling
@@ -69,7 +69,7 @@ Network changes at hyperscale cross team boundaries. Backbone, edge, security, a
 
 ## Architecture
 
-A change starts as intent: a peering turn-up, a circuit migration, or a roadmap item. A **mapping layer** joins the network source of truth with data-center asset data to fill its gaps, for example mapping old devices to new ones for a forklift migration, or resolving non-standard rack locations and patch-panel details. The **workflow engine** composes the change from **reusable building blocks**, so a tested step is reused instead of re-implemented, and engineers find blocks through an LLM-powered search. Risky options are **staged** (opt-in, default off), changes are **pushed** as scripted, reviewed code, and migrations are **verified** with BGP session snapshots taken before and after.
+A change starts as intent: a peering turn-up, a circuit migration, or a roadmap item. A **mapping layer** joins the network source of truth with data-center asset data to fill its gaps, for example mapping old devices to new ones for a forklift migration, or resolving non-standard rack locations and patch-panel details. The **workflow engine** composes the change from **reusable building blocks**, so each step is built once and reused instead of re-implemented, and engineers find blocks through an LLM-powered search. Risky options are **staged** (opt-in, default off), changes are **pushed** as scripted, reviewed code, and migrations are **verified** with BGP session snapshots taken before and after.
 
 ## Protocol-level details
 

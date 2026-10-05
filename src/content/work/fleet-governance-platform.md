@@ -1,6 +1,6 @@
 ---
 title: Fleet Governance Platform
-tagline: A live source of truth with guarded bulk operations for a multi-billion-dollar rack inventory
+tagline: A live source of truth with guarded bulk operations for data-center rack inventory
 summary: Replaced manual processes and lagging batch analytics with a platform that operations and finance trust for destructive, high-value decisions across a multi-billion-dollar data-center rack inventory.
 role: Tech lead and architect
 period: 2024 – present
@@ -8,7 +8,7 @@ stack: [Hack/PHP, React, GraphQL, SQL, Python, LLM agents]
 metrics:
   - { value: '81 → 10', label: 'days per disposal cycle' }
   - { value: '27,000+', label: 'racks in the first guarded sweep' }
-  - { value: '100s of $M', label: 'assets rebalanced' }
+  - { value: '1,000–2,500', label: 'pallet spaces freed by rebalancing' }
   - { value: '9-figure', label: 'aging inventory reduced (est.)' }
 tldr:
   - Built one live source of truth for a multi-billion-dollar rack inventory, shared by operations and finance.

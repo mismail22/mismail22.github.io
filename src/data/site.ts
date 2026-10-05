@@ -8,11 +8,11 @@ export const site = {
   role: 'Tech Lead · Infrastructure Platforms & Automation · Meta',
   title: 'Mohanad Ismail · Infrastructure Platforms & Network Automation',
   description:
-    'Network and infrastructure engineer, 16 years, 11 at Meta. Architected the real-time platform governing a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge and lab networks, and grew an R&D infrastructure team from 5 to 24.',
+    'Network and infrastructure engineer, 16 years, 11 at Meta. Architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge and lab networks, and grew an R&D infrastructure team from 5 to 24.',
   // Hero headline, split so the second half can be de-emphasized.
   headline: ['I turn risky, manual infrastructure work', 'into guarded, automated systems.'],
   intro:
-    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the real-time platform governing a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier grew an R&D infrastructure team from 5 to 24 people. MBA (Honors), Boston University.',
+    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier grew an R&D infrastructure team from 5 to 24 people. MBA (Honors), Boston University.',
   location: 'Menlo Park, CA',
   status: 'Open to Staff+ IC & infra EM roles',
 
@@ -45,11 +45,11 @@ export const site = {
   teamPrinciples: [
     {
       title: 'Build the operating model before the headcount.',
-      body: 'Before growing from 5 to 24, I defined onboarding, role boundaries, escalation paths, and the hiring bar for a mix of FTEs, contractors, and MSP partners.',
+      body: 'Every new person got a clear lane, an escalation path, and a way to grow out of it. That structure, more than hiring speed, is what let the team grow from 5 to 24 without losing reliability.',
     },
     {
       title: 'Shared ownership beats escalation.',
-      body: 'A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams; partner engagement went from 37% to 83%.',
+      body: 'A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams, instead of another round of escalations.',
     },
   ],
   teamProof: [
