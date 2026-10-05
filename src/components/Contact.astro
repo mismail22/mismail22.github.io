@@ -7,10 +7,9 @@ const channels = [...(site.email ? [{ label: 'Email', handle: site.email, href: 
 ---
 
 <section id="contact" aria-labelledby="contact-title" class="relative overflow-hidden border-t border-line py-28 sm:py-40">
-  <div class="bg-dots absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_60%_70%_at_20%_40%,#000,transparent)]" aria-hidden="true"></div>
   <div class="container-page">
-    <p class="text-lg text-muted" data-reveal>Hiring for a Staff+ infrastructure or infra EM role?</p>
-    <h2 id="contact-title" class="mt-4 text-[clamp(3rem,7vw,6rem)] leading-[0.95] font-medium tracking-[-0.045em]" data-reveal style="--i: 1">
+    <p class="eyebrow" data-reveal>Hiring for a Staff+ infrastructure or infra EM role?</p>
+    <h2 id="contact-title" class="text-hero mt-4 font-medium" data-reveal style="--i: 1">
       Let's build something.
     </h2>
 
@@ -23,10 +22,10 @@ const channels = [...(site.email ? [{ label: 'Email', handle: site.email, href: 
                 href={c.href}
                 target={c.external ? '_blank' : undefined}
                 rel={c.external ? 'noopener me' : undefined}
-                class="group inline-flex items-baseline gap-4 py-2 text-2xl font-medium tracking-[-0.02em] text-fg transition-colors hover:text-accent-strong sm:text-3xl"
+                class="text-title group inline-flex items-baseline gap-4 py-2 text-fg transition-colors hover:text-accent-strong"
               >
                 {c.label}
-                <span class="font-mono text-sm font-normal text-muted">{c.handle}</span>
+                <span class="text-base font-normal tracking-normal text-muted">{c.handle}</span>
                 <ArrowUpRight class="size-5 self-center text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true" />
               </a>
             </li>

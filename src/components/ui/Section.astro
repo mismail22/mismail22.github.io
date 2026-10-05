@@ -1,22 +1,18 @@
 ---
-// Two header styles keep the page from feeling repetitive:
-// - instrument: a mono "01 / Label" line above the title (data-heavy sections)
-// - annotation: just a large title (editorial sections)
-// `band` gives a section a full-bleed background to break up the rhythm.
+// Every section shares one header: a small accent label, the title, and an
+// optional intro. `band` gives a section a full-bleed background for rhythm.
 interface Props {
   id: string;
   title: string;
-  index?: string;
   eyebrow?: string;
   intro?: string;
-  variant?: 'instrument' | 'annotation';
   band?: 'none' | 'cool' | 'warm';
   // Nav item this section highlights, when it isn't the section's own id
   navGroup?: string;
   class?: string;
 }
 
-const { id, title, index, eyebrow, intro, variant = 'instrument', band = 'none', navGroup, class: className } = Astro.props;
+const { id, title, eyebrow, intro, band = 'none', navGroup, class: className } = Astro.props;
 
 const bands = {
   none: '',
@@ -25,28 +21,16 @@ const bands = {
 };
 ---
 
-<section
-  id={id}
-  data-nav-group={navGroup}
-  aria-labelledby={`${id}-title`}
-  class:list={['relative', band === 'none' ? 'py-24 sm:py-36' : 'py-24 sm:py-32', bands[band], className]}
->
+<section id={id} data-nav-group={navGroup} aria-labelledby={`${id}-title`} class:list={['relative py-24 sm:py-32', bands[band], className]}>
   <div class="container-page">
-    <header class:list={['max-w-3xl', variant === 'annotation' ? 'mb-12 sm:mb-16' : 'mb-12']}>
-      {
-        variant === 'instrument' && eyebrow && (
-          <p class="sys-label" data-reveal>
-            {index && <span class="text-accent">{index} / </span>}
-            {eyebrow}
-          </p>
-        )
-      }
-      <h2 id={`${id}-title`} class:list={['text-display', variant === 'instrument' && 'mt-4']} data-reveal style="--i: 1">
+    <header class="mb-12 max-w-3xl sm:mb-16">
+      {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+      <h2 id={`${id}-title`} class:list={['text-display', eyebrow && 'mt-3']} data-reveal style="--i: 1">
         {title}
       </h2>
       {
         intro && (
-          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-pretty text-muted" data-reveal style="--i: 2">
+          <p class="text-lead mt-5 max-w-2xl text-muted" data-reveal style="--i: 2">
             {intro}
           </p>
         )

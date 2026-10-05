@@ -8,14 +8,13 @@ const incidents = (await getCollection('incidents')).sort((a, b) => a.data.order
 <Section
   id="incidents"
   band="cool"
-  index="03"
-  eyebrow="Incident log"
+  eyebrow="Incidents"
   title="When it broke."
   intro="Production is where engineering judgment gets tested. Incidents I worked, written like postmortem summaries."
 >
-  <div class="overflow-hidden rounded-2xl border border-line bg-canvas font-mono" data-reveal>
+  <div class="overflow-hidden rounded-2xl border border-line bg-canvas" data-reveal>
     <div class="flex items-center justify-between gap-4 border-b border-line px-5 py-3 text-xs text-muted sm:px-7">
-      <span><span class="text-accent">$</span> tail incident.log</span>
+      <span class="font-mono"><span class="text-accent">$</span> tail incident.log</span>
       <span>{incidents.length} entries · newest first</span>
     </div>
     <ol class="divide-y divide-line">
@@ -31,23 +30,23 @@ const incidents = (await getCollection('incidents')).sort((a, b) => a.data.order
               </span>
               <span class="text-muted">{inc.year}</span>
             </div>
-            <div class="font-sans">
+            <div>
               <h3 class="text-lg font-medium tracking-[-0.01em] text-fg">{inc.title}</h3>
               <dl class="mt-4 flex flex-col gap-3 text-sm sm:grid sm:grid-cols-2 sm:gap-x-10">
                 <div class="order-first sm:order-last sm:col-span-2">
-                  <dt class="sys-label">Result</dt>
-                  <dd class="mt-1 font-mono text-accent">{inc.result}</dd>
+                  <dt class="text-sm text-muted">Result</dt>
+                  <dd class="mt-1 font-medium text-accent">{inc.result}</dd>
                 </div>
                 <div>
-                  <dt class="sys-label">Impact</dt>
+                  <dt class="text-sm text-muted">Impact</dt>
                   <dd class="mt-1 text-prose">{inc.impact}</dd>
                 </div>
                 <div>
-                  <dt class="sys-label">Root cause</dt>
+                  <dt class="text-sm text-muted">Root cause</dt>
                   <dd class="mt-1 text-prose">{inc.cause}</dd>
                 </div>
                 <div class="sm:col-span-2">
-                  <dt class="sys-label">Fix</dt>
+                  <dt class="text-sm text-muted">Fix</dt>
                   <dd class="mt-1 text-prose">{inc.fix}</dd>
                 </div>
               </dl>

@@ -63,13 +63,63 @@
   color: var(--color-muted);
 }
 
-/* Display type: weight 500 reads more premium than bold at large sizes. */
+/* Type scale: six steps, used everywhere. Nothing on the page is smaller than 12px. */
+@utility text-hero {
+  font-size: clamp(2.5rem, 0.9rem + 5.6vw, 5.75rem);
+  line-height: 0.95;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+/* Section titles. Weight 500 reads more premium than bold at large sizes. */
 @utility text-display {
   font-size: clamp(2.25rem, 1.4rem + 3vw, 3.5rem);
   line-height: 1.05;
   font-weight: 500;
   letter-spacing: -0.035em;
   text-wrap: balance;
+}
+
+/* Card and sub-section titles */
+@utility text-title {
+  font-size: clamp(1.375rem, 1.15rem + 0.7vw, 1.75rem);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility text-lead {
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Numbers: monospace is reserved for figures and code. */
+@utility text-metric-xl {
+  font-family: var(--font-mono);
+  font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility text-metric {
+  font-family: var(--font-mono);
+  font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Small accent label above section titles */
+@utility eyebrow {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--color-accent);
 }
 
 @layer base {
@@ -178,38 +228,6 @@
     }
   }
 
-  /* Corner tick marks: reserved for the hero bar and diagram frames. */
-  .ticks > i {
-    position: absolute;
-    width: 9px;
-    height: 9px;
-    border-color: var(--color-dim);
-    pointer-events: none;
-  }
-  .ticks > i:nth-child(1) {
-    top: 7px;
-    left: 7px;
-    border-top: 1px solid;
-    border-left: 1px solid;
-  }
-  .ticks > i:nth-child(2) {
-    top: 7px;
-    right: 7px;
-    border-top: 1px solid;
-    border-right: 1px solid;
-  }
-  .ticks > i:nth-child(3) {
-    bottom: 7px;
-    left: 7px;
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-  }
-  .ticks > i:nth-child(4) {
-    bottom: 7px;
-    right: 7px;
-    border-bottom: 1px solid;
-    border-right: 1px solid;
-  }
 
   .led {
     position: relative;

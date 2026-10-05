@@ -12,7 +12,7 @@ const resolve = (href: string) => (href.startsWith('/') ? withBase(href) : href)
 
 <Section
   id="impact"
-  variant="annotation"
+  eyebrow="Impact"
   title="Outcomes, with receipts."
   intro="What changed because I was there. Each card links to the work behind it."
 >
@@ -24,18 +24,18 @@ const resolve = (href: string) => (href.startsWith('/') ? withBase(href) : href)
             href={resolve(c.evidence.href)}
             class="panel panel--link group flex h-full flex-col rounded-2xl p-[clamp(1.25rem,1rem+1vw,2rem)]"
           >
-            <p class="flex items-center justify-between gap-4 font-mono text-[11px] text-muted">
+            <p class="flex items-center justify-between gap-4 text-sm text-muted">
               <span>
                 <span class="text-accent">{String(i + 1).padStart(2, '0')}</span> · {c.meta}
               </span>
-              <span class="tracking-widest uppercase">{c.evidence.kind}</span>
+              <span class="capitalize">{c.evidence.kind}</span>
             </p>
 
             <div class="mt-6 border-b border-line pb-5">
               <ImpactViz viz={c.viz} data={c.vizData} />
             </div>
 
-            <p class="mt-6 font-mono text-[clamp(2.5rem,1.8rem+2.6vw,4rem)] leading-none font-medium tracking-[-0.04em] text-fg tabular-nums">
+            <p class="text-metric-xl mt-6 text-fg">
               {c.value}
             </p>
             <h3 class="mt-3 text-xl leading-snug font-medium tracking-[-0.015em] text-fg">{c.headline}</h3>

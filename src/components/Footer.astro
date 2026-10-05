@@ -7,7 +7,7 @@ const deployed = built.toLocaleDateString('en-US', { month: 'short', day: 'numer
 ---
 
 <footer class="border-t border-line">
-  <div class="container-page flex flex-col gap-3 py-8 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+  <div class="container-page flex flex-col gap-3 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
     <p>© {year} {site.name}</p>
     <p>
       Last deployed <time datetime={built.toISOString()}>{deployed}</time> · Built with Astro ·

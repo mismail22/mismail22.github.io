@@ -2,31 +2,20 @@
 import type { HTMLTag, Polymorphic } from 'astro/types';
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
-  ticks?: boolean;
   reveal?: boolean;
   delay?: number;
 };
 
-const { as: Tag = 'div', ticks = false, reveal = true, delay = 0, class: className, ...attrs } = Astro.props;
+const { as: Tag = 'div', reveal = true, delay = 0, class: className, ...attrs } = Astro.props;
 // Only clickable panels get the cursor spotlight.
 const interactive = Tag === 'a' || Tag === 'button';
 ---
 
 <Tag
-  class:list={['panel', interactive && 'panel--link', ticks && 'ticks', className]}
+  class:list={['panel', interactive && 'panel--link', className]}
   data-reveal={reveal ? '' : undefined}
   style={delay ? `--i: ${delay}` : undefined}
   {...attrs}
 >
-  {
-    ticks && (
-      <>
-        <i aria-hidden="true" />
-        <i aria-hidden="true" />
-        <i aria-hidden="true" />
-        <i aria-hidden="true" />
-      </>
-    )
-  }
   <slot />
 </Tag>

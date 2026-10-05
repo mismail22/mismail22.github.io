@@ -20,10 +20,10 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
           <span class="tl-span absolute inset-y-1.5 left-0 right-3 rounded-sm" />
           <span class="tl-marker absolute top-1/2 right-0 size-4 -translate-y-1/2 rounded-full border-2 border-accent bg-canvas" />
         </div>
-        <div class="flex justify-between font-mono text-[11px] text-muted">
+        <div class="flex justify-between text-xs text-muted">
           {years.map((y) => <span>{y}</span>)}
         </div>
-        <div class="flex gap-5 font-mono text-[11px] text-muted">
+        <div class="flex gap-5 text-xs text-muted">
           <span class="inline-flex items-center gap-2"><span class="tl-key h-2 w-4 rounded-sm" />{data.hidden}</span>
           <span class="inline-flex items-center gap-2"><span class="size-2 rounded-full bg-accent" />{data.found}</span>
         </div>
@@ -36,14 +36,14 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
       <div class="flex h-full flex-col justify-end gap-3">
         <div class="grid grid-cols-3 gap-2">
           {Array.from({ length: n('count') }, (_, i) => (
-            <span class="blk relative flex h-12 items-center justify-center overflow-hidden rounded-lg border border-line-strong font-mono text-xs text-fg" style={`--d: ${i}`}>
+            <span class="blk relative flex h-12 items-center justify-center overflow-hidden rounded-lg border border-line-strong text-xs text-fg" style={`--d: ${i}`}>
               <span class="blk-fill absolute inset-0" />
               <span class="relative">1 {data.unit}</span>
             </span>
           ))}
         </div>
-        <p class="flex items-center gap-2 font-mono text-[11px] text-muted">
-          <span class="tl-key h-2 w-4 rounded-sm" />{data.before}<span class="text-dim">→</span><span class="size-2 rounded-sm bg-accent" />{data.after}
+        <p class="flex items-center gap-2 text-xs text-muted">
+          <span class="tl-key h-2 w-4 rounded-sm" />{data.before}<span class="text-muted">→</span><span class="size-2 rounded-sm bg-accent" />{data.after}
         </p>
       </div>
     )
@@ -51,7 +51,7 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
 
   {
     viz === 'shrink' && (
-      <div class="flex h-full flex-col justify-end gap-3 font-mono text-[11px] text-muted">
+      <div class="flex h-full flex-col justify-end gap-3 text-xs text-muted">
         <div>
           <p>{data.fromLabel}</p>
           <span class="mt-1.5 block h-2 rounded-full bg-line-strong" />
@@ -74,7 +74,7 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
             <span class="cell aspect-square rounded-[2px] bg-accent/70" style={`--c: ${i % n('cols')}`} />
           ))}
         </div>
-        <p class="font-mono text-[11px] text-muted">One cell per workflow</p>
+        <p class="text-xs text-muted">One cell per workflow</p>
       </div>
     )
   }
@@ -85,12 +85,12 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
         <div class="relative flex items-center justify-between px-1">
           <span class="chain-line absolute inset-x-3 top-1/2 h-px bg-accent/50" />
           {Array.from({ length: n('count') }, (_, i) => (
-            <span class="node relative flex size-9 items-center justify-center rounded-full border border-accent bg-canvas font-mono text-xs text-accent" style={`--d: ${i}`}>
+            <span class="node relative flex size-9 items-center justify-center rounded-full border border-accent bg-canvas text-sm font-medium text-accent" style={`--d: ${i}`}>
               {i + 1}
             </span>
           ))}
         </div>
-        <p class="font-mono text-[11px] text-muted">
+        <p class="text-xs text-muted">
           {data.count} {data.label}, one automated flow
         </p>
       </div>
@@ -107,7 +107,7 @@ const years = viz === 'timeline' ? Array.from({ length: n('end') - n('start') + 
             <span class="h-8 w-0.5 rounded-full bg-accent" />
           </span>
         </div>
-        <div class="flex justify-between font-mono text-[11px] text-muted">
+        <div class="flex justify-between text-xs text-muted">
           <span>0</span><span>50th</span><span class="text-accent">{data.label}</span>
         </div>
       </div>

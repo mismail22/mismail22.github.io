@@ -26,7 +26,7 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
       </p>
 
       <h1
-        class="mt-8 text-[clamp(2.5rem,0.9rem+5.6vw,5.75rem)] leading-[0.95] font-semibold tracking-[-0.045em] whitespace-nowrap"
+        class="text-hero mt-8 whitespace-nowrap"
         data-reveal
         style="--i: 1"
       >
@@ -65,9 +65,9 @@ const linkedin = site.socials.find((s) => s.icon === 'linkedin');
         }
       </div>
 
-      <ul class="mt-9 flex flex-wrap gap-2" aria-label="Core stack" data-reveal style="--i: 5">
-        {site.stack.map((s) => <li class="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">{s}</li>)}
-      </ul>
+      <p class="mt-8 text-sm text-muted" data-reveal style="--i: 5">
+        <span class="sr-only">Core stack: </span>{site.stack.join(" · ")}
+      </p>
     </div>
   </div>
 
