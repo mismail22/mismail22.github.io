@@ -1,7 +1,7 @@
 [
   {
     "id": "meta-tech-lead",
-    "role": "Network Engineer, Automation & Tooling (Tech Lead)",
+    "role": "Tech Lead, Infrastructure Platforms & AI",
     "company": "Meta",
     "location": "Menlo Park, CA",
     "start": "2024-03",
@@ -15,8 +15,8 @@
     "tags": ["React", "GraphQL", "PHP/Hack", "SQL", "LLM agents", "Network automation"]
   },
   {
-    "id": "meta-rd-environments",
-    "role": "R&D Environments Lead (Infrastructure Engineer)",
+    "id": "meta-rd-infrastructure",
+    "role": "Engineering Manager, R&D Infrastructure",
     "company": "Meta",
     "location": "Menlo Park, CA",
     "start": "2022-02",

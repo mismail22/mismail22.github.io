@@ -11,7 +11,7 @@
     "id": "acl-vlan",
     "skill": "ACL & VLAN policy at scale",
     "group": "network",
-    "where": "R&D Environments",
+    "where": "R&D Infrastructure",
     "evidence": "162 production code changes consolidating ACL policy and 40+ VLAN migrations, delivered with network-infra, network-security, and infra-security teams.",
     "order": 2
   },
@@ -59,7 +59,7 @@
     "id": "monitoring",
     "skill": "Monitoring & alerting",
     "group": "platform",
-    "where": "R&D Environments",
+    "where": "R&D Infrastructure",
     "evidence": "Onboarded Wi-Fi alerting into central monitoring, doubling coverage to ~2,500 access points. Improved incident alert detection by 31%.",
     "order": 8
   },

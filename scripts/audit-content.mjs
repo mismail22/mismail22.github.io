@@ -17,6 +17,7 @@ const BANNED = [
   [/\bSEV\s?S?\d{4,}/g, 'incident ID'],
   [/mohanad\.amr|492-9777|mismail@meta/g, 'personal contact detail'],
   [/mailto:/g, 'public email link'],
+  [/Network Engineer, Automation|Environments Lead|Network Operations Engineer|Senior Network Engineer/g, 'internal job title (use resume titles)'],
 ];
 
 const files = [];
