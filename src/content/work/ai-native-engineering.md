@@ -61,4 +61,4 @@ Designed and built the audit method, the agent, and the retrieval search, and wr
 
 ## What I'd do differently
 
-**Package the method for others from the first run.** My own AI speed-up mattered far less than what happened once the audit method and the Claude Code skill were written up for other teams, which is when adoption took off. I'd now treat the write-up as part of the deliverable, not an afterthought, because the multiplier only counts when it scales beyond my own keyboard.
+**The five years is the real finding.** The typo and the over-matching pattern weren't hard bugs; they survived five years because nothing checked what the classification logic produced. The audit fixed this instance, but an audit is a one-time sweep. What I do now: classification rules ship with assertions on their outputs (expected totals, match counts, unmatched rows), so the next defect fails a check the day it lands instead of waiting years for someone to look.

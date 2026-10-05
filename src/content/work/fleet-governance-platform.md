@@ -72,4 +72,4 @@ Tech lead and architect. I partnered with edge deployment, inventory operations,
 
 ## What I'd do differently
 
-**Audit the upstream data before building on it.** A governance platform is only as trustworthy as the classification logic beneath it. When I later ran an AI-assisted audit over inventory pipelines, it found a defect that had been hiding for five years. Next time, that audit happens on day one, before the first dashboard.
+**Settle identity in the first schema.** To ship the MVP fast, several entities kept their legacy identifiers. It was the right call for speed, but it bought a migration later: four entity types moved onto platform-native keys, with a pre-migration audit, an ID-map table, and a flag-gated read path to cut over without breaking consumers. Keys are the one decision that gets more expensive every week. Now I decide canonical identity before the first table ships, even when everything else is allowed to be rough.

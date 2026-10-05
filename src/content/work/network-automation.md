@@ -56,7 +56,6 @@ A change starts as intent: a peering migration, a turn-up, or a roadmap item. A 
 2. **Blocks over scripts.** Owning **102 workflows built from 314 reusable building blocks** made every fix and safety check reusable across the estate.
 3. **Make the library searchable.** A two-stage retrieval agent cut building-block lookup from **~10 minutes to seconds** and rolled out to network operations, deployment, and ops-automation teams.
 4. **Fill data gaps in the workflow, not in spreadsheets.** The peering-circuit migration workflow carries a detailed old-to-new device mapping (34 migrations, ~102 hours saved), and patch-panel initialization queries data-center asset data directly (~72 hours a month saved).
-5. **Simple beats clever.** The carrier-grade router system (Juniper PTX10003) went through several iterations and proposals; the design that shipped was the simplest, most scalable, and least disruptive to the network.
 
 ## Results
 
@@ -71,4 +70,4 @@ Engineer on the earlier workflow tooling, then owner of the workflow-automation 
 
 ## What I'd do differently
 
-**Build workflow-health detection in from day one.** Two incidents I worked started the same way: an automated workflow stopped or got stuck, and nobody knew until capacity or tickets were already affected. I added anomaly detection as an incident follow-up; next time, stalled-run and abnormal-duration alerts ship with the first workflow, not after the first outage.
+**Make the boring design the baseline.** The carrier-grade router system (Juniper PTX10003) went through several more elaborate proposals before landing on the one that shipped: simple, scalable, and barely disruptive to the network, saving ~480 hours a year. The iterations taught me something, but they cost calendar time with Edge partners waiting. Now the simplest viable design goes on the table first, and every alternative has to beat it on a named risk, not on elegance.
