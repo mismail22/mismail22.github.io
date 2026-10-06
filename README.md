@@ -42,7 +42,7 @@ Append an object to `src/data/projects.json`:
 
 ### Add a case study
 
-Copy one of the files in `src/content/work/`, change the front matter and the write-up, and it gets its own page at `/work/<file-name>` plus a chapter on the home page. Front matter holds the TL;DR (3 bullets), metrics, decision records, the lesson and its pull quote, and the diagram. Diagram nodes sit on a grid (`col`, `row`); `kind` controls styling (`source`, `core`, `guard`, `surface`, `target`); `callout: n` links a node to decision n; `edges` are `[from, to]` pairs.
+Copy one of the files in `src/content/work/`, change the front matter and the write-up, and it gets its own page at `/work/<file-name>` and a card on the Work page. The homepage features the three cases listed in `src/components/home/Systems.astro`. Front matter holds the TL;DR (3 bullets), metrics, decision records, the lesson and its pull quote, and the diagram. Diagram nodes sit on a grid (`col`, `row`); `kind` controls styling (`source`, `core`, `guard`, `surface`, `target`); `callout: n` links a node to decision n; `edges` are `[from, to]` pairs.
 
 ### Content audit
 

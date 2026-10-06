@@ -19,7 +19,7 @@ Night shift: dark, cinematic, visual-first. The first screen covers identity, th
 
 ## Rationale
 
-Mohanad rejected the earlier designs as text-heavy and not about him. He chose Night shift from three clickable prototypes and asked for the whole experience to be redesigned. His own documents and internal records agree on one through-line in every era: turning manual operations into governed systems.
+Mohanad rejected the earlier designs as text-heavy and not about him. He chose Night shift from three clickable prototypes and asked for the whole experience to be redesigned. His career record shows one through-line in every era: turning manual operations into governed systems.
 
 ## Impact
 
