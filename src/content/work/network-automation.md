@@ -6,10 +6,15 @@ role: Engineer, then tech lead
 period: 2020 – present
 stack: [Python, Hack/PHP, BGP, Juniper PTX, ACL / VLAN, Workflow orchestration]
 metrics:
-  - { value: '102 / 314', label: 'workflows / reusable blocks owned' }
-  - { value: '162', label: 'ACL changes generated from my first policy script' }
-  - { value: '~480 h', label: 'saved per year (router system)' }
-  - { value: '57%', label: 'faster workflows (push over polling)' }
+  - { value: '102 / 314', label: 'workflows / reusable blocks in the owned estate', qualifier: 'Roadmap and health ownership; not a claim of sole authorship.', evidenceType: scope }
+  - { value: '162', label: 'ACL changes seeded by the first policy script', qualifier: 'Team-scaled output after I authored the initial policy pattern.', evidenceType: measured }
+  - { value: '~480 h', label: 'engineering time saved per year', qualifier: 'Estimated annual effect of the carrier-grade router system.', evidenceType: estimated }
+  - { value: '57%', label: 'faster workflow execution', qualifier: 'Measured after polling steps moved to event wake-ups.', evidenceType: measured }
+plate:
+  title: A staged network change
+  caption: A reconstructed workflow showing intent, opt-in risk, scripted push, and before/after verification.
+  kind: workflow
+  sanitized: true
 tldr:
   - Owned a 102-workflow network automation estate built from 314 reusable blocks.
   - Added protocol-level safety to peering (BGP GTSM, session snapshots) and modeled carrier-grade router ports so automation can't misuse them.

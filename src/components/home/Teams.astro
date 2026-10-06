@@ -1,0 +1,128 @@
+---
+// The lab-infrastructure team: how it grew and what it held itself to.
+import MeterBar from '../viz/MeterBar.astro';
+import TeamGrid from '../viz/TeamGrid.astro';
+import { withBase } from '../../lib/format';
+---
+
+<section id="teams" class="teams" aria-labelledby="teams-title">
+  <div class="wrap">
+    <header class="head" data-reveal>
+      <p class="eyebrow">02 · Teams</p>
+      <h2 id="teams-title" class="display-m">Operating model first.<br />Headcount second.</h2>
+      <p class="lead">From 2022 to 2024 I led lab infrastructure for about 1,000 research labs and grew the team from 5 to 24.</p>
+    </header>
+
+    <div class="grid">
+      <div class="growth" data-reveal>
+        <p class="big">5<span class="arrow">→</span>24</p>
+        <p class="big-label">people in two years</p>
+        <TeamGrid />
+      </div>
+
+      <ul class="stats">
+        <li data-reveal style="--i: 1">
+          <p class="value">96.85%</p>
+          <p class="label">Repair SLA against a 95% target, with 99% availability</p>
+          <MeterBar value={96.85} target={95} min={90} max={100} />
+        </li>
+        <li data-reveal style="--i: 2">
+          <p class="value">37% <span class="to">→</span> 83%</p>
+          <p class="label">Partner-team incident participation after a shared-ownership charter</p>
+          <MeterBar value={83} from={37} />
+        </li>
+        <li data-reveal style="--i: 3">
+          <p class="value">40% <span class="to">→</span> 75%</p>
+          <p class="label">Incidents the team handled on its own, after training and runbooks</p>
+          <MeterBar value={75} from={40} />
+        </li>
+      </ul>
+    </div>
+
+    <a class="link-arrow more" href={withBase('/about#leadership')}>How the team was built <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<style>
+  .teams {
+    padding-block: clamp(88px, 12vw, 160px);
+    border-top: 1px solid var(--line);
+  }
+  .head {
+    display: grid;
+    gap: 18px;
+    max-width: 760px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 48px 24px;
+    margin-top: clamp(48px, 7vw, 88px);
+  }
+  .growth {
+    grid-column: 1 / span 5;
+  }
+  .big {
+    color: var(--ink);
+    font-size: clamp(5rem, 3rem + 7vw, 9rem);
+    font-weight: 800;
+    font-stretch: 68%;
+    line-height: 0.85;
+    font-variant-numeric: tabular-nums;
+  }
+  .arrow {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .big-label {
+    margin: 10px 0 28px;
+    color: var(--muted);
+    font: 500 12px/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .stats {
+    display: grid;
+    grid-column: 7 / -1;
+    align-content: start;
+    gap: 36px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stats li {
+    display: grid;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .value {
+    color: var(--ink);
+    font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem);
+    font-weight: 800;
+    font-stretch: 74%;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .to {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .label {
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .more {
+    margin-top: 40px;
+  }
+
+  @media (max-width: 1023px) {
+    .growth,
+    .stats {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

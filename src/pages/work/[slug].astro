@@ -1,21 +1,15 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import ArrowLeft from '@lucide/astro/icons/arrow-left';
-import ArrowRight from '@lucide/astro/icons/arrow-right';
 import Footer from '../../components/Footer.astro';
 import Navbar from '../../components/Navbar.astro';
 import ArchDiagram from '../../components/ui/ArchDiagram.astro';
-import Button from '../../components/ui/Button.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site';
 import { withBase } from '../../lib/format';
 
 export async function getStaticPaths() {
   const studies = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
-  return studies.map((entry, i) => ({
-    params: { slug: entry.id },
-    props: { entry, index: i, next: studies[(i + 1) % studies.length] },
-  }));
+  return studies.map((entry, index) => ({ params: { slug: entry.id }, props: { entry, index, next: studies[(index + 1) % studies.length] } }));
 }
 
 interface Props {
@@ -26,230 +20,497 @@ interface Props {
 
 const { entry, index, next } = Astro.props;
 const { data } = entry;
-const { Content, headings } = await render(entry);
-
-// Table of contents: markdown sections, then the decision records and lesson.
-const sections = headings.filter((h) => h.depth === 2);
-const toc = [
-  ...sections.map((h) => ({ id: h.slug, text: h.text })),
-  { id: 'decisions', text: 'Key decisions' },
-  { id: 'lesson', text: "What I'd do differently" },
-];
-const num = (n: number) => String(n).padStart(2, '0');
-const legend = [
-  { kind: 'source', label: 'Source data' },
+const { Content } = await render(entry);
+const kinds = [
+  { kind: 'source', label: 'Source' },
   { kind: 'core', label: 'Core service' },
-  { kind: 'guard', label: 'Safety check' },
+  { kind: 'guard', label: 'Guardrail' },
   { kind: 'surface', label: 'Interface' },
-  { kind: 'target', label: 'Outcome / target' },
-];
+  { kind: 'target', label: 'Outcome' },
+].filter((k) => data.diagram.nodes.some((node) => node.kind === k.kind));
 ---
 
 <BaseLayout title={`${data.title} · ${site.name}`} description={data.summary}>
-  <Navbar home={false} />
-  <main id="main" tabindex="-1" class="focus:outline-none">
-    <article class="relative pt-32 pb-24 sm:pt-40">
-      <div class="bg-grid absolute inset-x-0 top-0 -z-10 h-[32rem] [mask-image:linear-gradient(to_bottom,#000,transparent)]" aria-hidden="true"></div>
+  <Navbar current="work" />
+  <main id="main" tabindex="-1">
+    <article>
+      <header class="wrap case-head">
+        <a class="back" href={withBase('/work')}><span aria-hidden="true">←</span> All work</a>
+        <p class="eyebrow">Case 0{index + 1} · {data.period}</p>
+        <h1 class="display-l">{data.title}</h1>
+        <p class="lead">{data.tagline}</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>{data.role}</dd></div>
+          <div><dt>Period</dt><dd>{data.period}</dd></div>
+          <div class="stack"><dt>Stack</dt><dd>{data.stack.join(' · ')}</dd></div>
+        </dl>
+      </header>
 
-      <!-- Header -->
-      <header class="container-page">
-        <a href={withBase('/#systems')} class="no-print inline-flex items-center gap-2 text-sm text-muted hover:text-fg">
-          <ArrowLeft class="size-3.5" aria-hidden="true" />
-          All systems
-        </a>
-        <p class="mt-8 text-sm text-muted">
-          <span class="text-accent">Case {num(index + 1)}</span> · {data.role} · {data.period}
-        </p>
-        <h1 class="text-display mt-4 max-w-4xl">{data.title}</h1>
-        <p class="mt-5 max-w-3xl text-xl leading-snug text-pretty text-muted sm:text-2xl">{data.tagline}</p>
-        <p class="mt-6 text-sm text-muted">{data.stack.join(' · ')}</p>
-
-        <div class="mt-10 grid gap-8 lg:grid-cols-12">
-          <aside class="rounded-2xl border border-accent/25 bg-accent/[0.04] p-6 lg:col-span-5" aria-label="TL;DR">
-            <p class="text-sm font-medium text-accent">TL;DR</p>
-            <ul class="mt-3 space-y-2.5 text-base leading-relaxed text-prose">
-              {
-                data.tldr.map((t) => (
-                  <li class="flex gap-3">
-                    <span class="mt-[0.7em] h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
-                    {t}
-                  </li>
-                ))
-              }
-            </ul>
-          </aside>
-          <dl class="grid grid-cols-2 gap-x-8 gap-y-6 self-center lg:col-span-7 lg:grid-cols-2">
+      <section class="outcomes" aria-labelledby="outcomes-title">
+        <div class="wrap">
+          <h2 id="outcomes-title" class="eyebrow">Outcomes with provenance</h2>
+          <dl class="metric-grid">
             {
-              data.metrics.map((m) => (
-                <div class="flex flex-col-reverse gap-1 border-l border-line pl-5">
-                  <dt class="text-sm text-muted">{m.label}</dt>
-                  <dd class="text-metric text-fg">{m.value}</dd>
+              data.metrics.map((metric, i) => (
+                <div data-reveal style={`--i: ${i}`}>
+                  <dt class="value">{metric.value}</dt>
+                  <dd>
+                    <p class="label">{metric.label}</p>
+                    <span class="evidence" data-type={metric.evidenceType}>
+                      {metric.evidenceType}
+                    </span>
+                    <p class="qualifier">{metric.qualifier}</p>
+                  </dd>
                 </div>
               ))
             }
           </dl>
         </div>
-      </header>
+      </section>
 
-      <!-- Architecture band -->
-      <figure class="mt-16 border-y border-line bg-band py-10 sm:py-14">
-        <div class="container-page">
-          <figcaption class="mb-6 flex flex-wrap items-center justify-between gap-4">
-            <span class="text-sm text-muted">Architecture</span>
-            <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted" aria-label="Legend">
-              {
-                legend.map((l) => (
-                  <li class="flex items-center gap-2">
-                    <span class={`legend-swatch legend-swatch--${l.kind}`} aria-hidden="true" />
-                    {l.label}
-                  </li>
-                ))
-              }
-              <li class="flex items-center gap-2">
-                <span class="flex size-4 items-center justify-center rounded-full border border-accent text-xs text-accent" aria-hidden="true">1</span>
-                Decision
+      <section class="wrap tldr" aria-labelledby="tldr-title">
+        <h2 id="tldr-title" class="eyebrow">In three lines</h2>
+        <ol>
+          {
+            data.tldr.map((line, i) => (
+              <li data-reveal style={`--i: ${i}`}>
+                <span class="n">0{i + 1}</span>
+                <p>{line}</p>
               </li>
-            </ul>
-          </figcaption>
-          <div class="bg-dots rounded-2xl border border-line p-4 sm:p-6" style={`view-transition-name: diagram-${entry.id}`}>
-            <div class="hidden lg:block">
-              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" />
-            </div>
-            <div class="mx-auto max-w-md lg:hidden">
-              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture diagram`} calloutHref="#decision-" vertical />
-            </div>
-          </div>
+            ))
+          }
+        </ol>
+      </section>
+
+      <figure class="wrap plate" aria-labelledby="plate-title">
+        <figcaption class="plate-head">
+          <p class="eyebrow">Figure 01 · {data.plate.sanitized ? 'Sanitized reconstruction' : data.plate.kind}</p>
+          <h2 id="plate-title" class="display-s">{data.plate.title}</h2>
+          <p class="plate-caption">{data.plate.caption}</p>
+        </figcaption>
+        <div class="diagram">
+          <div class="wide"><ArchDiagram diagram={data.diagram} label={`${data.title}: ${data.plate.title}`} calloutHref="#decision-" /></div>
+          <div class="tall"><ArchDiagram diagram={data.diagram} label={`${data.title}: ${data.plate.title}`} calloutHref="#decision-" vertical /></div>
         </div>
+        <ul class="key" aria-label="Diagram key">
+          {kinds.map((k) => <li><i class:list={['sw', k.kind]} />{k.label}</li>)}
+          <li><i class="sw callout">1</i>Links to a decision below</li>
+        </ul>
       </figure>
 
-      <!-- Body with sticky table of contents -->
-      <div class="container-page mt-16 grid gap-10 lg:grid-cols-12">
-        <nav class="lg:col-span-3" aria-label="On this page" data-toc>
-          <ol class="flex gap-2 overflow-x-auto pb-2 lg:sticky lg:top-28 lg:flex-col lg:gap-1 lg:overflow-visible lg:border-l lg:border-line lg:pb-0">
-            {
-              toc.map((item, i) => (
-                <li class="shrink-0">
-                  <a
-                    href={`#${item.id}`}
-                    class="toc-link flex gap-3 rounded-full border border-line px-3 py-1.5 text-sm whitespace-nowrap text-muted transition-colors hover:text-fg lg:-ml-px lg:rounded-none lg:border-0 lg:border-l lg:border-transparent lg:py-1.5 lg:pl-4 lg:whitespace-normal"
-                    data-toc-link
-                  >
-                    <span class="text-sm text-muted">{num(i + 1)}</span>
-                    {item.text}
-                  </a>
-                </li>
-              ))
-            }
-          </ol>
-        </nav>
-
-        <div class="lg:col-span-9">
-          <div class="prose-cp">
-            <Content />
-          </div>
-
-          <!-- Decision records -->
-          <section id="decisions" class="mt-16 max-w-[64ch]" data-toc-target aria-labelledby="decisions-title">
-            <p class="text-sm font-medium text-accent">{num(sections.length + 1)}</p>
-            <h2 id="decisions-title" class="text-title mt-2">Key decisions</h2>
-            <ol class="mt-6 space-y-5">
-              {
-                data.decisions.map((d, i) => (
-                  <li id={`decision-${i + 1}`} class="scroll-mt-28 rounded-2xl border border-line bg-surface p-6 target:border-accent/60">
-                    <h3 class="flex items-start gap-3 text-lg leading-snug font-medium text-fg">
-                      <span class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border border-accent text-sm font-medium text-accent">{i + 1}</span>
-                      {d.title}
-                    </h3>
-                    <dl class="mt-4 grid gap-x-8 gap-y-4 text-base leading-relaxed sm:grid-cols-2">
-                      {d.alternative && (
-                        <div>
-                          <dt class="text-sm text-muted">Alternative considered</dt>
-                          <dd class="mt-1 text-prose">{d.alternative}</dd>
-                        </div>
-                      )}
-                      <div class:list={[!d.alternative && 'sm:col-span-2']}>
-                        <dt class="text-sm text-muted">Why</dt>
-                        <dd class="mt-1 text-prose">{d.why}</dd>
-                      </div>
-                      {d.tradeoff && (
-                        <div class="sm:col-span-2">
-                          <dt class="text-sm text-muted">Trade-off</dt>
-                          <dd class="mt-1 text-prose">{d.tradeoff}</dd>
-                        </div>
-                      )}
-                    </dl>
-                  </li>
-                ))
-              }
-            </ol>
-          </section>
-
-          <!-- Lesson -->
-          <section id="lesson" class="mt-16 max-w-[64ch]" data-toc-target aria-labelledby="lesson-title">
-            <p class="text-sm font-medium text-accent">{num(sections.length + 2)}</p>
-            <h2 id="lesson-title" class="text-title mt-2">What I'd do differently</h2>
-            <blockquote class="text-title mt-6 border-l-2 border-accent pl-6 font-normal text-fg">
-              {data.pullQuote}
-            </blockquote>
-            <p class="mt-6 leading-[1.75] text-prose">{data.lesson}</p>
-          </section>
-
-          <nav class="mt-20 grid max-w-[64ch] gap-4 sm:grid-cols-2" aria-label="More">
-            <a href={withBase(`/work/${next.id}`)} class="panel panel--link group block p-6">
-              <p class="text-sm text-muted">Next case study</p>
-              <p class="mt-3 flex items-center justify-between gap-3 text-lg font-medium text-fg">
-                {next.data.title}
-                <ArrowRight class="size-5 text-accent transition-transform group-hover:translate-x-1" aria-hidden="true" />
-              </p>
-            </a>
-            <div class="panel flex flex-col justify-between gap-4 p-6">
-              <p class="text-sm text-muted">Want the deeper version?</p>
-              <Button href={withBase('/#contact')} class="self-start rounded-full">Get in touch</Button>
-            </div>
-          </nav>
-        </div>
+      <div class="wrap body">
+        <div class="prose-night"><Content /></div>
       </div>
+
+      <section id="decisions" class="wrap decisions" aria-labelledby="decisions-title">
+        <p class="eyebrow">Decision ledger</p>
+        <h2 id="decisions-title" class="display-m">The choices that shaped it.</h2>
+        <ol>
+          {
+            data.decisions.map((decision, i) => (
+              <li id={`decision-${i + 1}`} class="decision" data-reveal>
+                <p class="n">Decision 0{i + 1}</p>
+                <h3 class="display-s">{decision.title}</h3>
+                <div class:list={['cols', !decision.alternative && 'single']}>
+                  {decision.alternative && (
+                    <div class="alt">
+                      <p class="k">Alternative considered</p>
+                      <p>{decision.alternative}</p>
+                    </div>
+                  )}
+                  <div class="why">
+                    <p class="k">Why this</p>
+                    <p>{decision.why}</p>
+                  </div>
+                </div>
+                {decision.tradeoff && (
+                  <p class="tradeoff">
+                    <span class="k">Tradeoff</span>
+                    {decision.tradeoff}
+                  </p>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section id="reflection" class="wrap reflection" aria-labelledby="reflection-title">
+        <p class="eyebrow">Reflection</p>
+        <h2 id="reflection-title" class="sr-only">What I would change next time</h2>
+        <blockquote class="quote">{data.pullQuote}</blockquote>
+        <p class="lesson">{data.lesson}</p>
+      </section>
+
+      <nav class="wrap next" aria-label="Next case study">
+        <p class="eyebrow">Next case</p>
+        <a class="next-link" href={withBase(`/work/${next.id}`)}>
+          <span class="display-m">{next.data.title}</span>
+          <span class="next-arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
     </article>
   </main>
   <Footer />
 </BaseLayout>
 
 <style>
-  .legend-swatch {
-    width: 14px;
-    height: 10px;
-    border-radius: 3px;
-    border: 1px solid var(--color-line-strong);
-    background: var(--color-surface-2);
-  }
-  .legend-swatch--core {
-    border-color: color-mix(in oklab, var(--color-accent) 55%, transparent);
-    background: var(--color-surface);
-  }
-  .legend-swatch--guard {
-    border: 1px dashed var(--color-amber);
-  }
-  .legend-swatch--surface {
-    border-style: dotted;
-  }
-  .legend-swatch--target {
-    border-color: var(--color-accent);
-    background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
+  main:focus {
+    outline: none;
   }
 
-  .toc-link[aria-current='true'] {
-    color: var(--color-fg);
-    border-color: var(--color-accent);
+  .case-head {
+    display: grid;
+    gap: 18px;
+    padding-block: clamp(40px, 7vw, 96px) clamp(40px, 6vw, 72px);
+  }
+  .back {
+    justify-self: start;
+    margin-bottom: 18px;
+    color: var(--muted);
+    font: 500 12px/1 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 150ms ease;
+  }
+  .back:hover {
+    color: var(--ink);
+  }
+  .case-head .lead {
+    max-width: 56ch;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px 24px;
+    margin-top: 18px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .facts .stack {
+    grid-column: span 2;
+  }
+  .facts dt {
+    color: var(--dim);
+    font: 500 11px/1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .facts dd {
+    margin: 6px 0 0;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.45;
   }
 
-  @media (min-width: 64rem) {
-    .toc-link[aria-current='true'] {
-      border-color: transparent;
-      border-left-color: var(--color-accent);
+  .outcomes {
+    padding-block: clamp(40px, 6vw, 72px);
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 24px;
+    margin: 28px 0 0;
+  }
+  .metric-grid > div {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+  .value {
+    color: var(--ink);
+    font-size: clamp(2.4rem, 1.6rem + 2.4vw, 4rem);
+    font-weight: 800;
+    font-stretch: 72%;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric-grid dd {
+    display: grid;
+    justify-items: start;
+    gap: 8px;
+    margin: 0;
+  }
+  .label {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .qualifier {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  .tldr {
+    padding-block: clamp(56px, 8vw, 104px);
+  }
+  .tldr ol {
+    display: grid;
+    gap: 0;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .tldr li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tldr .n {
+    color: var(--signal);
+    font: 600 12px/2 var(--mono);
+  }
+  .tldr p {
+    max-width: 60ch;
+    color: var(--ink);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+    line-height: 1.4;
+  }
+
+  .plate {
+    margin: 0 auto;
+    padding-bottom: clamp(56px, 8vw, 104px);
+  }
+  .plate-head {
+    display: grid;
+    gap: 12px;
+    max-width: 760px;
+  }
+  .plate-caption {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .diagram {
+    margin-top: 28px;
+    padding: clamp(18px, 3vw, 40px);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 0) 0 0 / 22px 22px,
+      var(--bg);
+  }
+  .tall {
+    display: none;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font: 500 11px/1.3 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .key li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sw {
+    display: inline-block;
+    width: 18px;
+    height: 12px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+  }
+  .sw.source {
+    background: var(--bg);
+  }
+  .sw.core {
+    border-color: var(--ink-2);
+  }
+  .sw.guard {
+    border-color: var(--signal);
+    background: rgb(255 176 32 / 0.08);
+  }
+  .sw.surface {
+    border-style: dashed;
+  }
+  .sw.target {
+    border-color: var(--ink);
+    background: var(--surface-2);
+  }
+  .sw.callout {
+    display: inline-grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--signal);
+    color: var(--signal-ink);
+    font-size: 9.5px;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .body {
+    padding-block: clamp(48px, 7vw, 88px);
+    border-top: 1px solid var(--line);
+  }
+
+  .decisions {
+    padding-block: clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .decisions h2 {
+    margin-top: 16px;
+  }
+  .decisions ol {
+    display: grid;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .decision {
+    display: grid;
+    gap: 16px;
+    padding-block: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .decision .n {
+    color: var(--signal);
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .cols.single {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 68ch;
+  }
+  .cols > div {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+  }
+  .cols > .why {
+    border-left: 2px solid var(--signal);
+    background: var(--surface);
+  }
+  .k {
+    color: var(--dim);
+    font: 600 10.5px/1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cols p:not(.k) {
+    color: var(--ink-2);
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+  .tradeoff {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    max-width: 80ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .tradeoff .k {
+    flex: none;
+    color: var(--signal);
+  }
+
+  .reflection {
+    padding-block: clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .quote {
+    max-width: 22ch;
+    margin: 20px 0 0;
+    color: var(--ink);
+    font-size: clamp(2.2rem, 1.4rem + 3vw, 4.25rem);
+    font-weight: 800;
+    font-stretch: 72%;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .quote::before {
+    content: '“';
+    color: var(--signal);
+  }
+  .quote::after {
+    content: '”';
+    color: var(--signal);
+  }
+  .lesson {
+    max-width: 68ch;
+    margin-top: 28px;
+    color: var(--ink-2);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .next {
+    padding-block: clamp(56px, 8vw, 104px);
+    border-top: 1px solid var(--line);
+  }
+  .next-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 18px;
+    transition: color 150ms ease;
+  }
+  .next-link:hover {
+    color: var(--signal);
+  }
+  .next-arrow {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+    transition: transform 200ms var(--ease-out);
+  }
+  .next-link:hover .next-arrow {
+    transform: translateX(6px);
+  }
+
+  @media (max-width: 1023px) {
+    .metric-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .wide {
+      display: none;
+    }
+    .tall {
+      display: block;
+    }
+  }
+  @media (max-width: 767px) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tldr li {
+      grid-template-columns: 36px 1fr;
+    }
+  }
+  @media (max-width: 479px) {
+    .metric-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
-
-<script>
-  import '../../scripts/toc';
-</script>

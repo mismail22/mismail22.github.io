@@ -1,0 +1,41 @@
+---
+// "57% faster": the full bar is the old run time, the solid bar the new one.
+interface Props {
+  /** New duration as a share of the old one, 0–1 */
+  ratio: number;
+}
+
+const { ratio } = Astro.props;
+const width = 324;
+---
+
+<div class="viz shrink" data-viz data-delay="550">
+  <svg viewBox={`0 0 ${width} 24`} aria-hidden="true" focusable="false">
+    <rect class="before" x="0" y="4" width={width} height="7" />
+    <rect class="after" x="0" y="14" width={Math.round(width * ratio)} height="7" />
+  </svg>
+</div>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    max-width: var(--viz-max, 340px);
+    height: auto;
+  }
+  .before {
+    fill: var(--ghost);
+  }
+  .after {
+    fill: var(--viz-ink, var(--ink));
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+    transition: transform 900ms cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+  :global(.js:not(.rm):not(.no-motion)) .shrink:not(.played) .after {
+    transform: scaleX(2.3);
+  }
+  .instant .after {
+    transition: none;
+  }
+</style>

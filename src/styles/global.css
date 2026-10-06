@@ -1,492 +1,318 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/geist';
+@import '@fontsource-variable/archivo/wdth.css';
 @import '@fontsource-variable/geist-mono';
 
+/* Night shift: near-black, warm off-white ink, one amber signal.
+   Archivo does double duty: condensed and heavy for display, normal width for
+   reading. Geist Mono carries labels, figures, and code. */
+
 @theme {
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', monospace;
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --color-bg: #0a0b0d;
+  --color-surface: #111317;
+  --color-line: #23262b;
+  --color-ink: #f2f1ec;
+  --color-muted: #8a8c91;
+  --color-signal: #ffb020;
+}
 
-  /* Control Plane, annotated. Text pairs meet WCAG AA on --color-canvas. */
-  --color-canvas: #07080a;
-  --color-band: #0b0d10; /* instrument bands: systems, incidents */
-  --color-band-warm: #0f0e0c; /* leadership band */
-  --color-surface: #0c0e11;
-  --color-surface-2: #13161a;
-  --color-line: #1d2126;
-  --color-line-strong: #2d333b;
-  --color-fg: #e6e8eb;
-  --color-prose: #b9bfc8; /* long-form text */
-  --color-muted: #9aa1ab; /* meta text */
-  --color-dim: #5d6570; /* decorative only (ticks, rules), never body text */
-  --color-accent: #34d399;
-  --color-accent-strong: #6ee7b7;
-  --color-on-accent: #03130c;
-  --color-signal: #5eead4; /* topology and diagram traffic only */
-  --color-amber: #f5b54a; /* incidents and guard nodes only */
-
+:root {
+  color-scheme: dark;
+  --bg: #0a0b0d;
+  --surface: #111317;
+  --surface-2: #16181d;
+  --line: #23262b;
+  --line-strong: #3b3f46;
+  --ghost: #2a2d33;
+  --ink: #f2f1ec;
+  --ink-2: #c3c2bb;
+  --muted: #8a8c91;
+  --dim: #62656b;
+  --signal: #ffb020;
+  --signal-ink: #0a0b0d;
+  --team-new: rgb(242 241 236 / 0.34);
+  --focus: #ffb020;
+  --display: 'Archivo Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@utility container-page {
-  margin-inline: auto;
-  width: 100%;
-  max-width: 88rem;
-  padding-inline: 1.25rem;
-
-  @variant sm {
-    padding-inline: 2rem;
-  }
-
-  @variant xl {
-    padding-inline: 3rem;
-  }
-}
-
-@utility bg-grid {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-@utility bg-dots {
-  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-@utility sys-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-/* Type scale: six steps, used everywhere. Nothing on the page is smaller than 12px. */
-@utility text-hero {
-  font-size: clamp(2.5rem, 0.9rem + 5.6vw, 5.75rem);
-  line-height: 0.95;
-  font-weight: 600;
-  letter-spacing: -0.045em;
-}
-
-/* Section titles. Weight 500 reads more premium than bold at large sizes. */
-@utility text-display {
-  font-size: clamp(2.25rem, 1.4rem + 3vw, 3.5rem);
-  line-height: 1.05;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-}
-
-/* Card and sub-section titles */
-@utility text-title {
-  font-size: clamp(1.375rem, 1.15rem + 0.7vw, 1.75rem);
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-
-@utility text-lead {
-  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
-  line-height: 1.6;
-  text-wrap: pretty;
-}
-
-/* Numbers: monospace is reserved for figures and code. */
-@utility text-metric-xl {
-  font-family: var(--font-mono);
-  font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
-}
-
-@utility text-metric {
-  font-family: var(--font-mono);
-  font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Small accent label above section titles */
-@utility eyebrow {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: var(--color-accent);
+  --nav-h: 60px;
 }
 
 @layer base {
   html {
-    color-scheme: dark;
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 24px);
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-canvas);
-    color: var(--color-fg);
-    font-family: var(--font-sans);
-    font-size: 1.0625rem;
-    line-height: 1.65;
+    margin: 0;
+    overflow-x: clip;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 17px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  section[id],
-  [data-toc-target] {
-    scroll-margin-top: 6rem;
-  }
-
   ::selection {
-    background-color: color-mix(in oklab, var(--color-accent) 30%, transparent);
-    color: var(--color-fg);
+    background: var(--signal);
+    color: var(--signal-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--focus);
     outline-offset: 3px;
-    border-radius: 6px;
   }
 
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
     }
-
     *,
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
     }
   }
 }
 
 @layer components {
-  /* Instrument panel: hairline border and inner top highlight. Only clickable
-     panels (.panel--link) get the cursor spotlight. */
-  .panel {
-    position: relative;
-    isolation: isolate;
-    border: 1px solid var(--color-line);
-    border-radius: 16px;
-    background:
-      linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 120px),
-      var(--color-surface);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
-    transition: border-color 250ms ease;
+  .wrap {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: clamp(20px, 3vw, 40px);
   }
 
-  .panel--link {
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 300ms ease;
-    }
-
-    &::before {
-      z-index: -1;
-      background: radial-gradient(
-        480px circle at var(--x, 50%) var(--y, 50%),
-        color-mix(in oklab, var(--color-accent) 6%, transparent),
-        transparent 45%
-      );
-    }
-
-    &::after {
-      padding: 1px;
-      background: radial-gradient(
-        280px circle at var(--x, 50%) var(--y, 50%),
-        color-mix(in oklab, var(--color-accent) 50%, transparent),
-        transparent 50%
-      );
-      mask:
-        linear-gradient(#000 0 0) content-box exclude,
-        linear-gradient(#000 0 0);
-    }
-
-    &:hover {
-      border-color: var(--color-line-strong);
-    }
-
-    &:hover::before,
-    &:hover::after {
-      opacity: 1;
-    }
+  .eyebrow {
+    color: var(--signal);
+    font: 600 11.5px/1.4 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-
-  .led {
-    position: relative;
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    flex-shrink: 0;
-    border-radius: 9999px;
-    background: var(--color-accent);
-    box-shadow: 0 0 10px color-mix(in oklab, var(--color-accent) 70%, transparent);
-  }
-  .led--pulse::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    animation: led-pulse 2.2s var(--ease-out) infinite;
-  }
-  .led--amber {
-    background: var(--color-amber);
-    box-shadow: 0 0 10px color-mix(in oklab, var(--color-amber) 70%, transparent);
+  .meta {
+    color: var(--muted);
+    font: 500 12px/1.45 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  .nav-link {
-    position: relative;
-    z-index: 1;
+  .display-l,
+  .display-m,
+  .display-s {
+    font-weight: 800;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .display-l {
+    font-size: clamp(3rem, 1.3rem + 6.6vw, 7.5rem);
+    font-stretch: 70%;
+    line-height: 0.86;
+    letter-spacing: -0.012em;
+  }
+  .display-m {
+    font-size: clamp(2.4rem, 1.35rem + 3.6vw, 5rem);
+    font-stretch: 72%;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+  }
+  .display-s {
+    font-size: clamp(1.65rem, 1.2rem + 1.5vw, 2.5rem);
+    font-weight: 780;
+    font-stretch: 75%;
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+  }
+
+  .lead {
+    color: var(--ink-2);
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.35rem);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .btn {
     display: inline-flex;
     align-items: center;
-    border-radius: 9999px;
-    padding: 0.375rem 0.875rem;
-    font-size: 0.875rem;
-    color: var(--color-muted);
-    transition: color 150ms ease;
-
-    &:hover,
-    &[aria-current='true'] {
-      color: var(--color-fg);
-    }
-  }
-
-  /* Native <details> accordion with a smooth height transition where supported. */
-  .log-entry {
-    interpolate-size: allow-keywords;
-
-    &::details-content {
-      block-size: 0;
-      overflow: hidden;
-      transition:
-        block-size 350ms var(--ease-out),
-        content-visibility 350ms allow-discrete;
-    }
-
-    &[open]::details-content {
-      block-size: auto;
-    }
-
-    & summary {
-      list-style: none;
-      cursor: pointer;
-      min-height: 44px;
-    }
-
-    & summary::-webkit-details-marker {
-      display: none;
-    }
-
-    & .chevron {
-      transition: transform 250ms var(--ease-out);
-    }
-
-    &[open] .chevron {
-      transform: rotate(90deg);
-    }
-  }
-
-  /* Long-form case-study copy. Headings are numbered (01 Problem, 02 …). */
-  .prose-cp {
-    counter-reset: h2;
-    color: var(--color-prose);
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    max-width: 64ch;
-
-    & h2 {
-      counter-increment: h2;
-      margin-top: 4rem;
-      margin-bottom: 1rem;
-      color: var(--color-fg);
-      font-size: 1.75rem;
-      line-height: 1.2;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    & h2::before {
-      content: counter(h2, decimal-leading-zero);
-      display: block;
-      margin-bottom: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      color: var(--color-accent);
-    }
-
-    & h2:first-child {
-      margin-top: 0;
-    }
-
-    & p,
-    & ul,
-    & ol,
-    & pre {
-      margin-bottom: 1.25rem;
-    }
-
-    & strong {
-      color: var(--color-fg);
-      font-weight: 600;
-    }
-
-    & code {
-      font-family: var(--font-mono);
-      font-size: 0.875em;
-      color: var(--color-fg);
-    }
-
-    & :not(pre) > code {
-      border: 1px solid var(--color-line);
-      border-radius: 6px;
-      background: var(--color-surface-2);
-      padding: 0.1em 0.35em;
-    }
-
-    & pre {
-      overflow-x: auto;
-      border: 1px solid var(--color-line);
-      border-radius: 12px;
-      background: var(--color-band) !important;
-      padding: 1.1rem 1.25rem;
-      font-size: 0.875rem;
-      line-height: 1.6;
-    }
-
-    & ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    & ul > li {
-      position: relative;
-      padding-left: 1.5rem;
-    }
-
-    & ul > li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.85em;
-      width: 0.75rem;
-      height: 1px;
-      background: color-mix(in oklab, var(--color-accent) 60%, transparent);
-    }
-
-    & li + li {
-      margin-top: 0.6rem;
-    }
-  }
-}
-
-/* Scroll reveal: only hides content when JS is running and motion is allowed,
-   so no-JS and reduced-motion visitors always see everything. */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
+    gap: 10px;
+    height: 46px;
+    padding: 0 22px;
+    font-size: 12px;
+    font-weight: 650;
+    font-stretch: 112%;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
     transition:
-      opacity 500ms var(--ease-out),
-      transform 500ms var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 60ms);
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+  .btn--primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn--primary:hover {
+    background: #ffffff;
+  }
+  .btn--ghost {
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+  }
+  .btn--ghost:hover {
+    border-color: var(--ink);
   }
 
-  .js [data-reveal]:not(.is-in) {
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 650;
+    font-stretch: 112%;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 150ms ease;
+  }
+  .link-arrow:hover {
+    color: var(--signal);
+  }
+  .link-arrow .arrow {
+    transition: transform 200ms var(--ease-out);
+  }
+  .link-arrow:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  /* Evidence tags next to numbers: measured, estimated, scope */
+  .evidence {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
+    font: 600 10px/1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .evidence[data-type='measured'] {
+    border-color: rgb(255 176 32 / 0.45);
+    color: var(--signal);
+  }
+
+  /* Scroll reveal: content is visible by default and only hidden once the
+     motion script is known to run. */
+  .js:not(.rm):not(.no-motion) [data-reveal] {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(18px);
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 700ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .js:not(.rm):not(.no-motion) [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
   }
 
-  /* Cross-document morph: case-study thumbnail → full diagram. */
-  @view-transition {
-    navigation: auto;
+  /* Case-study write-ups */
+  .prose-night {
+    max-width: 68ch;
+    color: var(--ink-2);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .prose-night h2 {
+    margin: 64px 0 16px;
+    color: var(--ink);
+    font-size: clamp(1.65rem, 1.2rem + 1.5vw, 2.5rem);
+    font-weight: 780;
+    font-stretch: 75%;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .prose-night h2:first-child {
+    margin-top: 0;
+  }
+  .prose-night h3 {
+    margin: 36px 0 10px;
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 650;
+  }
+  .prose-night p,
+  .prose-night ul,
+  .prose-night ol,
+  .prose-night pre {
+    margin: 0 0 20px;
+  }
+  .prose-night ul,
+  .prose-night ol {
+    padding-left: 20px;
+  }
+  .prose-night ul {
+    list-style: square;
+  }
+  .prose-night ol {
+    list-style: decimal;
+  }
+  .prose-night li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+  .prose-night li::marker {
+    color: var(--signal);
+  }
+  .prose-night strong {
+    color: var(--ink);
+    font-weight: 650;
+  }
+  .prose-night code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+  }
+  .prose-night :not(pre) > code {
+    padding: 1px 5px;
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+  .prose-night pre {
+    overflow-x: auto;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--signal);
+    background: var(--surface) !important;
+    color: var(--ink);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .prose-night pre code {
+    background: none;
+    color: inherit;
+  }
+  .prose-night a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+    text-underline-offset: 3px;
   }
 }
 
-@keyframes led-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(3.2);
-    opacity: 0;
-  }
-}
-
-/* Hiring managers save case studies as PDFs. */
 @media print {
-  html,
-  body {
-    background: #fff !important;
-    color: #111 !important;
-  }
-
-  header[data-site-header],
-  footer,
-  nav[aria-label='More'],
-  [data-toc],
-  [data-scroll-progress],
   .no-print {
     display: none !important;
   }
-
-  .panel,
-  .prose-cp pre {
-    background: #fff !important;
-    border-color: #ccc !important;
-    box-shadow: none !important;
-  }
-
-  .prose-cp,
-  .prose-cp strong,
-  .prose-cp h2,
-  .prose-cp code,
-  h1,
-  dd {
-    color: #111 !important;
-  }
-
-  .prose-cp h2::before {
-    color: #555 !important;
-  }
-
-  .arch .arch-edge,
-  .arch .arch-node rect {
-    stroke: #333 !important;
-  }
-
-  .arch .arch-node rect {
-    fill: #fff !important;
-  }
-
-  .arch .arch-label,
-  .arch .arch-sub {
-    fill: #111 !important;
-  }
-
-  .arch .arch-flow {
-    display: none;
-  }
-
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
+  body {
+    background: #fff;
+    color: #000;
   }
 }

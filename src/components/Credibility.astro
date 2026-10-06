@@ -1,0 +1,72 @@
+---
+import CompanyLogo from './ui/CompanyLogo.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<ul class:list={['cred', className]} aria-label="Experience and education">
+  <li>
+    <CompanyLogo company="meta" mono decorative class="logo" />
+    <span class="name">Meta</span>
+    <span class="detail">11 yrs</span>
+  </li>
+  <li>
+    <CompanyLogo company="vodafone" mono decorative class="logo" />
+    <span class="name">Vodafone</span>
+    <span class="detail">5 yrs</span>
+  </li>
+  <li>
+    <span class="badge" aria-hidden="true">BU</span>
+    <span class="name">Boston University</span>
+    <span class="detail">MBA, Honors</span>
+  </li>
+</ul>
+
+<style>
+  .cred {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 22px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--cred-fg, var(--ink-2));
+    font-family: var(--cred-font, var(--display));
+    font-size: var(--cred-size, 13px);
+    line-height: 1;
+  }
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+  li :global(.logo) {
+    width: 16px;
+    height: 16px;
+    color: var(--cred-mark, var(--ink));
+  }
+  .badge {
+    display: inline-grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--cred-mark, var(--ink));
+    color: var(--bg);
+    font: 700 8px/1 var(--display);
+    letter-spacing: 0.02em;
+  }
+  .name {
+    font-weight: 560;
+    color: var(--cred-name, var(--ink));
+  }
+  .detail {
+    color: var(--muted);
+  }
+</style>

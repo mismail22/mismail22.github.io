@@ -6,10 +6,15 @@ role: Designer and builder
 period: 2019 – present
 stack: [LLM agents, RAG, SQL, Python, React]
 metrics:
-  - { value: '5 yrs', label: 'defect hidden, then found' }
-  - { value: '< 1 wk', label: 'to peer-team adoption' }
-  - { value: '9 tools', label: 'LLM agent, shipped in one week' }
-  - { value: 'Top 1%', label: 'AI-assisted development, company-wide' }
+  - { value: '5 yrs', label: 'classification defect age', qualifier: 'Elapsed time between introduction and human-verified discovery.', evidenceType: measured }
+  - { value: '< 1 wk', label: 'to peer-team method adoption', qualifier: 'Adoption interval for the audit procedure, not the underlying code.', evidenceType: measured }
+  - { value: '9 tools', label: 'agent tool surface', qualifier: 'Three platform tools and six existing CLI commands.', evidenceType: scope }
+  - { value: 'Top 1%', label: 'AI-assisted development activity', qualifier: 'Internal telemetry; retained as secondary context rather than homepage proof.', evidenceType: scope }
+plate:
+  title: Claimed behavior → verified behavior
+  caption: A reconstructed audit loop; models propose candidates and queries against real data decide what is true.
+  kind: audit
+  sanitized: true
 tldr:
   - An LLM compared what each data pipeline claimed to do with what its code did; a human verified every candidate against real data.
   - It surfaced two small bugs that had misstated a nine-figure amount of inventory for five years; peer teams adopted the method the same week.

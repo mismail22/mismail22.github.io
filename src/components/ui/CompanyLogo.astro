@@ -11,12 +11,23 @@ export type Company = keyof typeof logos;
 interface Props {
   company: Company;
   class?: string;
+  /** Draw in currentColor instead of the brand color */
+  mono?: boolean;
+  /** Hide from assistive tech when a visible label sits next to the mark */
+  decorative?: boolean;
 }
 
-const { company, class: className } = Astro.props;
+const { company, class: className, mono = false, decorative = false } = Astro.props;
 const logo = logos[company];
 ---
 
-<svg class={className} viewBox="0 0 24 24" fill={logo.color} role="img" aria-label={logo.title}>
+<svg
+  class={className}
+  viewBox="0 0 24 24"
+  fill={mono ? 'currentColor' : logo.color}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : logo.title}
+  aria-hidden={decorative ? 'true' : undefined}
+>
   <path d={logo.path}></path>
 </svg>

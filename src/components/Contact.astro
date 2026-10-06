@@ -1,47 +1,42 @@
 ---
-import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
-import ContactForm from './ContactForm.astro';
+import SocialLinks from './SocialLinks.astro';
 import { site } from '../data/site';
-
-const channels = [...(site.email ? [{ label: 'Email', handle: site.email, href: `mailto:${site.email}`, external: false }] : []), ...site.socials.map((s) => ({ ...s, external: true }))];
 ---
 
-<section id="contact" aria-labelledby="contact-title" class="relative overflow-hidden border-t border-line py-28 sm:py-40">
-  <div class="container-page">
-    <p class="eyebrow" data-reveal>Hiring for a Staff+ infrastructure or infra EM role?</p>
-    <h2 id="contact-title" class="text-hero mt-4 font-medium" data-reveal style="--i: 1">
-      Let's build something.
-    </h2>
-
-    <div class:list={['mt-14 grid gap-12', site.formspreeId && 'lg:grid-cols-12']}>
-      <ul class:list={['flex flex-col gap-1', site.formspreeId && 'lg:col-span-5']} data-reveal style="--i: 2">
-        {
-          channels.map((c) => (
-            <li>
-              <a
-                href={c.href}
-                target={c.external ? '_blank' : undefined}
-                rel={c.external ? 'noopener me' : undefined}
-                class="text-title group inline-flex items-baseline gap-4 py-2 text-fg transition-colors hover:text-accent-strong"
-              >
-                {c.label}
-                <span class="text-base font-normal tracking-normal text-muted">{c.handle}</span>
-                <ArrowUpRight class="size-5 self-center text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true" />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-
-      {
-        site.formspreeId && (
-          <div class="lg:col-span-7" data-reveal>
-            <ContactForm />
-          </div>
-        )
-      }
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>04 · Contact</p>
+    <h2 id="contact-title" class="display-l" data-reveal>Let's talk.</h2>
+    <div class="row" data-reveal>
+      <p class="lead">{site.status}. LinkedIn is the fastest way to reach me.</p>
+      <SocialLinks size="lg" />
     </div>
-
-    <p class="mt-16 text-sm text-muted" data-reveal>{site.humanNote}</p>
+    {site.email && <p class="email"><a href={`mailto:${site.email}`}>{site.email}</a></p>}
   </div>
 </section>
+
+<style>
+  .contact {
+    padding-block: clamp(96px, 13vw, 180px);
+    border-top: 1px solid var(--line);
+  }
+  h2 {
+    margin-top: 20px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px 40px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .lead {
+    max-width: 40ch;
+  }
+  .email {
+    margin-top: 24px;
+  }
+</style>

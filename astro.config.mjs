@@ -13,6 +13,9 @@ const base = process.env.BASE || '/';
 export default defineConfig({
   site,
   base,
+  redirects: {
+    '/evidence': '/work',
+  },
   integrations: [sitemap()],
   devToolbar: { enabled: false },
   vite: {

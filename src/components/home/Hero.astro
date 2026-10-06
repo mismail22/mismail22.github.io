@@ -1,0 +1,134 @@
+---
+// The 30-second screen: who, the one-line claim, three proof charts, the career
+// route, and a way to reach out. No scrolling needed at 1440×900 or 390×844.
+import Credibility from '../Credibility.astro';
+import SocialLinks from '../SocialLinks.astro';
+import JourneyMap from '../viz/JourneyMap.astro';
+import Proof from '../viz/Proof.astro';
+import { site } from '../../data/site';
+import { withBase } from '../../lib/format';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap grid">
+    <p class="id">{site.identity}</p>
+    <div class="headline">
+      <h1 id="hero-title">{site.headline.map((line) => <span class="line">{line} </span>)}</h1>
+    </div>
+    <div class="side"><Proof /></div>
+  </div>
+
+  <div class="map"><JourneyMap /></div>
+
+  <div class="wrap actions">
+    <div class="cta">
+      <a class="btn btn--primary" href={withBase('/work')}>See the work <span aria-hidden="true">→</span></a>
+      <SocialLinks />
+    </div>
+    <Credibility />
+  </div>
+</section>
+
+<style>
+  .hero {
+    --map-maxh: clamp(200px, calc(100svh - 520px), 400px);
+    padding: clamp(14px, 3svh, 32px) 0 clamp(28px, 4svh, 44px);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .id,
+  .headline,
+  .side {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .id {
+    color: var(--signal);
+    font: 600 11.5px/1.4 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .headline {
+    container-type: inline-size;
+    margin-top: 12px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 10.4cqi, 8rem);
+    font-weight: 800;
+    font-stretch: 70%;
+    line-height: 0.86;
+    letter-spacing: -0.012em;
+    text-transform: uppercase;
+  }
+  .line {
+    display: block;
+  }
+  .side {
+    margin-top: 24px;
+  }
+
+  .map {
+    margin-top: clamp(16px, 2.6svh, 28px);
+    padding-inline: clamp(0px, 1vw, 16px);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 32px;
+    margin-top: clamp(14px, 2.4svh, 24px);
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .hero {
+      --proof-cols: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .id {
+      grid-column: 1 / span 9;
+      grid-row: 1;
+    }
+    .headline {
+      grid-column: 1 / span 9;
+      grid-row: 2;
+    }
+    .side {
+      grid-column: 10 / -1;
+      grid-row: 1 / span 2;
+      align-self: end;
+      margin-top: 0;
+      padding-left: 20px;
+      border-left: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .hero {
+      padding-top: 14px;
+    }
+    .headline {
+      margin-top: 10px;
+    }
+    .map {
+      margin-top: 18px;
+      padding-inline: 0;
+    }
+    .actions {
+      margin-top: 18px;
+    }
+  }
+</style>

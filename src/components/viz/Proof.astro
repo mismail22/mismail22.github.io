@@ -1,0 +1,129 @@
+---
+// Three outcomes drawn as data. Every chart says what one mark means, and every
+// number keeps a short qualifier; the case studies carry the full ones.
+import ProofShrink from './ProofShrink.astro';
+import ProofTeam from './ProofTeam.astro';
+import ProofTicks from './ProofTicks.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<ul class:list={['proof', className]}>
+  <li>
+    <p class="value">81<span class="arrow">→</span>10 <span class="unit">days</span></p>
+    <div class="slot"><ProofTicks /></div>
+    <p class="note"><span class="tag">Fleet disposal cycle · measured</span><span class="key">1 tick = 1 day</span></p>
+  </li>
+  <li>
+    <p class="value">57% <span class="unit">faster</span></p>
+    <div class="slot"><ProofShrink ratio={0.43} /></div>
+    <p class="note"><span class="tag">Workflow run time · measured</span><span class="key">Before / after</span></p>
+  </li>
+  <li>
+    <p class="value">5<span class="arrow">→</span>24 <span class="unit">people</span></p>
+    <div class="slot"><ProofTeam /></div>
+    <p class="note"><span class="tag">Team I led, 2022–24</span><span class="key">1 dot = 1 person</span></p>
+  </li>
+</ul>
+
+<style>
+  .proof {
+    display: grid;
+    grid-template-columns: var(--proof-cols, minmax(0, 1fr));
+    gap: var(--proof-gap, 22px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: grid;
+    gap: 7px;
+    align-content: start;
+    min-width: 0;
+  }
+  .value {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--value-size, 32px);
+    font-weight: 780;
+    font-stretch: 76%;
+    line-height: 1;
+    letter-spacing: -0.005em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .arrow {
+    display: inline-block;
+    margin-inline: 0.08em;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .unit {
+    color: var(--muted);
+    font-size: 0.42em;
+    font-weight: 650;
+    font-stretch: 100%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .slot {
+    margin-top: 3px;
+  }
+  .note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2px 12px;
+    margin: 0;
+  }
+  .tag {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+  .key {
+    color: var(--dim);
+    font: 500 10.5px/1.35 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 639px) {
+    .proof {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+    }
+    li {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      grid-template-areas:
+        'value slot'
+        'note note';
+      column-gap: 14px;
+      row-gap: 5px;
+      align-items: center;
+    }
+    .value {
+      grid-area: value;
+      font-size: 22px;
+    }
+    .slot {
+      grid-area: slot;
+      margin: 0;
+    }
+    .note {
+      grid-area: note;
+    }
+    .tag {
+      font-size: 11.5px;
+    }
+    .key {
+      font-size: 9.5px;
+    }
+  }
+</style>

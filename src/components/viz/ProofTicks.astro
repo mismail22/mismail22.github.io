@@ -1,0 +1,44 @@
+---
+// 81 → 10 days: one tick per day; 71 of them collapse away.
+const DAYS_BEFORE = 81;
+const DAYS_AFTER = 10;
+---
+
+<div class="viz ticks" data-viz data-delay="300">
+  <svg viewBox="0 0 324 24" aria-hidden="true" focusable="false">
+    {
+      Array.from({ length: DAYS_BEFORE }, (_, i) => (
+        <rect class:list={['tk', i >= DAYS_AFTER && 'gone']} x={i * 4} y="0" width="2.2" height="24" style={`--d:${(DAYS_BEFORE - 1 - i) * 5}`} />
+      ))
+    }
+  </svg>
+</div>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    max-width: var(--viz-max, 340px);
+    height: auto;
+  }
+  .tk {
+    fill: var(--viz-ink, var(--ink));
+  }
+  .gone {
+    fill: var(--ghost);
+    transform: scaleY(0.38);
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    transition:
+      fill 280ms ease,
+      transform 280ms cubic-bezier(0.3, 0.7, 0.3, 1);
+    transition-delay: calc(var(--d) * 1ms);
+  }
+  :global(.js:not(.rm):not(.no-motion)) .ticks:not(.played) .gone {
+    fill: var(--viz-ink, var(--ink));
+    transform: none;
+  }
+  .instant .gone {
+    transition: none;
+  }
+</style>

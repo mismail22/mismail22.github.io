@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content';
+import Footer from '../../components/Footer.astro';
+import Navbar from '../../components/Navbar.astro';
+import ArchDiagram from '../../components/ui/ArchDiagram.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/format';
+
+const studies = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map((entry) => entry.data);
+---
+
+<BaseLayout title="Work · Mohanad Ismail" description="Infrastructure platform, network automation, and AI-assisted engineering case studies by Mohanad Ismail.">
+  <Navbar current="work" />
+  <main id="main" tabindex="-1">
+    <header class="wrap page-head">
+      <p class="eyebrow">Work</p>
+      <h1 class="display-l">Systems, decisions,<br />and what changed.</h1>
+      <p class="lead">Public-safe case studies from infrastructure where correctness, operational risk, and team boundaries all mattered.</p>
+    </header>
+
+    <section class="wrap studies" aria-label="Case studies">
+      {
+        studies.map(({ id, data }, index) => (
+          <a class="study" href={withBase(`/work/${id}`)} data-reveal style={`--i: ${index}`}>
+            <div class="study-text">
+              <p class="num">
+                Case 0{index + 1} · {data.period}
+              </p>
+              <h2 class="display-s">{data.title}</h2>
+              <p class="tagline">{data.tagline}</p>
+              <dl class="metrics">
+                {data.metrics.slice(0, 2).map((metric) => (
+                  <div>
+                    <dt class="value">{metric.value}</dt>
+                    <dd>
+                      <span class="label">{metric.label}</span>
+                      <span class="evidence" data-type={metric.evidenceType}>
+                        {metric.evidenceType}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <span class="link-arrow">
+                Read the case <span class="arrow" aria-hidden="true">→</span>
+              </span>
+            </div>
+            <div class="study-visual" aria-hidden="true">
+              <ArchDiagram diagram={data.diagram} label={`${data.title} architecture`} compact />
+            </div>
+          </a>
+        ))
+      }
+    </section>
+
+    <section class="wrap more" aria-labelledby="more-title">
+      <p class="eyebrow">Also</p>
+      <h2 id="more-title" class="display-m">More systems</h2>
+      <ul class="projects">
+        {
+          projects.map((project) => (
+            <li data-reveal>
+              <div>
+                <h3 class="project-title">{project.title}</h3>
+                <p class="meta">{project.context}</p>
+              </div>
+              <p class="project-summary">{project.summary}</p>
+              <div class="project-metrics">
+                {project.metrics.map((metric) => (
+                  <p>
+                    <span class="pv">{metric.value}</span>
+                    <span class="pl">{metric.label}</span>
+                  </p>
+                ))}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+  .page-head {
+    display: grid;
+    gap: 20px;
+    padding-block: clamp(56px, 9vw, 120px) clamp(40px, 6vw, 72px);
+  }
+  .page-head .lead {
+    max-width: 58ch;
+  }
+
+  .studies {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+  .study {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 32px 24px;
+    padding-block: clamp(36px, 5vw, 64px);
+    border-bottom: 1px solid var(--line);
+    transition: background-color 200ms ease;
+  }
+  .study:hover {
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.015), transparent);
+  }
+  .study:hover h2 {
+    color: var(--signal);
+  }
+  .study:hover .link-arrow {
+    color: var(--signal);
+  }
+  .study:hover .arrow {
+    transform: translateX(4px);
+  }
+  .study-text {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    grid-column: 1 / span 6;
+  }
+  .study-visual {
+    grid-column: 8 / -1;
+    align-self: center;
+    padding: 20px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .num {
+    color: var(--signal);
+    font: 600 11px/1.3 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  h2 {
+    transition: color 150ms ease;
+  }
+  .tagline {
+    max-width: 52ch;
+    color: var(--ink-2);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 4px 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .value {
+    color: var(--ink);
+    font-size: 28px;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1;
+  }
+  dd {
+    display: grid;
+    justify-items: start;
+    gap: 7px;
+    margin: 6px 0 0;
+  }
+  .label {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+
+  .more {
+    padding-block: clamp(80px, 11vw, 140px);
+  }
+  .more h2 {
+    margin-top: 16px;
+  }
+  .projects {
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .projects li {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) minmax(0, 3fr);
+    gap: 16px 32px;
+    padding-block: 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .project-title {
+    color: var(--ink);
+    font-size: 19px;
+    font-weight: 800;
+    font-stretch: 78%;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .projects .meta {
+    margin-top: 6px;
+  }
+  .project-summary {
+    color: var(--ink-2);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+  .project-metrics {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+  .pv {
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: 800;
+    font-stretch: 78%;
+  }
+  .pl {
+    margin-left: 6px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  @media (max-width: 1023px) {
+    .study-text,
+    .study-visual {
+      grid-column: 1 / -1;
+    }
+    .projects li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

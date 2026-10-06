@@ -6,34 +6,60 @@ export const site = {
   name: 'Mohanad Ismail',
   handle: 'mohanad',
   role: 'Tech Lead · Infrastructure Platforms & Automation · Meta',
-  title: 'Mohanad Ismail · Infrastructure Platforms & Network Automation',
+  identity: 'Tech Lead, Infrastructure Platforms / Meta / 16 years',
+  title: 'Mohanad Ismail · Infrastructure Platforms & Automation',
   description:
-    'Network and infrastructure engineer, 16 years, 11 at Meta. Architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge and lab networks, and grew an R&D infrastructure team from 5 to 24.',
-  // Hero headline, split so the second half can be de-emphasized.
-  headline: ['I turn risky, manual infrastructure work', 'into guarded, automated systems.'],
-  intro:
-    'Network and infrastructure engineer, 16 years, 11 at Meta. I architected the governance platform for a multi-billion-dollar data-center rack inventory, automated network changes across backbone, edge, and lab networks, and earlier built and led an R&D infrastructure team. MBA (Honors), Boston University.',
+    'Mohanad Ismail turns manual infrastructure operations into systems that scale: 16 years from a national mobile network in Cairo to network and fleet automation at Meta.',
+  // One line per row of the hero headline.
+  headline: ['I turn manual', 'operations into', 'systems that scale.'],
   location: 'Menlo Park, CA',
-  status: 'Open to Staff+ IC & infra EM roles',
+  status: 'Open to Staff+ and engineering leadership roles in infrastructure',
 
-  // Hero "Track record": result as the big value, baseline/context in the
-  // caption, and a small visual of the change. `count` animates the number.
-  heroTelemetry: [
-    { label: 'In infrastructure', value: '16', unit: 'yrs', count: { to: 16 }, caption: 'Vodafone 5 · Meta 11', viz: 'ruler' },
-    { label: 'Fleet on my platform', value: 'Multi-$B', caption: '27,000+ racks in the first guarded sweep', viz: 'scale' },
-    { label: 'To retire hardware', value: '10', unit: 'days', count: { from: 81, to: 10 }, caption: 'down from 81 days', viz: 'shrink' },
-    { label: 'Team I built', value: '24', count: { from: 5, to: 24 }, caption: 'from 5 people, in two years', viz: 'dots' },
+  // The career route drawn on the hero map. `label` places the map caption.
+  journey: [
+    {
+      key: 'cairo',
+      city: 'Cairo',
+      years: '2010–2015',
+      org: 'Vodafone',
+      what: 'Ran a national mobile packet core and automated its operations',
+      lat: 30.04,
+      lng: 31.24,
+      label: 'left',
+    },
+    {
+      key: 'singapore',
+      city: 'Singapore',
+      years: '2015–2018',
+      org: 'Facebook',
+      what: 'Integrated 10+ telecom carriers for apps used by billions',
+      lat: 1.35,
+      lng: 103.82,
+      label: 'below-left',
+    },
+    {
+      key: 'menlo',
+      city: 'Menlo Park',
+      years: '2018–now',
+      org: 'Meta',
+      what: 'Automated network operations, led a 24-person lab team, built a fleet system of record',
+      lat: 37.45,
+      lng: -122.18,
+      label: 'below',
+    },
   ],
-  stack: ['Python', 'Hack/PHP', 'SQL', 'GraphQL/React', 'BGP', 'Workflow orchestration', 'LLM agents'],
+
+  careerEras: [
+    { years: '2010–2015', place: 'Cairo', title: 'Operate the network', body: 'National mobile packet core, routing, and the physical consequences of infrastructure failure.' },
+    { years: '2015–2022', place: 'Singapore → Menlo Park', title: 'Automate the operation', body: 'Carrier integrations, network workflows, incident response, ML intake, and hardware lifecycle automation.' },
+    { years: '2022–2024', place: 'Menlo Park', title: 'Design the operating model', body: 'Reliability, ownership, escalation, and a blended organization scaled from 5 to 24.' },
+    { years: '2024–now', place: 'Menlo Park', title: 'Build the control plane', body: 'Live fleet governance, guarded bulk actions, auditability, and AI-assisted engineering.' },
+  ],
 
   // Optional public email. Leave empty to keep it off the site.
   email: '' as string,
   // Path inside /public (e.g. 'resume.pdf'). Leave empty to hide the Resume buttons.
   resume: '' as string,
-  // Create a free form at https://formspree.io and paste its ID (the part
-  // after /f/). Messages go to your inbox without exposing your address.
-  // The contact form stays hidden until this is set.
-  formspreeId: '' as string,
   repo: 'https://github.com/mismail22/mismail22.github.io',
 
   socials: [
@@ -41,27 +67,6 @@ export const site = {
     { label: 'GitHub', handle: 'mismail22', href: 'https://github.com/mismail22', icon: 'github' },
     // { label: 'X', handle: 'yourhandle', href: 'https://x.com/yourhandle', icon: 'x' },
   ],
-
-  // Team section
-  teamPrinciples: [
-    {
-      title: 'Build the operating model before the headcount.',
-      body: 'Every new person got a clear lane, an escalation path, and a way to grow out of it. That structure, more than hiring speed, is what let the team grow from 5 to 24 without losing reliability.',
-    },
-    {
-      title: 'Shared ownership beats escalation.',
-      body: 'A long-running incident-ownership conflict ended with a shared charter across network, network-security, and infra-security teams, instead of another round of escalations.',
-    },
-  ],
-  teamProof: [
-    { value: '96.85%', label: 'repair SLA vs 95% target' },
-    { value: '382', label: 'lab deployments in six months' },
-    { value: '10 → 3', label: 'days to resolve help requests' },
-    { value: '37 → 83%', label: 'partner incident engagement' },
-  ],
-  teamNotes: ['Promoted a direct report into a lab-operations lead role', 'Mentored 4 engineers through complex technical designs', '19 behavioral interview loops'],
-  teamClosing:
-    'In 2024 I moved into a hands-on tech-lead role to architect the fleet platform, while completing a two-year MBA with Honors (2026).',
 
   // Employers in the experience section (roles are grouped by `org`)
   orgs: [

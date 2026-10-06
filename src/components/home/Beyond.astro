@@ -1,0 +1,72 @@
+---
+import { site } from '../../data/site';
+
+const mba = site.education[0];
+---
+
+<section class="beyond" aria-labelledby="beyond-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>03 · Beyond the job</p>
+    <h2 id="beyond-title" class="sr-only">Beyond the job</h2>
+    <div class="grid">
+      <article data-reveal>
+        <p class="big">MBA</p>
+        <h3 class="title">{mba.degree} · Boston University Questrom</h3>
+        <p class="body">Analytics, strategic leadership, and risk management. Led a team to a top-5% finish in an international strategy simulation.</p>
+      </article>
+      <article data-reveal style="--i: 1">
+        <p class="big">12<span class="th">th</span></p>
+        <h3 class="title">2016 Windsurfing World Championship</h3>
+        <p class="body">Different environment, same instinct: read the conditions, make the adjustment, commit.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .beyond {
+    padding-block: clamp(88px, 12vw, 160px);
+    border-top: 1px solid var(--line);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 24px;
+    margin-top: 36px;
+  }
+  article {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .big {
+    color: var(--ink);
+    font-size: clamp(5rem, 3rem + 7vw, 10rem);
+    font-weight: 800;
+    font-stretch: 68%;
+    line-height: 0.82;
+  }
+  .th {
+    color: var(--signal);
+    font-size: 0.4em;
+    vertical-align: top;
+  }
+  .title {
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 650;
+  }
+  .body {
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (max-width: 767px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

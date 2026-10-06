@@ -1,0 +1,143 @@
+---
+// The two classification bugs, as synthetic SQL (the real code is internal).
+type Part = { text: string; bug?: 1 | 2 };
+type Line = { parts: Part[]; note?: { bug: 1 | 2; text: string } };
+
+const lines: Line[] = [
+  { parts: [{ text: '-- bucket every rack by status and type' }] },
+  { parts: [{ text: 'CASE' }] },
+  { parts: [{ text: "  WHEN status = " }, { text: "'dispossed'", bug: 1 }, { text: " THEN 'disposed'" }] },
+  { parts: [], note: { bug: 1, text: '                ↑ typo: never matches' } },
+  { parts: [{ text: '  WHEN rack_type LIKE ' }, { text: "'%STOR%'", bug: 2 }, { text: " THEN 'storage'" }] },
+  { parts: [], note: { bug: 2, text: "                      ↑ also matches 'RESTORE'" } },
+  { parts: [{ text: 'END' }] },
+];
+---
+
+<figure class="sql" data-viz data-delay="200">
+  <div class="head">
+    <span>classification.sql</span>
+    <span class="synthetic">Synthetic example</span>
+  </div>
+  <pre class="code"><code>{lines.map((line) => (
+    <span class:list={['line', line.note && `note note-${line.note.bug}`, line.parts[0]?.text.startsWith('--') && 'comment']}>{line.note ? line.note.text : line.parts.map((part) => (part.bug ? <mark class={`bug bug-${part.bug}`}>{part.text}</mark> : part.text))}</span>
+  ))}</code></pre>
+  <figcaption class="foot">
+    <span class="years">5 years</span>
+    <span class="what">undetected, until an AI-assisted audit compared what the code claimed with what it did</span>
+  </figcaption>
+</figure>
+
+<style>
+  .sql {
+    margin: 0;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font: 500 11px/1.3 var(--mono);
+    letter-spacing: 0.06em;
+  }
+  .synthetic {
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .code {
+    margin: 0;
+    padding: 16px 14px;
+    overflow-x: auto;
+    color: var(--ink);
+    font: 400 13px/1.7 var(--mono);
+    white-space: normal;
+  }
+  .line {
+    display: block;
+    min-height: 1.7em;
+    white-space: pre;
+  }
+  .comment {
+    color: var(--dim);
+  }
+  .bug {
+    padding: 1px 0;
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 -2px 0 var(--signal);
+    transition:
+      background-color 400ms ease,
+      color 400ms ease;
+  }
+  .note {
+    color: var(--signal);
+    font-size: 12px;
+    transition: opacity 400ms ease;
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 14px;
+    padding: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .years {
+    color: var(--ink);
+    font-size: 30px;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .what {
+    flex: 1 1 18rem;
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  :global(.js:not(.rm):not(.no-motion)) .sql:not(.played) .bug {
+    box-shadow: none;
+  }
+  :global(.js:not(.rm):not(.no-motion)) .sql:not(.played) .note {
+    opacity: 0;
+  }
+  .sql.played .bug-1,
+  .sql.played .note-1 {
+    transition-delay: 500ms;
+  }
+  .sql.played .bug-2,
+  .sql.played .note-2 {
+    transition-delay: 1300ms;
+  }
+  .sql.played .bug {
+    animation: flag 900ms ease both;
+  }
+  .sql.played .bug-1 {
+    animation-delay: 500ms;
+  }
+  .sql.played .bug-2 {
+    animation-delay: 1300ms;
+  }
+  .sql.instant .bug {
+    animation: none;
+  }
+  @keyframes flag {
+    0% {
+      background: transparent;
+      box-shadow: inset 0 -2px 0 transparent;
+    }
+    40% {
+      background: rgb(255 176 32 / 0.28);
+    }
+    100% {
+      background: rgb(255 176 32 / 0.1);
+      box-shadow: inset 0 -2px 0 var(--signal);
+    }
+  }
+</style>

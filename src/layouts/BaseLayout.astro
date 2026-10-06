@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import geistMonoLatin from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
 import { site } from '../data/site';
 import { withBase } from '../lib/format';
@@ -23,13 +23,23 @@ const ogImage = new URL(withBase('og-image.png'), Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="theme-color" content="#07080a" />
+    <meta name="theme-color" content="#0A0B0D" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
     <link rel="sitemap" href={withBase('sitemap-index.xml')} />
-    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMonoLatin} as="font" type="font/woff2" crossorigin />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('rm');
+        // If the motion script never runs, show everything in its final state.
+        setTimeout(() => {
+          if (!root.hasAttribute('data-motion')) root.classList.add('no-motion');
+        }, 2500);
+      })();
+    </script>
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -49,23 +59,36 @@ const ogImage = new URL(withBase('og-image.png'), Astro.site);
         '@context': 'https://schema.org',
         '@type': 'Person',
         name: site.name,
-        jobTitle: 'Engineering Leader, Infrastructure & Platforms',
+        jobTitle: 'Tech Lead, Infrastructure Platforms & Automation',
         address: { '@type': 'PostalAddress', addressLocality: site.location },
         sameAs: site.socials.map((s) => s.href),
         url: Astro.site?.href,
       })}
     />
   </head>
-  <body class="min-h-dvh">
-    <a
-      href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-on-accent"
-    >
-      Skip to content
-    </a>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
     <slot />
     <script>
       import '../scripts/motion';
     </script>
   </body>
 </html>
+
+<style>
+  .skip {
+    position: fixed;
+    top: -48px;
+    left: 12px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: var(--signal);
+    color: var(--signal-ink);
+    font-size: 13px;
+    font-weight: 650;
+    transition: top 150ms ease;
+  }
+  .skip:focus {
+    top: 12px;
+  }
+</style>

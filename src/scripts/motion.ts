@@ -1,98 +1,71 @@
-// Shared motion: scroll reveals, count-up numbers, panel spotlight and the
-// scroll progress bar. Everything degrades to static content when motion is
-// reduced or JS is unavailable (values are server-rendered in final form).
+// Site-wide progressive enhancement. Everything renders complete without this
+// script; it only adds scroll reveals, play-once visuals, and the phone menu.
 
-import { formatValue } from '../lib/format';
+const root = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canObserve = 'IntersectionObserver' in window;
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// --- Count-up -------------------------------------------------------------
-
-function formatCount(el: HTMLElement, value: number) {
-  el.textContent = formatValue(value, {
-    prefix: el.dataset.prefix,
-    suffix: el.dataset.suffix,
-    decimals: Number(el.dataset.decimals ?? 0),
-  });
-}
-
-function countUp(el: HTMLElement) {
-  const to = Number(el.dataset.count);
-  const from = Number(el.dataset.countFrom ?? 0);
-  const duration = 900;
-  const start = performance.now();
-  const tick = (now: number) => {
-    const t = Math.min(1, (now - start) / duration);
-    const eased = 1 - Math.pow(1 - t, 4);
-    formatCount(el, from + (to - from) * eased);
-    if (t < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-
-const counters = [...document.querySelectorAll<HTMLElement>('[data-count]')];
-
-// --- Reveal ----------------------------------------------------------------
-
+// [data-reveal]: fade up once on first view.
 const revealables = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
-
-if (reduceMotion || !('IntersectionObserver' in window)) {
-  revealables.forEach((el) => el.classList.add('is-in'));
+if (reducedMotion || !canObserve) {
+  revealables.forEach((element) => element.classList.add('is-in'));
 } else {
-  // Reset counters to their start value; they animate when revealed.
-  counters.forEach((el) => formatCount(el, Number(el.dataset.countFrom ?? 0)));
-
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
-        const el = entry.target as HTMLElement;
-        observer.unobserve(el);
-        if (el.hasAttribute('data-reveal')) el.classList.add('is-in');
-        if (el.hasAttribute('data-count')) countUp(el);
+        entry.target.classList.add('is-in');
+        observer.unobserve(entry.target);
       }
     },
     { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
   );
-  revealables.forEach((el) => observer.observe(el));
-  counters.forEach((el) => observer.observe(el));
+  revealables.forEach((element) => observer.observe(element));
 }
 
-// --- Spotlight on clickable panels (fine pointers only) --------------------
-
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  document.addEventListener(
-    'pointermove',
-    (event) => {
-      const panel = (event.target as HTMLElement).closest<HTMLElement>('.panel--link');
-      if (!panel) return;
-      const rect = panel.getBoundingClientRect();
-      panel.style.setProperty('--x', `${event.clientX - rect.left}px`);
-      panel.style.setProperty('--y', `${event.clientY - rect.top}px`);
-    },
-    { passive: true },
-  );
-}
-
-// --- Scroll progress -------------------------------------------------------
-
-const progress = document.querySelector<HTMLElement>('[data-scroll-progress]');
-if (progress) {
-  let queued = false;
-  const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
-    queued = false;
-  };
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!queued) {
-        queued = true;
-        requestAnimationFrame(update);
+// [data-viz]: data visuals animate to their final state once, when seen.
+// Their static markup already shows that final state.
+const visuals = [...document.querySelectorAll<HTMLElement>('[data-viz]')];
+if (reducedMotion || !canObserve) {
+  visuals.forEach((element) => element.classList.add('played', 'instant'));
+} else {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const element = entry.target as HTMLElement;
+        observer.unobserve(element);
+        window.setTimeout(() => element.classList.add('played'), Number(element.dataset.delay ?? 0));
       }
     },
-    { passive: true },
+    { threshold: 0.3 },
   );
-  update();
+  visuals.forEach((element) => observer.observe(element));
 }
+
+// Phone menu
+const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+const menu = document.querySelector<HTMLElement>('[data-menu]');
+const setMenu = (open: boolean) => {
+  if (!toggle || !menu) return;
+  menu.hidden = !open;
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+};
+toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+menu?.addEventListener('click', (event) => {
+  if ((event.target as HTMLElement).closest('a')) setMenu(false);
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    toggle.focus();
+  }
+});
+window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+  if (event.matches) setMenu(false);
+});
+
+root.setAttribute('data-motion', 'ready');
+
+export {};

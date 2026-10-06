@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs",
     "astro": "astro",
     "check": "astro check",
     "og": "node scripts/og-image.mjs",
@@ -16,11 +17,11 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
-    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/archivo": "5.3.0",
     "@fontsource-variable/geist-mono": "5.3.0",
-    "@lucide/astro": "1.52.0",
     "@tailwindcss/vite": "4.3.3",
     "astro": "^7.3.5",
+    "dotted-map": "3.1.0",
     "tailwindcss": "4.3.3"
   },
   "allowScripts": {

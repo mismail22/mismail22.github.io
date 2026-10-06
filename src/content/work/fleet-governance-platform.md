@@ -6,10 +6,15 @@ role: Tech lead and architect
 period: 2024 – present
 stack: [Hack/PHP, React, GraphQL, SQL, Python, LLM agents]
 metrics:
-  - { value: '81 → 10', label: 'days per disposal cycle' }
-  - { value: '27,000+', label: 'racks in the first guarded sweep' }
-  - { value: '1,000–2,500', label: 'pallet spaces freed by rebalancing' }
-  - { value: '9-figure', label: 'aging inventory reduced (est.)' }
+  - { value: '81 → 10', label: 'days per disposal cycle', qualifier: 'Platform and process outcome after live-data and guarded-workflow adoption.', evidenceType: measured }
+  - { value: '27,000+', label: 'racks evaluated in the first guarded sweep', qualifier: 'Evaluation scope; not a count of assets changed or disposed.', evidenceType: scope }
+  - { value: '1,000–2,500', label: 'pallet spaces freed by rebalancing', qualifier: 'Operational estimate across completed rebalancing work.', evidenceType: estimated }
+  - { value: '9-figure', label: 'aging inventory reduction', qualifier: 'Estimated affected value, not booked savings.', evidenceType: estimated }
+plate:
+  title: The governing loop
+  caption: A reconstructed, public-safe model of how live truth becomes a guarded, auditable fleet action.
+  kind: decision-trace
+  sanitized: true
 tldr:
   - Built one live source of truth for a multi-billion-dollar rack inventory, shared by operations and finance.
   - Every destructive action runs through a guarded CLI and leaves an audit trail designed with finance.

@@ -1,0 +1,86 @@
+---
+// LinkedIn and GitHub as icon links. The visible mark is the link; the name is
+// in the accessible label and the tooltip.
+import BrandIcon from './ui/BrandIcon.astro';
+import { site } from '../data/site';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { size = 'md', class: className } = Astro.props;
+---
+
+<ul class:list={['social', size, className]}>
+  {
+    site.socials.map((social) => (
+      <li>
+        <a href={social.href} target="_blank" rel="noopener me" aria-label={`${social.label} (opens in a new tab)`} title={social.label}>
+          <BrandIcon name={social.icon} class="icon" />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    transition:
+      border-color 150ms ease,
+      color 150ms ease,
+      background-color 150ms ease;
+  }
+  a:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .sm {
+    gap: 4px;
+  }
+  .sm a {
+    width: 36px;
+    height: 36px;
+    border-color: transparent;
+    color: var(--ink-2);
+  }
+  .sm a:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+  .sm .icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .lg {
+    gap: 12px;
+  }
+  .lg a {
+    width: 64px;
+    height: 64px;
+  }
+  .lg .icon {
+    width: 26px;
+    height: 26px;
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+// 5 → 24 people: the founding five, then the people added over two years.
+const START = 5;
+const END = 24;
+---
+
+<div class="viz team" data-viz data-delay="800">
+  <svg viewBox="0 0 324 14" aria-hidden="true" focusable="false">
+    {
+      Array.from({ length: END }, (_, i) => (
+        <circle class:list={['p', i < START ? 'first' : 'added']} cx={6.75 + i * 13.5} cy="7" r="5" style={`--d:${Math.max(0, i - START) * 32}`} />
+      ))
+    }
+  </svg>
+</div>
+
+<style>
+  svg {
+    display: block;
+    width: 100%;
+    max-width: var(--viz-max, 340px);
+    height: auto;
+    overflow: visible;
+  }
+  .first {
+    fill: var(--viz-ink, var(--ink));
+  }
+  .added {
+    fill: var(--team-new);
+    stroke: transparent;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    transition:
+      fill 240ms ease,
+      stroke 240ms ease;
+    transition-delay: calc(var(--d) * 1ms);
+  }
+  :global(.js:not(.rm):not(.no-motion)) .team:not(.played) .added {
+    fill: transparent;
+    stroke: var(--line-strong);
+  }
+  .instant .added {
+    transition: none;
+  }
+</style>

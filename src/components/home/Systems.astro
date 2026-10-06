@@ -1,0 +1,188 @@
+---
+// Three case studies, each led by a visual of the system rather than prose.
+import GoverningLoop from '../viz/GoverningLoop.astro';
+import LaneRace from '../viz/LaneRace.astro';
+import SqlDiff from '../viz/SqlDiff.astro';
+import { withBase } from '../../lib/format';
+
+const cases = [
+  {
+    id: 'fleet-governance-platform',
+    title: 'Fleet governance platform',
+    summary: 'One live source of truth, with guarded bulk actions, for a multi-billion-dollar data-center fleet.',
+    metrics: [
+      { value: '81 → 10', label: 'days per disposal cycle', type: 'measured' },
+      { value: '9-figure', label: 'aging-inventory reduction', type: 'estimated' },
+    ],
+    visual: 'loop',
+  },
+  {
+    id: 'network-automation',
+    title: 'Network automation at fleet scale',
+    summary: 'Peering turn-ups, circuit migrations, and ACL policy, rebuilt as composable, staged, verified workflows.',
+    metrics: [
+      { value: '57%', label: 'faster workflow runs', type: 'measured' },
+      { value: '162', label: 'ACL changes from my first policy script', type: 'measured' },
+    ],
+    visual: 'race',
+  },
+  {
+    id: 'ai-native-engineering',
+    title: 'AI-native engineering',
+    summary: 'An AI-assisted audit that found a nine-figure data defect, and agents that reuse existing tools instead of new write paths.',
+    metrics: [
+      { value: '5 yrs', label: 'the defect went undetected', type: 'measured' },
+      { value: '< 1 wk', label: 'for peer teams to adopt the method', type: 'measured' },
+    ],
+    visual: 'sql',
+  },
+] as const;
+---
+
+<section id="systems" class="systems" aria-labelledby="systems-title">
+  <div class="wrap">
+    <header class="head" data-reveal>
+      <p class="eyebrow">01 · Systems</p>
+      <h2 id="systems-title" class="display-m">Manual work in.<br />Systems out.</h2>
+      <p class="lead">Three public-safe case studies: what was manual, what I built, and what changed.</p>
+    </header>
+
+    <ol class="cases">
+      {
+        cases.map((item, index) => (
+          <li class:list={['case', index % 2 === 1 && 'flip']} data-reveal>
+            <div class="text">
+              <p class="num">Case 0{index + 1}</p>
+              <h3 class="display-s">
+                <a href={withBase(`/work/${item.id}`)}>{item.title}</a>
+              </h3>
+              <p class="summary">{item.summary}</p>
+              <dl class="metrics">
+                {item.metrics.map((metric) => (
+                  <div>
+                    <dt class="value">{metric.value}</dt>
+                    <dd>
+                      <span class="label">{metric.label}</span>
+                      <span class="evidence" data-type={metric.type}>
+                        {metric.type}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <a class="link-arrow" href={withBase(`/work/${item.id}`)} aria-label={`Read the case study: ${item.title}`}>
+                Read the case <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+            <div class="visual">
+              {item.visual === 'loop' && <GoverningLoop />}
+              {item.visual === 'race' && <LaneRace />}
+              {item.visual === 'sql' && <SqlDiff />}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .systems {
+    padding-block: clamp(88px, 12vw, 160px);
+    border-top: 1px solid var(--line);
+  }
+  .head {
+    display: grid;
+    gap: 18px;
+    max-width: 760px;
+  }
+  .cases {
+    display: grid;
+    margin: clamp(48px, 7vw, 88px) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .case {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 32px 24px;
+    padding-block: clamp(40px, 6vw, 72px);
+    border-bottom: 1px solid var(--line);
+  }
+  .text {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    grid-column: 1 / span 5;
+  }
+  .visual {
+    grid-column: 7 / -1;
+    align-self: center;
+    padding: clamp(20px, 2.4vw, 32px);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--surface) 0%, rgb(17 19 23 / 0.4) 100%);
+  }
+  .flip .text {
+    grid-column: 8 / -1;
+    grid-row: 1;
+  }
+  .flip .visual {
+    grid-column: 1 / span 6;
+    grid-row: 1;
+  }
+  .num {
+    color: var(--signal);
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  h3 a {
+    transition: color 150ms ease;
+  }
+  h3 a:hover {
+    color: var(--signal);
+  }
+  .summary {
+    color: var(--ink-2);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 6px 0 6px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .value {
+    color: var(--ink);
+    font-size: 30px;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  dd {
+    display: grid;
+    justify-items: start;
+    gap: 7px;
+    margin: 6px 0 0;
+  }
+  .label {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 1023px) {
+    .text,
+    .visual,
+    .flip .text,
+    .flip .visual {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+  }
+</style>

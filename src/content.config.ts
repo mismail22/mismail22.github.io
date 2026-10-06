@@ -12,7 +12,18 @@ const work = defineCollection({
     role: z.string(),
     period: z.string(),
     stack: z.array(z.string()).min(1),
-    metrics: z.array(z.object({ value: z.string(), label: z.string() })).min(2).max(4),
+    metrics: z.array(z.object({
+      value: z.string(),
+      label: z.string(),
+      qualifier: z.string(),
+      evidenceType: z.enum(['measured', 'estimated', 'scope']),
+    })).min(2).max(4),
+    plate: z.object({
+      title: z.string(),
+      caption: z.string(),
+      kind: z.enum(['decision-trace', 'workflow', 'audit']),
+      sanitized: z.boolean(),
+    }),
     tldr: z.array(z.string()).length(3),
     // Decision records; `alternative` only where one was actually considered
     decisions: z

@@ -1,17 +1,45 @@
 ---
+import SocialLinks from './SocialLinks.astro';
 import { site } from '../data/site';
+import { withBase } from '../lib/format';
 
-const built = new Date();
-const year = built.getFullYear();
-const deployed = built.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line">
-  <div class="container-page flex flex-col gap-3 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-    <p>© {year} {site.name}</p>
-    <p>
-      Last deployed <time datetime={built.toISOString()}>{deployed}</time> · Built with Astro ·
-      <a href={site.repo} target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-4 hover:text-fg">Source</a>
-    </p>
+<footer class="footer no-print">
+  <div class="wrap row">
+    <a class="mark" href={withBase('/')}>Mohanad Ismail</a>
+    <p class="meta">© {year} · {site.location}</p>
+    <SocialLinks size="sm" class="footer-social" />
+    <a class="top meta" href="#main">Back to top <span aria-hidden="true">↑</span></a>
   </div>
 </footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+    padding-block: 22px;
+  }
+  .mark {
+    font-size: 12px;
+    font-weight: 650;
+    font-stretch: 112%;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .row :global(.footer-social) {
+    margin-left: auto;
+  }
+  .top {
+    transition: color 150ms ease;
+  }
+  .top:hover {
+    color: var(--ink);
+  }
+</style>

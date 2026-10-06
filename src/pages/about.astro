@@ -1,0 +1,533 @@
+---
+import { getCollection } from 'astro:content';
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
+import CompanyLogo from '../components/ui/CompanyLogo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { formatMonth } from '../lib/format';
+
+const roles = (await getCollection('experience')).map((entry) => entry.data).sort((a, b) => b.start.localeCompare(a.start));
+const phases = (await getCollection('teamPhases')).sort((a, b) => a.data.order - b.data.order).map((entry) => entry.data);
+const principles = (await getCollection('principles')).sort((a, b) => a.data.order - b.data.order).map((entry) => entry.data);
+const skills = (await getCollection('skills')).map((entry) => ({ id: entry.id, ...entry.data }));
+const capabilityGroups = [
+  { title: 'Infrastructure platforms', ids: ['workflows', 'sot', 'cli', 'flags'] },
+  { title: 'Network systems', ids: ['bgp', 'acl-vlan', 'edge-peering', 'dc-physical'] },
+  { title: 'Data and AI methods', ids: ['pipelines', 'schema', 'agents', 'rag', 'llm-audit'] },
+  { title: 'Reliability and leadership', ids: ['incidents', 'slo', 'monitoring', 'org', 'vendors'] },
+].map((group) => ({ ...group, entries: group.ids.map((id) => skills.find((skill) => skill.id === id)).filter((entry) => entry !== undefined) }));
+
+// The timeline bar: each era's width is proportional to its years.
+const START = 2010;
+const NOW = 2026;
+const eras = site.careerEras.map((era) => {
+  const [from, to] = era.years.split('–');
+  const end = to === 'now' ? NOW : Number(to);
+  return { ...era, from: Number(from), span: end - Number(from) };
+});
+const orgs = site.orgs.map((org) => ({ ...org, roles: roles.filter((role) => role.org === org.id) }));
+---
+
+<BaseLayout title={`About · ${site.name}`} description="The career arc, operating approach, and capabilities behind Mohanad Ismail's infrastructure work.">
+  <Navbar current="about" />
+  <main id="main" tabindex="-1">
+    <header class="wrap page-head">
+      <p class="eyebrow">About</p>
+      <h1 class="display-l">Operator first.<br />Architect by accumulation.</h1>
+      <p class="lead">
+        I started by operating a national mobile network, then automated network operations, led a lab-infrastructure team, and now build fleet
+        governance systems. Each chapter taught the same lesson: a system is not finished until its ownership and its failure modes are designed
+        too.
+      </p>
+    </header>
+
+    <section class="wrap eras" aria-labelledby="eras-title">
+      <h2 id="eras-title" class="eyebrow">Sixteen years, four chapters</h2>
+      <div class="bar" aria-hidden="true">
+        {eras.map((era, i) => <span class:list={['seg', i === eras.length - 1 && 'now']} style={`flex:${era.span}`} />)}
+      </div>
+      <div class="axis" aria-hidden="true"><span>{START}</span><span>Today</span></div>
+      <ol class="era-list">
+        {
+          eras.map((era, i) => (
+            <li data-reveal style={`--i: ${i}`}>
+              <p class="era-years">
+                0{i + 1} · {era.years} · {era.place}
+              </p>
+              <h3 class="era-title">{era.title}</h3>
+              <p class="era-body">{era.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section id="experience" class="wrap experience" aria-labelledby="experience-title">
+      <p class="eyebrow">Experience</p>
+      <h2 id="experience-title" class="display-m">The full sequence.</h2>
+      {
+        orgs.map((org) => (
+          <div class="org">
+            <div class="org-head">
+              <CompanyLogo company={org.logo} mono decorative class="org-logo" />
+              <div>
+                <h3 class="org-name">{org.name}</h3>
+                <p class="meta">
+                  {org.period} · {org.tenure} · {org.locations}
+                </p>
+              </div>
+            </div>
+            <ol class="roles">
+              {org.roles.map((role) => (
+                <li data-reveal>
+                  <div class="role-head">
+                    <h4 class="role-title">{role.role}</h4>
+                    <p class="meta">
+                      {formatMonth(role.start)} – {role.end ? formatMonth(role.end) : 'Present'} · {role.location}
+                    </p>
+                  </div>
+                  <ul class="highlights">
+                    {role.highlights.slice(0, 3).map((highlight) => (
+                      <li>{highlight}</li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="leadership" class="wrap leadership" aria-labelledby="leadership-title">
+      <p class="eyebrow">Leadership · 2022–2024</p>
+      <h2 id="leadership-title" class="display-m">How the team was built.</h2>
+      <ol class="phases">
+        {
+          phases.map((phase, i) => (
+            <li data-reveal style={`--i: ${i}`}>
+              <p class="phase-when">{phase.when}</p>
+              <h3 class="phase-title">{phase.title}</h3>
+              <p class="phase-detail">{phase.detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="principles" aria-labelledby="principles-title">
+      <div class="wrap">
+        <p class="eyebrow">How I work</p>
+        <h2 id="principles-title" class="display-m">Five rules I build by.</h2>
+        <ol class="rules">
+          {
+            principles.map((principle, i) => (
+              <li data-reveal style={`--i: ${i % 3}`}>
+                <p class="rule-n">0{i + 1}</p>
+                <h3 class="rule-title">{principle.title}</h3>
+                <p class="rule-body">{principle.body}</p>
+                <p class="rule-proof">
+                  <span class="pv">{principle.proof.value}</span> {principle.proof.label}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="wrap capabilities" aria-labelledby="capabilities-title">
+      <p class="eyebrow">Capabilities with evidence</p>
+      <h2 id="capabilities-title" class="display-m">What the work required.</h2>
+      <div class="groups">
+        {
+          capabilityGroups.map((group) => (
+            <section class="group" data-reveal>
+              <h3 class="group-title">{group.title}</h3>
+              <ul>
+                {group.entries.map((entry) => (
+                  <li>
+                    <p class="skill">{entry.skill}</p>
+                    <p class="evidence-text">{entry.evidence}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrap education" aria-labelledby="education-title">
+      <p class="eyebrow">Education</p>
+      <h2 id="education-title" class="sr-only">Education</h2>
+      <ul class="schools">
+        {
+          site.education.map((school) => (
+            <li data-reveal>
+              <p class="degree">{school.degree}</p>
+              <p class="school">{school.school}</p>
+              <p class="meta">{school.period}</p>
+              {'note' in school && school.note && <p class="school-note">{school.note}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="wrap outside" aria-labelledby="outside-title">
+      <p class="eyebrow">Outside the system</p>
+      <h2 id="outside-title" class="display-m">12th at the 2016 Windsurfing World Championship.</h2>
+      <p class="lead">Different environment, same instinct: read the conditions, make the adjustment, commit.</p>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+  .page-head {
+    display: grid;
+    gap: 20px;
+    padding-block: clamp(56px, 9vw, 120px) clamp(40px, 6vw, 72px);
+  }
+  .page-head .lead {
+    max-width: 60ch;
+  }
+
+  .eras {
+    padding-block: clamp(40px, 6vw, 72px) clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    gap: 3px;
+    height: 14px;
+    margin-top: 28px;
+  }
+  .seg {
+    background: var(--line-strong);
+  }
+  .seg.now {
+    background: var(--signal);
+  }
+  .axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: var(--dim);
+    font: 500 11px/1 var(--mono);
+    letter-spacing: 0.06em;
+  }
+  .era-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 24px;
+    margin: 36px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .era-list li {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+  .era-years {
+    color: var(--signal);
+    font: 600 11px/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .era-title {
+    color: var(--ink);
+    font-size: 24px;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .era-body {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .experience {
+    padding-block: clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .experience h2 {
+    margin-top: 16px;
+  }
+  .org {
+    margin-top: 48px;
+  }
+  .org-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .org-head :global(.org-logo) {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    color: var(--ink);
+  }
+  .org-name {
+    color: var(--ink);
+    font-size: 26px;
+    font-weight: 800;
+    font-stretch: 75%;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .org-head .meta {
+    margin-top: 6px;
+  }
+  .roles {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .roles > li {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: 16px 32px;
+    padding-block: 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .role-title {
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.3;
+  }
+  .role-head .meta {
+    margin-top: 6px;
+  }
+  .highlights {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding-left: 18px;
+    list-style: square;
+  }
+  .highlights li {
+    color: var(--ink-2);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .highlights li::marker {
+    color: var(--signal);
+  }
+
+  .leadership {
+    padding-block: clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .leadership h2 {
+    margin-top: 16px;
+  }
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .phases li {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: 2px solid var(--line-strong);
+  }
+  .phases li:last-child {
+    border-top-color: var(--signal);
+  }
+  .phase-when {
+    color: var(--signal);
+    font: 600 11px/1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .phase-title {
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    font-stretch: 76%;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .phase-detail {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .principles {
+    padding-block: clamp(64px, 9vw, 120px);
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .principles h2 {
+    margin-top: 16px;
+  }
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 24px;
+    margin: 44px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .rules li {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    padding-top: 18px;
+    border-top: 2px solid var(--line-strong);
+  }
+  .rule-n {
+    color: var(--signal);
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.1em;
+  }
+  .rule-title {
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    font-stretch: 76%;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  .rule-body {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .rule-proof {
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .pv {
+    color: var(--ink);
+    font-weight: 800;
+    font-stretch: 78%;
+    font-size: 18px;
+  }
+
+  .capabilities {
+    padding-block: clamp(64px, 9vw, 120px);
+  }
+  .capabilities h2 {
+    margin-top: 16px;
+  }
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 32px;
+    margin-top: 44px;
+  }
+  .group {
+    padding-top: 18px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .group-title {
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 800;
+    font-stretch: 76%;
+    text-transform: uppercase;
+  }
+  .group ul {
+    display: grid;
+    gap: 16px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .skill {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .evidence-text {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .education {
+    padding-block: clamp(56px, 8vw, 104px);
+    border-top: 1px solid var(--line);
+  }
+  .schools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .schools li {
+    display: grid;
+    gap: 6px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .degree {
+    color: var(--ink);
+    font-size: 24px;
+    font-weight: 800;
+    font-stretch: 75%;
+    text-transform: uppercase;
+  }
+  .school {
+    color: var(--ink-2);
+    font-size: 15.5px;
+  }
+  .school-note {
+    max-width: 52ch;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .outside {
+    display: grid;
+    gap: 20px;
+    padding-block: clamp(64px, 9vw, 120px);
+    border-top: 1px solid var(--line);
+  }
+  .outside h2 {
+    max-width: 18ch;
+  }
+
+  @media (max-width: 1023px) {
+    .era-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .rules {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 767px) {
+    .phases,
+    .era-list,
+    .rules,
+    .groups,
+    .schools,
+    .roles > li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,354 @@
+---
+// The career route on a dotted world map, generated at build time (no client
+// JavaScript). Robinson projection centered on 115°E so the route reads left
+// to right: Cairo → Singapore → across the Pacific → Menlo Park.
+import DottedMap from 'dotted-map';
+import { site } from '../../data/site';
+
+type Point = { x: number; y: number; data?: string };
+
+const stops = site.journey;
+const map = new DottedMap({ height: 72, grid: 'diagonal', projection: { name: 'robinson', center: { lat: 0, lng: 115 } } });
+stops.forEach((stop) => map.addPin({ lat: stop.lat, lng: stop.lng, data: stop.key }));
+// Invisible pins that mark the crop: southern Scandinavia down to the tips of
+// Africa and Australia. (The generator already drops Antarctica.)
+map.addPin({ lat: 62, lng: 115, data: 'crop-top' });
+map.addPin({ lat: -37, lng: 115, data: 'crop-bottom' });
+
+const points = map.getPoints() as Point[];
+const pin = (key: string) => {
+  const found = points.find((point) => point.data === key);
+  if (!found) throw new Error(`JourneyMap: missing pin ${key}`);
+  return found;
+};
+const round = (n: number) => Math.round(n * 100) / 100;
+const top = pin('crop-top').y;
+const bottom = pin('crop-bottom').y;
+const width = Math.max(...points.map((point) => point.x)) + 1;
+const pad = 2;
+const viewY = top - pad;
+const viewH = bottom - top + pad * 2;
+const land = points.filter((point) => !point.data && point.y >= top - 0.01 && point.y <= bottom + 0.01);
+const path = (dots: Point[]) => dots.map((dot) => `M${round(dot.x)} ${round(dot.y)}h0`).join('');
+
+const places = stops.map((stop, index) => {
+  const at = pin(stop.key);
+  const near = land.filter((dot) => Math.hypot(dot.x - at.x, dot.y - at.y) < 6.5);
+  return {
+    ...stop,
+    index,
+    x: round(at.x),
+    y: round(at.y),
+    left: round((at.x / width) * 100),
+    topPct: round(((at.y - viewY) / viewH) * 100),
+    lit: path(near),
+  };
+});
+
+const arc = (a: { x: number; y: number }, b: { x: number; y: number }, lift: number) =>
+  `M${a.x} ${a.y}Q${round((a.x + b.x) / 2)} ${round((a.y + b.y) / 2 - lift)} ${b.x} ${b.y}`;
+const arcs = places.slice(1).map((place, i) => ({ d: arc(places[i], place, i === 0 ? 10 : 15), index: i }));
+---
+
+<figure class="journey" data-viz data-delay="150" style={`--ar:${round(width / viewH)}`} aria-labelledby="journey-caption">
+  <div class="stage">
+    <svg viewBox={`0 ${round(viewY)} ${round(width)} ${round(viewH)}`} aria-hidden="true" focusable="false">
+      <path class="land" d={path(land)} />
+      {places.map((place) => <path class:list={['lit', `lit-${place.index}`]} d={place.lit} />)}
+      {arcs.map((a) => <path class:list={['route', `route-${a.index}`]} d={a.d} pathLength="1" />)}
+      {arcs.map((a) => <path class:list={['packet', `packet-${a.index}`]} d={a.d} pathLength="1" />)}
+      {
+        places.map((place) => (
+          <g class:list={['city', `city-${place.index}`]} transform={`translate(${place.x} ${place.y})`}>
+            <circle class="halo" r="2.2" />
+            <circle class="core" r="0.85" />
+          </g>
+        ))
+      }
+    </svg>
+    {
+      places.map((place) => (
+        <div class:list={['label', `label-${place.index}`, `at-${place.label}`]} style={`left:${place.left}%;top:${place.topPct}%`} aria-hidden="true">
+          <p class="where">
+            <span class="num">0{place.index + 1}</span>
+            {place.city}
+          </p>
+          <p class="when">
+            {place.years} · {place.org}
+          </p>
+          <p class="what">{place.what}</p>
+        </div>
+      ))
+    }
+  </div>
+  <ol class="route-list">
+    {
+      places.map((place) => (
+        <li>
+          <span class="num">0{place.index + 1}</span>
+          <span class="where">{place.city}</span>
+          <span class="when">
+            {place.years} · {place.org}
+          </span>
+          <span class="what">{place.what}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <figcaption id="journey-caption" class="sr-only">
+    Career route: {places.map((place) => `${place.city}, ${place.years}, ${place.org}: ${place.what}.`).join(' ')}
+  </figcaption>
+</figure>
+
+<style>
+  .journey {
+    position: relative;
+    margin: 0;
+  }
+  .stage {
+    position: relative;
+    width: min(100%, calc(var(--map-maxh, 100vh) * var(--ar)));
+    margin-inline: auto;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .land,
+  .lit {
+    fill: none;
+    stroke-width: 0.58;
+    stroke-linecap: round;
+  }
+  .land {
+    stroke: var(--map-dot, #2b2e34);
+  }
+  .lit {
+    stroke: var(--map-lit, #8d9097);
+    transition: opacity 900ms ease;
+  }
+
+  .route,
+  .packet {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .route {
+    stroke: var(--signal);
+    stroke-width: var(--route-w, 0.22);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1100ms cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  .packet {
+    stroke: #fff4dc;
+    stroke-width: var(--packet-w, 0.38);
+    stroke-dasharray: 0.03 1;
+    stroke-dashoffset: 0.03;
+    opacity: 0;
+  }
+
+  .city {
+    transform-box: fill-box;
+  }
+  .halo {
+    fill: rgb(255 176 32 / 0.16);
+    stroke: rgb(255 176 32 / 0.55);
+    stroke-width: 0.2;
+  }
+  .core {
+    fill: var(--signal);
+  }
+  .halo,
+  .core {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      transform 500ms cubic-bezier(0.3, 1.5, 0.5, 1),
+      opacity 400ms ease;
+  }
+
+  .label {
+    position: absolute;
+    z-index: 1;
+    width: max-content;
+    max-width: 260px;
+    padding: 10px 12px 11px;
+    border-left: 2px solid var(--signal);
+    background: rgb(10 11 13 / 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition:
+      opacity 500ms ease,
+      transform 500ms var(--ease-out);
+  }
+  .at-left {
+    transform: translate(calc(-100% - 18px), -50%);
+  }
+  .at-below-left {
+    transform: translate(calc(-100% - 10px), 14px);
+  }
+  .at-below {
+    transform: translate(-50%, 18px);
+  }
+  .where {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 800;
+    font-stretch: 75%;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .num {
+    color: var(--signal);
+    font: 600 10.5px/1 var(--mono);
+    letter-spacing: 0.08em;
+  }
+  .when {
+    margin-top: 3px;
+    color: var(--muted);
+    font: 500 11px/1.4 var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .what {
+    margin-top: 5px;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    line-height: 1.38;
+  }
+
+  .route-list {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Before playing (only when the motion script will run it). */
+  :global(.js:not(.rm):not(.no-motion)) .journey:not(.played) .route {
+    stroke-dashoffset: 1;
+  }
+  :global(.js:not(.rm):not(.no-motion)) .journey:not(.played) :is(.halo, .core) {
+    transform: scale(0);
+  }
+  :global(.js:not(.rm):not(.no-motion)) .journey:not(.played) .label {
+    opacity: 0;
+  }
+  :global(.js:not(.rm):not(.no-motion)) .journey:not(.played) .lit {
+    opacity: 0;
+  }
+
+  /* Choreography: each stop lights up as the route reaches it. */
+  .city-0 :is(.halo, .core),
+  .lit-0 {
+    transition-delay: 100ms;
+  }
+  .label-0 {
+    transition-delay: 250ms;
+  }
+  .route-0 {
+    transition-delay: 450ms;
+  }
+  .city-1 :is(.halo, .core),
+  .lit-1 {
+    transition-delay: 1500ms;
+  }
+  .label-1 {
+    transition-delay: 1650ms;
+  }
+  .route-1 {
+    transition-delay: 1750ms;
+    transition-duration: 1300ms;
+  }
+  .city-2 :is(.halo, .core),
+  .lit-2 {
+    transition-delay: 3000ms;
+  }
+  .label-2 {
+    transition-delay: 3150ms;
+  }
+
+  .journey.played .packet {
+    animation: packet 2.6s cubic-bezier(0.45, 0, 0.3, 1) 3.4s 3 both;
+  }
+  .journey.played .packet-1 {
+    animation-delay: 4.2s;
+  }
+  .journey.instant .packet {
+    animation: none;
+  }
+  @keyframes packet {
+    0% {
+      stroke-dashoffset: 0.03;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: -1;
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .journey {
+      --route-w: 0.55;
+      --packet-w: 0.9;
+    }
+    .halo {
+      r: 4.2px;
+    }
+    .core {
+      r: 1.7px;
+    }
+    .label {
+      display: none;
+    }
+    .route-list {
+      position: static;
+      display: grid;
+      gap: 10px;
+      width: auto;
+      height: auto;
+      margin: 18px 0 0;
+      padding: 0;
+      overflow: visible;
+      clip-path: none;
+      list-style: none;
+      white-space: normal;
+    }
+    .route-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      column-gap: 10px;
+      align-items: baseline;
+    }
+    .route-list .num {
+      grid-row: span 3;
+    }
+    .route-list .where {
+      font-size: 15px;
+    }
+    .route-list .when {
+      margin-top: 2px;
+    }
+    .route-list .what {
+      margin-top: 2px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+  }
+</style>
